@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <gradient
+        android:startColor="#E3C2E8"
+        android:endColor="#D3CBE8"
+        android:angle="270" />
+    <corners android:radius="3dp" />
+    <stroke android:width="3dp" android:color="#434097" />
+    <text>sdfsf</text>
+</shape>

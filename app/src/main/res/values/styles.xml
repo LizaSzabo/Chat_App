@@ -1,0 +1,18 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">#5F3467</item>
+        <item name="colorPrimaryDark">#3B2A4C</item>
+        <item name="colorAccent">#9C27B0</item>
+        <item name="android:textColor">#491053</item>
+    </style>
+
+
+    <style name = "spinner" parent="android:Widget.TextView.SpinnerItem">
+        <item name="colorPrimary">#4C296A</item>
+        <item name = "boxBackgroundColor">#4C296A</item>
+    </style>
+
+
+</resources>
