@@ -12,6 +12,10 @@ class ChangePassDialog : DialogFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DialogChangePasswordBinding.inflate(inflater, container, false)
+
+        binding.btnSave.setOnClickListener{
+            dialog?.dismiss()
+        }
         return binding.root
     }
 }

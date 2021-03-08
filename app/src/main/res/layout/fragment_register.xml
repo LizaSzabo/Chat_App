@@ -43,7 +43,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textViewRegister"
         app:layout_constraintVertical_bias="0.0" />
 
-    <EditText
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/editTextUserName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -57,7 +57,19 @@
         app:layout_constraintTop_toBottomOf="@+id/textViewUserName"
         tools:ignore="MissingConstraints"
         android:backgroundTint="#39156E"
-        android:textColor="@color/colorPrimary"/>
+        android:textColor="@color/colorPrimary"
+        app:startIconDrawable="@drawable/ic_baseline_person_outline_24"
+        app:endIconMode="clear_text"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/tvTextUserName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
 
     <TextView
         android:id="@+id/textViewPass"
@@ -94,7 +106,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextPassword2" />
 
-    <EditText
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/editTextPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -108,7 +120,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewPass"
-        android:backgroundTint="#39156E"/>
+        android:backgroundTint="#39156E"
+        app:startIconDrawable="@drawable/ic_baseline_lock_open_24"
+       app:endIconMode="password_toggle"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/tvTextPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
 
     <TextView
         android:id="@+id/textViewPass2"
@@ -123,7 +147,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextPassword" />
 
-    <EditText
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/editTextPassword2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -137,7 +161,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewPass2"
-        android:backgroundTint="#39156E"/>
+        app:startIconDrawable="@drawable/ic_baseline_lock_open_24"
+        app:endIconMode="password_toggle"
+        android:backgroundTint="#39156E"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/tvTextPassword2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
 
     <ImageView
         android:id="@+id/ivAddPicture"

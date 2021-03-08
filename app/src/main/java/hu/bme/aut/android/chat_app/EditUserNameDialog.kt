@@ -15,6 +15,11 @@ class EditUserNameDialog: DialogFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DialogEditUserNameBinding.inflate(inflater, container, false)
+
+        binding.btnSave.setOnClickListener{
+            dialog?.dismiss()
+        }
+
         return binding.root
     }
 }
