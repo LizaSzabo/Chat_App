@@ -21,10 +21,7 @@ class MessagesFragment : Fragment() {
         super.onAttach(activity)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         fragmentBinding =FragmentMessagesBinding.inflate(inflater, container, false)
         // Inflate the layout for this fragment
@@ -48,8 +45,11 @@ class MessagesFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.Log_out) {
-
             val action = MessagesFragmentDirections.actionMessagesFragmentToLoginFragment()
+            findNavController().navigate(action)
+        }
+        else if(item.itemId == R.id.settings){
+            val action = MessagesFragmentDirections.actionMessagesFragmentToEditProfileFragment()
             findNavController().navigate(action)
         }
         return super.onOptionsItemSelected(item)

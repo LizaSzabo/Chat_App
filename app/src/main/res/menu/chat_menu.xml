@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/add_picture"
+        android:icon="@drawable/ic_baseline_add_photo_alternate_24"
+        android:title="Add picture"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/add_location"
+        android:icon="@drawable/ic_baseline_add_location_alt_24"
+        android:title="Location"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/add_gif"
+        android:icon="@drawable/ic_baseline_gif_24"
+        android:title="Add Gif"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/add_file"
+        android:icon="@drawable/ic_baseline_attach_file_24"
+        android:title="Add File"
+        app:showAsAction="ifRoom" />
+</menu>
