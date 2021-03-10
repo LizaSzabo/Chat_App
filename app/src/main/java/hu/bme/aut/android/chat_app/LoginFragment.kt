@@ -70,6 +70,8 @@ class LoginFragment : Fragment(), AdapterView.OnItemSelectedListener{
         }
         spinner.onItemSelectedListener = this
         spinner.setSelection(args.pos)
+        spinner.dropDownHorizontalOffset = -20
+
 
         return fragmentBinding.root
     }

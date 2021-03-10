@@ -23,7 +23,7 @@
         android:layout_marginEnd="5dp"
         android:layout_marginBottom="20dp"
         android:background="@drawable/text_edit_text"
-        android:hint="text"
+        android:hint="@string/text"
         android:paddingStart="10dp"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"

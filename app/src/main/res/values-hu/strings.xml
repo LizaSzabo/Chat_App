@@ -6,19 +6,19 @@
     <string name="register">REGISZTRÁCIÓ</string>
     <string name="login_ok">OK</string>
     <string name="register_ok">OK</string>
-    <string name="search_conversation">Search Conversation</string>
-    <string name="chat_list">Chat List</string>
-    <string name="edit_profile">Edit Profile</string>
-    <string name="edit_user_name">  Edit User Name</string>
-    <string name="change_password">  Change Password</string>
-    <string name="add_profile_picture">ADD PROFILE PICTURE</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="new_user_name">NEW USER NAME:</string>
-    <string name="save">Save</string>
-    <string name="current_password">CURRENT PASSWORD:</string>
-    <string name="new_password">NEW PASSWORD:</string>
-    <string name="confirm_new_password">CONFIRM NEW PASSWORD:</string>
+    <string name="search_conversation">Beszélgetés Keresése</string>
+    <string name="chat_list">Beszélgetés Lista</string>
+    <string name="edit_profile">Profil Szerkesztése</string>
+    <string name="edit_user_name">  Felhasználónév Szerkesztése</string>
+    <string name="change_password">  Jelszó változtatása</string>
+    <string name="add_profile_picture">PROFIL KÉP HOZZÁADÁSA</string>
+    <string name="new_user_name">ÚJ FELHASZNÁLÓ NÉV:</string>
+    <string name="save">Mentés</string>
+    <string name="current_password">JELENLEGI JELSZÓ:</string>
+    <string name="new_password">ÚJ JELSZÓ:</string>
+    <string name="confirm_new_password">ÚJ JELSZÓ MEGERŐSÍTÉSE:</string>
+    <string name="text">szöveg</string>
+    <string name="confirm_password">JELSZÓ MEGERŐSÍTÉSE:</string>
 
     <string-array name="languages">
         <item>EN</item>

@@ -141,7 +141,7 @@
         android:layout_marginStart="25dp"
         android:layout_marginTop="20dp"
         android:paddingStart="10dp"
-        android:text="CONFIRM PASSWORD:"
+        android:text="@string/confirm_password"
         android:textColor="#241237"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"

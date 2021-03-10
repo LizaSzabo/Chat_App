@@ -158,9 +158,14 @@
         android:layout_marginTop="36dp"
         android:layout_marginEnd="32dp"
         android:background="@android:drawable/btn_dropdown"
+        android:popupBackground="@drawable/spinner_item"
         android:spinnerMode="dropdown"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:dropDownVerticalOffset="40dp"
+        android:dropDownWidth="60dp"
+        android:textAlignment="center"
+        />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline3"
