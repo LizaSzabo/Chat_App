@@ -46,16 +46,33 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
-        android:id="@+id/btnSave"
-        android:layout_width="80dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="200dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="40dp"
-        android:background="@drawable/save_button"
-        android:text="@string/save"
-        android:textSize="16sp" />
+        android:orientation="horizontal"
+        >
 
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="80dp"
+            android:layout_marginStart="25dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/cancel_button"
+            android:text="@string/cancel"
+            android:layout_marginTop="20dp"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/btnSave"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="100dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="40dp"
+            android:background="@drawable/save_button"
+            android:text="@string/save"
+            android:textSize="16sp" />
+
+    </LinearLayout>
 
 </LinearLayout>

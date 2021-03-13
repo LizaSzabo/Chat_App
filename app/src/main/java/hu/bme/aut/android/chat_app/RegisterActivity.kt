@@ -26,19 +26,19 @@ class RegisterActivity: AppCompatActivity() {
     private fun ValidateRegistration(): Boolean{
 
         if(binding.editTextUserName.text.toString().isEmpty()){
-            Snackbar.make(findViewById(android.R.id.content),"User Name is reqiured", Snackbar.LENGTH_LONG)
+            Snackbar.make(findViewById(android.R.id.content), getString(R.string.user_name_required), Snackbar.LENGTH_LONG)
                 .setBackgroundTint(Color.RED)
                 .show()
             return false
         }
         if( binding.editTextPassword.text.toString().isEmpty()){
-            Snackbar.make(findViewById(android.R.id.content),"Password is required", Snackbar.LENGTH_LONG)
+            Snackbar.make(findViewById(android.R.id.content),getString(R.string.pass_required), Snackbar.LENGTH_LONG)
                 .setBackgroundTint(Color.RED)
                 .show()
             return false
         }
         if(binding.editTextPassword2.text.toString() != binding.editTextPassword.text.toString()){
-            Snackbar.make(findViewById(android.R.id.content),"Password confirmation failed",
+            Snackbar.make(findViewById(android.R.id.content),getString(R.string.pass_confirmation_failed),
                 Snackbar.LENGTH_LONG)
                 .setBackgroundTint(Color.RED)
                 .show()

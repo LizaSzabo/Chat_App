@@ -19,6 +19,13 @@
     <string name="confirm_new_password">ÚJ JELSZÓ MEGERŐSÍTÉSE:</string>
     <string name="text">szöveg</string>
     <string name="confirm_password">JELSZÓ MEGERŐSÍTÉSE:</string>
+    <string name="user_name_required">Kötelező a felhasználó név megadása</string>
+    <string name="pass_required">Kötelező jelszó megadása</string>
+    <string name="wrong_input">Hibás Felhasználó vagy jelszó</string>
+    <string name="pass_confirmation_failed">Hibás jelszó megerősítés</string>
+    <string name="user_not_empty">A Felhasználó név nem lehet üres</string>
+    <string name="cancel">Elvetés</string>
+    <string name="wrong_pass">Hibás jelszó</string>
 
     <string-array name="languages">
         <item>EN</item>

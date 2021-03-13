@@ -91,20 +91,16 @@ class LoginFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
     private fun ValidateLogin(): Boolean{
        if(fragmentBinding.editTextLoginName.text.toString().isEmpty()){
-            Snackbar.make(fragmentBinding.root, "User Name is reqiured", Snackbar.LENGTH_LONG)
-                .setBackgroundTint(Color.RED)
-                .show()
+           fragmentBinding.editTextLoginName.error = getString(R.string.user_name_required)
             return false
         }
         if( fragmentBinding.editTextLoginPassword.text.toString().isEmpty()){
-            Snackbar.make(fragmentBinding.root, "Password is required", Snackbar.LENGTH_LONG)
-                .setBackgroundTint(Color.RED)
-                .show()
+            fragmentBinding.editTextLoginPassword.error = getString(R.string.pass_required)
             return false
         }
         if(!ValidUserAndPass()){
             Snackbar.make(
-                fragmentBinding.root, "Wrong User Name or Password",
+                fragmentBinding.root, getString(R.string.wrong_input),
                 Snackbar.LENGTH_LONG
             )
                 .setBackgroundTint(Color.RED)

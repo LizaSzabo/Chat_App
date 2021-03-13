@@ -17,9 +17,15 @@ class EditUserNameDialog: DialogFragment() {
         binding = DialogEditUserNameBinding.inflate(inflater, container, false)
 
         binding.btnSave.setOnClickListener{
-            dialog?.dismiss()
+            if(binding.editTextLoginName.text.toString().isEmpty()){
+                binding.editTextLoginName.error = getString(R.string.user_not_empty)
+            }else
+                 dialog?.dismiss()
         }
 
+        binding.btnCancel.setOnClickListener{
+            dialog?.dismiss()
+        }
         return binding.root
     }
 }

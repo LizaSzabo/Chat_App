@@ -38,25 +38,17 @@ class RegisterFragment : Fragment() {
     private fun ValidateRegistration(): Boolean{
 
         if(fragmentBinding.tvTextUserName.text.toString().isEmpty()){
-            Snackbar.make(fragmentBinding.root,"User Name is reqiured", Snackbar.LENGTH_LONG)
-                .setBackgroundTint(Color.RED)
-                .show()
+            fragmentBinding.tvTextUserName.error = getString(R.string.user_name_required)
             return false
         }
         if( fragmentBinding.tvTextPassword.text.toString().isEmpty()){
-            Snackbar.make(fragmentBinding.root,"Password is required", Snackbar.LENGTH_LONG)
-                .setBackgroundTint(Color.RED)
-                .show()
+            fragmentBinding.tvTextPassword.error = getString(R.string.pass_required)
             return false
         }
         if(fragmentBinding.tvTextPassword2.text.toString() != fragmentBinding.tvTextPassword.text.toString()){
-            Snackbar.make(fragmentBinding.root,"Password confirmation failed",
-                Snackbar.LENGTH_LONG)
-                .setBackgroundTint(Color.RED)
-                .show()
+            fragmentBinding.tvTextPassword2.error = getString(R.string.pass_confirmation_failed)
             return false
         }
-
         return true
     }
 }

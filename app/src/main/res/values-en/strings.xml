@@ -19,6 +19,13 @@
     <string name="confirm_new_password">CONFIRM NEW PASSWORD:</string>
     <string name="text">text</string>
     <string name="confirm_password">CONFIRM PASSWORD:</string>
+    <string name="user_name_required">User Name is reqiured</string>
+    <string name="pass_required">Password is required</string>
+    <string name="wrong_input">Wrong User Name or Password</string>
+    <string name="pass_confirmation_failed">Password confirmation failed</string>
+    <string name="user_not_empty">User Name cannot be empty</string>
+    <string name="cancel">cancel</string>
+    <string name="wrong_pass">Wrong password</string>
 
     <string-array name="languages">
         <item>EN</item>
