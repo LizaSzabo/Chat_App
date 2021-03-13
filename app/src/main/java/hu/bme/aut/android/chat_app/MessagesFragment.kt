@@ -45,7 +45,7 @@ class MessagesFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.Log_out) {
-            val action = MessagesFragmentDirections.actionMessagesFragmentToLoginFragment()
+            val action = MessagesFragmentDirections.actionMessagesFragmentToLoginFragment(-1)
             findNavController().navigate(action)
         }
         else if(item.itemId == R.id.settings){

@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:text="@string/register"
         android:textColor="#241237"
-        android:textSize="30sp"
+        android:textSize="28dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toTopOf="@+id/guideline" />
@@ -23,14 +23,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.15" />
+        app:layout_constraintGuide_percent="0.13" />
 
     <TextView
         android:id="@+id/textViewUserName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="25dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="20dp"
         android:paddingStart="10dp"
         android:text="@string/login_name"
         android:textColor="#241237"
@@ -177,27 +177,25 @@
     </com.google.android.material.textfield.TextInputLayout>
 
 
-
     <ImageView
         android:id="@+id/ivAddPicture"
         android:layout_width="124dp"
         android:layout_height="122dp"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextPassword2"
         app:srcCompat="@drawable/addprofile" />
 
     <ImageView
         android:id="@+id/imageView4"
-        android:layout_width="88dp"
-        android:layout_height="74dp"
-        android:layout_marginTop="32dp"
+        android:layout_width="80dp"
+        android:layout_height="67dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logo"
-        />
+        app:srcCompat="@drawable/logo" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"

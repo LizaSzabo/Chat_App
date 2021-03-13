@@ -118,24 +118,13 @@ class LoginFragment : Fragment(), AdapterView.OnItemSelectedListener{
         when(position){
             0 -> setApplicationLocale("en")
             1 -> setApplicationLocale("hu")
-           // else -> setApplicationLocale("en")
+            else -> setApplicationLocale("en")
         }
         if(last_selected != position){
             last_selected = position
             val action = LoginFragmentDirections.actionLoginFragmentSelf(position)
             findNavController().navigate(action)
         }
-
-       /* last_selected = activity?.intent?.extras?.getInt("pos")!!
-        if(last_selected != position){
-            last_selected = position
-            val intent = activity?.intent
-            intent?.putExtra("pos", last_selected)
-            activity?.finish()
-            startActivity(intent)
-        }*/
-
-
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
