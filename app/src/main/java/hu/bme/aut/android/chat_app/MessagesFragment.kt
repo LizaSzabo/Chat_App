@@ -8,18 +8,21 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import hu.bme.aut.android.chat_app.Adapter_Rv.ConversationsAdapter
+import hu.bme.aut.android.chat_app.Model.Conversation
 import hu.bme.aut.android.chat_app.databinding.FragmentMessagesBinding
 
 
-class MessagesFragment : Fragment() {
+class MessagesFragment : Fragment(), ConversationsAdapter.ConversationItemClickListener {
 
     private lateinit var fragmentBinding: FragmentMessagesBinding
     private lateinit  var myContext: FragmentActivity
 
-    override fun onAttach(activity: Activity) {
+   /* override fun onAttach(activity: Activity) {
         myContext = activity as FragmentActivity
         super.onAttach(activity)
-    }
+    }*/
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -34,7 +37,17 @@ class MessagesFragment : Fragment() {
         setHasOptionsMenu(true)
         fragmentBinding.chatListToolbar.title = ""
 
+        initRecyclerView()
+
         return fragmentBinding.root
+    }
+
+    private fun initRecyclerView(){
+        Log.i("recy" ,"recy")
+        val conversationsAdapter = ConversationsAdapter()
+        fragmentBinding.rvConversations.layoutManager = LinearLayoutManager( context)
+        fragmentBinding.rvConversations.adapter = conversationsAdapter
+        conversationsAdapter.itemClickListener = this
     }
 
    override  fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -66,6 +79,10 @@ private fun openEditProfileActivity() {
     val action = MessagesFragmentDirections.actionMessagesFragmentToEditProfileFragment()
     findNavController().navigate(action)
 }
+
+    override fun onItemClick(conversation: Conversation) {
+        TODO("Not yet implemented")
+    }
 
 
 }
