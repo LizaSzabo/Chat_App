@@ -3,6 +3,7 @@ package hu.bme.aut.android.chat_app.Adapter_Rv
 import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
@@ -22,9 +23,11 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
     var itemClickListener: ConversationItemClickListener? = null
     var conv = Conversation("first", "private")
     var conv2 = Conversation("second", "private")
-    var conversationList = mutableListOf<Conversation>(Conversation("first", "private"), conv2)
+    var conversationList = emptyList<Conversation>()
+    //var conversationList = mutableListOf<Conversation>(Conversation("first", "private"), conv2, conv, conv, conv, conv, conv, conv, conv, conv)
 
 
+    @SuppressLint("ResourceAsColor")
     inner class ConversationViewHolder(val binding: ItemConversationBinding) : RecyclerView.ViewHolder(binding.root) {
         val ivConversationImage: ImageView = binding.ivConversationImage
         val ibStar: ImageButton = binding.ibStar
@@ -38,11 +41,23 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
                 conversation?.let { itemClickListener?.onItemClick(it) }
             }
 
+            itemView.setOnLongClickListener { view ->
+                view.setBackgroundResource(R.color.background)
+                itemClickListener?.onItemLongClick(adapterPosition, view)
+                true
+            }
 
+            ibStar.tag = R.drawable.star_icon
             ibStar.setOnClickListener{
                 when(ibStar.tag){
-                    R.drawable.star_icon-> ibStar.setImageResource(R.drawable.ic_baseline_star_24)
-                    R.drawable.ic_baseline_star_24 -> ibStar.setImageResource(R.drawable.star_icon)
+                    R.drawable.star_icon-> {
+                        ibStar.tag = R.drawable.ic_baseline_star_24
+                        ibStar.setImageResource(R.drawable.ic_baseline_star_24)
+                    }
+                    R.drawable.ic_baseline_star_24 ->{
+                        ibStar.tag = R.drawable.star_icon
+                        ibStar.setImageResource(R.drawable.star_icon)
+                    }
                 }
             }
         }
@@ -59,6 +74,7 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
 
     interface ConversationItemClickListener {
         fun onItemClick(conversation: Conversation)
+        fun onItemLongClick(position: Int, view: View): Boolean
     }
 
     companion object {
@@ -77,4 +93,16 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
     override fun getItemCount(): Int {
         return conversationList.size
     }
+
+    fun deleteConversation(position: Int) {
+        conversationList = conversationList.filterIndexed { index, _ -> index != position }
+        submitList(conversationList)
+    }
+
+    fun addAll(){
+        val convs = mutableListOf<Conversation>(Conversation("first", "private"), conv2, conv, conv, conv, conv, conv, conv, conv, conv)
+        conversationList += convs
+        submitList(conversationList)
+    }
+
 }

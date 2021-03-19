@@ -1,10 +1,13 @@
 package hu.bme.aut.android.chat_app
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.fragment.findNavController
@@ -17,6 +20,7 @@ import hu.bme.aut.android.chat_app.databinding.FragmentMessagesBinding
 class MessagesFragment : Fragment(), ConversationsAdapter.ConversationItemClickListener {
 
     private lateinit var fragmentBinding: FragmentMessagesBinding
+    private lateinit var conversationsAdapter: ConversationsAdapter
     private lateinit  var myContext: FragmentActivity
 
    /* override fun onAttach(activity: Activity) {
@@ -44,10 +48,11 @@ class MessagesFragment : Fragment(), ConversationsAdapter.ConversationItemClickL
 
     private fun initRecyclerView(){
         Log.i("recy" ,"recy")
-        val conversationsAdapter = ConversationsAdapter()
+        conversationsAdapter = ConversationsAdapter()
         fragmentBinding.rvConversations.layoutManager = LinearLayoutManager( context)
         fragmentBinding.rvConversations.adapter = conversationsAdapter
         conversationsAdapter.itemClickListener = this
+        conversationsAdapter.addAll()
     }
 
    override  fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -69,20 +74,39 @@ class MessagesFragment : Fragment(), ConversationsAdapter.ConversationItemClickL
     }
 
 
-private fun openChatActivity() {
-    val action = MessagesFragmentDirections.actionMessagesFragmentToChatFragment()
-    findNavController().navigate(action)
-
-}
-
-private fun openEditProfileActivity() {
-    val action = MessagesFragmentDirections.actionMessagesFragmentToEditProfileFragment()
-    findNavController().navigate(action)
-}
-
-    override fun onItemClick(conversation: Conversation) {
-        TODO("Not yet implemented")
+    private fun openChatActivity() {
+         val action = MessagesFragmentDirections.actionMessagesFragmentToChatFragment()
+         findNavController().navigate(action)
     }
 
+    private fun openEditProfileActivity() {
+         val action = MessagesFragmentDirections.actionMessagesFragmentToEditProfileFragment()
+         findNavController().navigate(action)
+    }
 
+    override fun onItemClick(conversation: Conversation) {
+        val action = MessagesFragmentDirections.actionMessagesFragmentToChatFragment()
+        findNavController().navigate(action)
+    }
+
+    @SuppressLint("ResourceAsColor")
+    override fun onItemLongClick(position: Int, view: View): Boolean {
+        val popup = PopupMenu(context, view)
+        popup.inflate(R.menu.menu_conversation)
+        popup.setOnDismissListener(){
+            view.setBackgroundColor(0)
+        }
+        popup.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+               R.id.delete -> conversationsAdapter.deleteConversation(position)
+               R.id.edit -> {
+                   val conversationDialog = EditConversationDialog()
+                   conversationDialog.show(parentFragmentManager, "")
+               }
+            }
+            false
+        }
+        popup.show()
+        return false
+    }
 }

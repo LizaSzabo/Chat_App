@@ -11,7 +11,6 @@
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -21,6 +20,8 @@
             android:layout_width="55dp"
             android:layout_height="55dp"
             android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:src="@drawable/default_profilepic" />
 
         <TextView

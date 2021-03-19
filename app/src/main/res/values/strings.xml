@@ -27,6 +27,12 @@
     <string name="user_not_empty">User Name cannot be empty</string>
     <string name="cancel">cancel</string>
     <string name="wrong_pass">Wrong password</string>
+    <string name="edit_conversation">Edit Conversation</string>
+    <string name="conversation_name">Conversation Title:</string>
+    <string name="delete">DELETE</string>
+    <string name="back">BACK</string>
+    <string name="edit">EDIT</string>
+    <string name="title_not_empty">The Conversation Title cannot be empty</string>
 
     <string-array name="languages">
         <item>EN</item>
