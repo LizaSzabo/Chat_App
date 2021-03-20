@@ -100,4 +100,10 @@ class ChatAdapter : ListAdapter<Message, ChatAdapter.ChatViewHolder>(itemCallbac
         }
     }
 
+    fun addMessage(message: Message){
+        messageList += message
+        submitList( messageList)
+    }
+
+
 }

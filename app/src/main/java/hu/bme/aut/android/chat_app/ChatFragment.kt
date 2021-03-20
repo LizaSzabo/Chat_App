@@ -1,6 +1,7 @@
 package hu.bme.aut.android.chat_app
 
 import android.os.Bundle
+import android.os.Message
 import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -24,7 +25,20 @@ class ChatFragment : Fragment() {
         setHasOptionsMenu(true)
        // fragmentBinding.chatTopToolbar.inflateMenu(R.menu.chat_menu)
         fragmentBinding.chatButtomToolbar.title = ""
+        fragmentBinding.ibSend.setOnClickListener{
+            if( fragmentBinding.text.text.toString().isNotEmpty()) {
+                var message = hu.bme.aut.android.chat_app.Model.Message(
+                    "first",
+                    "second",
+                    fragmentBinding.text.text.toString()
+                )
+                chatAdapter.addMessage(message)
+                fragmentBinding.text.setText("")
+            }
+        }
+
         initRecyclerView()
+
         return fragmentBinding.root
     }
     private fun initRecyclerView(){
