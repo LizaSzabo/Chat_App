@@ -10,11 +10,12 @@
         android:id="@+id/line"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
         android:background="@drawable/line"
-        app:layout_constraintBottom_toTopOf="@+id/guideline6"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/rvChat"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:orientation="horizontal" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/text"
@@ -80,5 +81,19 @@
         android:textSize="24sp"
         app:layout_constraintStart_toEndOf="@+id/chat_top_toolbar"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvChat"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="20dp"
+
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4"></androidx.recyclerview.widget.RecyclerView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

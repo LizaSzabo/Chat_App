@@ -6,6 +6,9 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import hu.bme.aut.android.chat_app.Adapter_Rv.ChatAdapter
+import hu.bme.aut.android.chat_app.Adapter_Rv.ConversationsAdapter
 import hu.bme.aut.android.chat_app.databinding.FragmentChatBinding
 import hu.bme.aut.android.chat_app.databinding.FragmentMessagesBinding
 
@@ -13,6 +16,7 @@ import hu.bme.aut.android.chat_app.databinding.FragmentMessagesBinding
 class ChatFragment : Fragment() {
 
     private lateinit var fragmentBinding: FragmentChatBinding
+    private lateinit var chatAdapter: ChatAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         fragmentBinding = FragmentChatBinding.inflate(inflater, container, false)
@@ -20,7 +24,15 @@ class ChatFragment : Fragment() {
         setHasOptionsMenu(true)
        // fragmentBinding.chatTopToolbar.inflateMenu(R.menu.chat_menu)
         fragmentBinding.chatButtomToolbar.title = ""
+        initRecyclerView()
         return fragmentBinding.root
+    }
+    private fun initRecyclerView(){
+        chatAdapter = ChatAdapter()
+        fragmentBinding.rvChat.layoutManager = LinearLayoutManager( context)
+        fragmentBinding.rvChat.adapter =  chatAdapter
+       // chatAdapter.itemClickListener = this
+        chatAdapter.addAll()
     }
 
     override  fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
