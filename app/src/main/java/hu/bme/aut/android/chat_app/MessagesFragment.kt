@@ -13,6 +13,8 @@ import androidx.fragment.app.FragmentActivity
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import hu.bme.aut.android.chat_app.Adapter_Rv.ConversationsAdapter
+import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentConversation
+import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentUser
 import hu.bme.aut.android.chat_app.Model.Conversation
 import hu.bme.aut.android.chat_app.databinding.FragmentMessagesBinding
 
@@ -40,6 +42,11 @@ class MessagesFragment : Fragment(), ConversationsAdapter.ConversationItemClickL
         (activity as AppCompatActivity).setSupportActionBar(fragmentBinding.chatListToolbar)
         setHasOptionsMenu(true)
         fragmentBinding.chatListToolbar.title = ""
+        fragmentBinding.txtTitle.text = currentUser?.userName
+
+        fragmentBinding.ibSearch.setOnClickListener{
+            conversationsAdapter.addAll(fragmentBinding.editTextSearch.text.toString())
+        }
 
         initRecyclerView()
 
@@ -52,7 +59,7 @@ class MessagesFragment : Fragment(), ConversationsAdapter.ConversationItemClickL
         fragmentBinding.rvConversations.layoutManager = LinearLayoutManager( context)
         fragmentBinding.rvConversations.adapter = conversationsAdapter
         conversationsAdapter.itemClickListener = this
-        conversationsAdapter.addAll()
+        conversationsAdapter.addAll(fragmentBinding.editTextSearch.text.toString())
     }
 
    override  fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -85,6 +92,7 @@ class MessagesFragment : Fragment(), ConversationsAdapter.ConversationItemClickL
     }
 
     override fun onItemClick(conversation: Conversation) {
+        currentConversation = conversation
         val action = MessagesFragmentDirections.actionMessagesFragmentToChatFragment()
         findNavController().navigate(action)
     }

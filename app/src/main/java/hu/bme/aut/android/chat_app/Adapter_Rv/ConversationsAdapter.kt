@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentUser
 import hu.bme.aut.android.chat_app.Model.Conversation
 import hu.bme.aut.android.chat_app.R
 import hu.bme.aut.android.chat_app.databinding.ItemConversationBinding
@@ -99,10 +100,23 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
         submitList(conversationList)
     }
 
-    fun addAll(){
-        val convs = mutableListOf<Conversation>(Conversation("first", "private"), conv2, conv, conv, conv, conv, conv, conv, conv, conv)
-        conversationList += convs
-        submitList(conversationList)
+    fun addAll(conversation: String){
+        //val convs = mutableListOf<Conversation>(Conversation("first", "private"), conv2, conv, conv, conv, conv, conv, conv, conv, conv)
+        var  convs = mutableListOf<Conversation>()
+        if(conversation.isEmpty()) {
+            conversationList = emptyList()
+            convs = currentUser?.conversations!!
+            conversationList += convs
+            submitList(conversationList)
+        }
+        else{
+            conversationList = emptyList()
+            for(c in currentUser?.conversations!!){
+                if(c.name.equals(conversation))
+                    conversationList += c
+                    submitList(conversationList)
+            }
+        }
     }
 
 }

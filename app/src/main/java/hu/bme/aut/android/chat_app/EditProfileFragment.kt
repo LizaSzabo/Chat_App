@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
+import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentUser
 import hu.bme.aut.android.chat_app.databinding.FragmentEditProfileBinding
 import hu.bme.aut.android.chat_app.databinding.FragmentLoginBinding
 
@@ -29,7 +30,7 @@ class EditProfileFragment : Fragment() {
             intent.action = Intent.ACTION_GET_CONTENT
             startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE)
         }
-
+        fragmentBinding.tvUserName.text = currentUser?.userName
         return fragmentBinding.root
     }
 

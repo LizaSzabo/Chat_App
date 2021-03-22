@@ -16,6 +16,8 @@ import androidx.navigation.NavArgs
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
+import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentUser
+import hu.bme.aut.android.chat_app.ChatApplication.Companion.usersList
 import hu.bme.aut.android.chat_app.databinding.FragmentLoginBinding
 import java.util.*
 import kotlin.properties.Delegates
@@ -29,11 +31,7 @@ class LoginFragment : Fragment(), AdapterView.OnItemSelectedListener{
     private var last_selected by Delegates.notNull<Int>()
 
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View?{
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?{
         fragmentBinding =FragmentLoginBinding.inflate(inflater, container, false)
 
         Log.i("pos", args.pos.toString())
@@ -110,8 +108,18 @@ class LoginFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
         return true
     }
+
     private fun ValidUserAndPass():Boolean{
-        return true;
+        for(user in usersList){
+            if(user.userName == (fragmentBinding.editTextLoginName.text.toString())){
+                if(user.password == (fragmentBinding.editTextLoginPassword.text.toString())) {
+                    currentUser = user
+                    return true
+                }
+                return false
+            }
+        }
+        return false
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {

@@ -10,6 +10,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentConversation
+import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentUser
 import hu.bme.aut.android.chat_app.Model.Conversation
 import hu.bme.aut.android.chat_app.Model.Message
 import hu.bme.aut.android.chat_app.R
@@ -85,8 +87,8 @@ class ChatAdapter : ListAdapter<Message, ChatAdapter.ChatViewHolder>(itemCallbac
     }
 
     fun addAll(){
-        val messages = mutableListOf<Message>(Message("first", "second", "Hello"), Message("first", "second", "Szia"),
-            Message("second", "second", "naaaaaaaagyon hossszuuuuuuuuuuuuuuuu szoveeeeeeeeeeeeeeeg"))
+        val messages = mutableListOf<Message>(Message("User1", "second", "Hello"), Message("User1", "second", "Szia"),
+            Message("User2", "second", "naaaaaaaagyon hossszuuuuuuuuuuuuuuuu szoveeeeeeeeeeeeeeeg"))
         messageList += messages
         submitList(messages)
     }
@@ -94,9 +96,8 @@ class ChatAdapter : ListAdapter<Message, ChatAdapter.ChatViewHolder>(itemCallbac
     override fun getItemViewType(position: Int): Int {
         val comparable = messageList[position].sender
         return when (comparable) {
-             "first" -> TYPE_SENT
-             "second" -> TYPE_RECEIVED
-            else -> throw IllegalArgumentException("Invalid type of data " + position)
+             currentUser?.userName -> TYPE_SENT
+            else -> TYPE_RECEIVED
         }
     }
 

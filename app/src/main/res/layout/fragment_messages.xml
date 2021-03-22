@@ -25,14 +25,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/chatListToolbar"
-        app:startIconDrawable="@drawable/ic_baseline_search_24">
+        >
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editTextLoginPassword"
+            android:id="@+id/editTextSearch"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/search_edit_text"
-            android:inputType="text" />
+            android:inputType="text"
+
+            android:paddingStart="45dp" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -97,4 +99,16 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/write" />
+
+    <ImageButton
+        android:id="@+id/ibSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginBottom="10dp"
+        android:layout_weight="1"
+        android:background="@null"
+        app:layout_constraintBottom_toBottomOf="@+id/textInputLayout2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_baseline_search_24" />
 </androidx.constraintlayout.widget.ConstraintLayout>

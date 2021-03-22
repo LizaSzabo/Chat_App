@@ -10,6 +10,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import hu.bme.aut.android.chat_app.Adapter_Rv.ChatAdapter
 import hu.bme.aut.android.chat_app.Adapter_Rv.ConversationsAdapter
+import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentConversation
+import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentUser
 import hu.bme.aut.android.chat_app.databinding.FragmentChatBinding
 import hu.bme.aut.android.chat_app.databinding.FragmentMessagesBinding
 
@@ -27,16 +29,20 @@ class ChatFragment : Fragment() {
         fragmentBinding.chatButtomToolbar.title = ""
         fragmentBinding.ibSend.setOnClickListener{
             if( fragmentBinding.text.text.toString().isNotEmpty()) {
-                var message = hu.bme.aut.android.chat_app.Model.Message(
-                    "first",
-                    "second",
-                    fragmentBinding.text.text.toString()
-                )
-                chatAdapter.addMessage(message)
+                var message = currentUser?.userName?.let { it1 ->
+                    hu.bme.aut.android.chat_app.Model.Message(
+                        it1,
+                        "second",
+                        fragmentBinding.text.text.toString()
+                    )
+                }
+                if (message != null) {
+                    chatAdapter.addMessage(message)
+                }
                 fragmentBinding.text.setText("")
             }
         }
-
+        fragmentBinding.conversationTitle.text = currentConversation?.name
         initRecyclerView()
 
         return fragmentBinding.root
