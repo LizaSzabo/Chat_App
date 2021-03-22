@@ -8,6 +8,7 @@ import android.view.*
 import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.ui.graphics.Color.Companion.White
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.fragment.findNavController
@@ -47,6 +48,7 @@ class MessagesFragment : Fragment(), ConversationsAdapter.ConversationItemClickL
         fragmentBinding.ibSearch.setOnClickListener{
             conversationsAdapter.addAll(fragmentBinding.editTextSearch.text.toString())
         }
+        fragmentBinding.editTextSearch.doOnTextChanged { _, _, _, _ -> conversationsAdapter.addAll(fragmentBinding.editTextSearch.text.toString())  }
 
         initRecyclerView()
 

@@ -5,6 +5,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
@@ -18,6 +19,8 @@ import hu.bme.aut.android.chat_app.Model.Conversation
 import hu.bme.aut.android.chat_app.R
 import hu.bme.aut.android.chat_app.databinding.ItemConversationBinding
 import kotlinx.android.synthetic.main.dialog_change_password.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.ConversationViewHolder>(itemCallback)  {
 
@@ -112,11 +115,10 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
         else{
             conversationList = emptyList()
             for(c in currentUser?.conversations!!){
-                if(c.name.equals(conversation))
+                if(c.name.contains(conversation, ignoreCase = true))
                     conversationList += c
                     submitList(conversationList)
             }
         }
     }
-
 }
