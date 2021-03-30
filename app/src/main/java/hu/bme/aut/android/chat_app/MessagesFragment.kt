@@ -49,7 +49,6 @@ class MessagesFragment : Fragment(), ConversationsAdapter.ConversationItemClickL
             conversationsAdapter.addAll(fragmentBinding.editTextSearch.text.toString())
         }
         fragmentBinding.editTextSearch.doOnTextChanged { _, _, _, _ -> conversationsAdapter.addAll(fragmentBinding.editTextSearch.text.toString())  }
-
         initRecyclerView()
 
         return fragmentBinding.root

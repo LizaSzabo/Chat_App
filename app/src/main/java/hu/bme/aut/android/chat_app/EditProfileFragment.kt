@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentUser
 import hu.bme.aut.android.chat_app.databinding.FragmentEditProfileBinding
 import hu.bme.aut.android.chat_app.databinding.FragmentLoginBinding
+import kotlinx.android.synthetic.main.fragment_edit_profile.*
 
 class EditProfileFragment : Fragment() {
     private lateinit var fragmentBinding: FragmentEditProfileBinding
@@ -28,7 +29,8 @@ class EditProfileFragment : Fragment() {
             val intent = Intent()
             intent.type = "image/*"
             intent.action = Intent.ACTION_GET_CONTENT
-            startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE)
+            startActivityForResult(Intent.createChooser(intent, "Select Picture"), this.PICK_IMAGE)
+           // currentUser?.profilePicture = imageButtonEditProfile as Int
         }
         fragmentBinding.tvUserName.text = currentUser?.userName
         return fragmentBinding.root

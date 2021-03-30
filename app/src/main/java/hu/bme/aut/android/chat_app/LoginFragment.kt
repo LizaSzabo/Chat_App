@@ -25,24 +25,15 @@ import kotlin.properties.Delegates
 
 class LoginFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
-
     val args:  LoginFragmentArgs by navArgs()
     private lateinit var fragmentBinding: FragmentLoginBinding
     private var last_selected by Delegates.notNull<Int>()
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?{
         fragmentBinding =FragmentLoginBinding.inflate(inflater, container, false)
 
         Log.i("pos", args.pos.toString())
         last_selected = args.pos
-        /*val snackText=intent.getStringExtra("SnackBarRegisterText")
-        if (snackText != null) {
-            Snackbar.make(findViewById(android.R.id.content),snackText, Snackbar.LENGTH_LONG)
-                .setBackgroundTint(Color.GREEN)
-                .setTextColor(R.color.colorPrimaryDark)
-                .show()
-        }*/
 
         fragmentBinding.buttonOk.background.alpha = 170
         fragmentBinding.buttonRegister.background.alpha = 100
@@ -59,10 +50,7 @@ class LoginFragment : Fragment(), AdapterView.OnItemSelectedListener{
                 android.R.layout.simple_spinner_item
             )
                 .also { adapter ->
-                // Specify the layout to use when the list of choices appears
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-
-                // Apply the adapter to the spinner
                 spinner.adapter = adapter
             }
         }
@@ -70,11 +58,10 @@ class LoginFragment : Fragment(), AdapterView.OnItemSelectedListener{
         spinner.setSelection(args.pos)
         spinner.dropDownHorizontalOffset = -20
 
-
         return fragmentBinding.root
     }
+
     private fun openRegisterActivity(){
-      // myContext.supportFragmentManager.beginTransaction().replace(R.id.fragment_container, RegisterFragment(), null).commit()
       val action = LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
         findNavController().navigate(action)
 
@@ -96,7 +83,7 @@ class LoginFragment : Fragment(), AdapterView.OnItemSelectedListener{
             fragmentBinding.editTextLoginPassword.error = getString(R.string.pass_required)
             return false
         }
-        if(!ValidUserAndPass()){
+        if(!validUserAndPass()){
             Snackbar.make(
                 fragmentBinding.root, getString(R.string.wrong_input),
                 Snackbar.LENGTH_LONG
@@ -105,11 +92,10 @@ class LoginFragment : Fragment(), AdapterView.OnItemSelectedListener{
                 .show()
             return false
         }
-
         return true
     }
 
-    private fun ValidUserAndPass():Boolean{
+    private fun validUserAndPass():Boolean{
         for(user in usersList){
             if(user.userName == (fragmentBinding.editTextLoginName.text.toString())){
                 if(user.password == (fragmentBinding.editTextLoginPassword.text.toString())) {
@@ -138,7 +124,6 @@ class LoginFragment : Fragment(), AdapterView.OnItemSelectedListener{
     override fun onNothingSelected(parent: AdapterView<*>?) {
         TODO("Not yet implemented")
     }
-
 
     private fun setApplicationLocale(locale: String) {
         val resources = resources
