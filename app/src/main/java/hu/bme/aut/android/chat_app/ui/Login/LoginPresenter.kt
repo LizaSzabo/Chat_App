@@ -1,4 +1,4 @@
-package hu.bme.aut.android.chat_app.ui
+package hu.bme.aut.android.chat_app.ui.Login
 
 import co.zsmb.rainbowcake.withIOContext
 import javax.inject.Inject

@@ -1,4 +1,4 @@
-package hu.bme.aut.android.chat_app.ui
+package hu.bme.aut.android.chat_app.ui.Login
 
 sealed class LoginViewState
 
