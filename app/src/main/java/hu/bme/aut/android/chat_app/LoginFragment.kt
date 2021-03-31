@@ -15,22 +15,31 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavArgs
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import co.zsmb.rainbowcake.base.RainbowCakeFragment
+import co.zsmb.rainbowcake.dagger.getViewModelFromFactory
+import co.zsmb.rainbowcake.extensions.exhaustive
 import com.google.android.material.snackbar.Snackbar
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentUser
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.usersList
 import hu.bme.aut.android.chat_app.databinding.FragmentLoginBinding
+import hu.bme.aut.android.chat_app.ui.*
+import kotlinx.android.synthetic.main.fragment_login.*
 import java.util.*
 import kotlin.properties.Delegates
 
 
-class LoginFragment : Fragment(), AdapterView.OnItemSelectedListener{
+class LoginFragment : RainbowCakeFragment<LoginViewState, LoginViewModel>(), AdapterView.OnItemSelectedListener{
 
     val args:  LoginFragmentArgs by navArgs()
     private lateinit var fragmentBinding: FragmentLoginBinding
     private var last_selected by Delegates.notNull<Int>()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?{
-        fragmentBinding =FragmentLoginBinding.inflate(inflater, container, false)
+
+
+    override fun onViewCreated(view: View,  savedInstanceState: Bundle?){
+        super.onViewCreated(view, savedInstanceState)
+        val binding = FragmentLoginBinding.bind(view)
+        fragmentBinding= binding
 
         Log.i("pos", args.pos.toString())
         last_selected = args.pos
@@ -58,7 +67,7 @@ class LoginFragment : Fragment(), AdapterView.OnItemSelectedListener{
         spinner.setSelection(args.pos)
         spinner.dropDownHorizontalOffset = -20
 
-        return fragmentBinding.root
+
     }
 
     private fun openRegisterActivity(){
@@ -136,5 +145,26 @@ class LoginFragment : Fragment(), AdapterView.OnItemSelectedListener{
         }
         resources.updateConfiguration(config, dm)
 
+    }
+
+    override fun getViewResource() = R.layout.fragment_login
+
+    override fun provideViewModel()= getViewModelFromFactory()
+
+    override fun render(viewState: LoginViewState) {
+        when(viewState){
+            Initial ->{
+
+            }
+            Loading ->{
+
+            }
+            DataReady -> {
+
+            }
+            NetworkError -> {
+
+            }
+        }.exhaustive
     }
 }
