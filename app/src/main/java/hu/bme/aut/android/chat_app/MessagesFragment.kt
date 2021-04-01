@@ -13,14 +13,24 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import co.zsmb.rainbowcake.base.RainbowCakeFragment
+import co.zsmb.rainbowcake.dagger.getViewModelFromFactory
+import co.zsmb.rainbowcake.extensions.exhaustive
 import hu.bme.aut.android.chat_app.Adapter_Rv.ConversationsAdapter
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentConversation
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentUser
 import hu.bme.aut.android.chat_app.Model.Conversation
+import hu.bme.aut.android.chat_app.databinding.FragmentLoginBinding
 import hu.bme.aut.android.chat_app.databinding.FragmentMessagesBinding
+import hu.bme.aut.android.chat_app.ui.Login.*
+import hu.bme.aut.android.chat_app.ui.Messages.DataReady
+import hu.bme.aut.android.chat_app.ui.Messages.Initial
+import hu.bme.aut.android.chat_app.ui.Messages.Loading
+import hu.bme.aut.android.chat_app.ui.Messages.MessagesViewModel
+import hu.bme.aut.android.chat_app.ui.Messages.MessagesViewState
 
 
-class MessagesFragment : Fragment(), ConversationsAdapter.ConversationItemClickListener {
+class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewModel>(), ConversationsAdapter.ConversationItemClickListener {
 
     private lateinit var fragmentBinding: FragmentMessagesBinding
     private lateinit var conversationsAdapter: ConversationsAdapter
@@ -31,9 +41,12 @@ class MessagesFragment : Fragment(), ConversationsAdapter.ConversationItemClickL
         super.onAttach(activity)
     }*/
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        fragmentBinding =FragmentMessagesBinding.inflate(inflater, container, false)
+        val binding = FragmentMessagesBinding.bind(view)
+        fragmentBinding= binding
+
         // Inflate the layout for this fragment
         fragmentBinding.imageButtonWrite.setOnClickListener(View.OnClickListener { openChatActivity() })
         fragmentBinding.imageButtonProfile.setOnClickListener(View.OnClickListener { openEditProfileActivity() })
@@ -51,7 +64,6 @@ class MessagesFragment : Fragment(), ConversationsAdapter.ConversationItemClickL
         fragmentBinding.editTextSearch.doOnTextChanged { _, _, _, _ -> conversationsAdapter.addAll(fragmentBinding.editTextSearch.text.toString())  }
         initRecyclerView()
 
-        return fragmentBinding.root
     }
 
     private fun initRecyclerView(){
@@ -117,5 +129,25 @@ class MessagesFragment : Fragment(), ConversationsAdapter.ConversationItemClickL
         }
         popup.show()
         return false
+    }
+
+
+    override fun getViewResource() = R.layout.fragment_messages
+
+    override fun provideViewModel()= getViewModelFromFactory()
+
+    override fun render(viewState: MessagesViewState) {
+        when(viewState){
+            Initial -> {
+
+            }
+            Loading ->{
+
+            }
+            DataReady -> {
+
+            }
+            else ->{}
+        }.exhaustive
     }
 }

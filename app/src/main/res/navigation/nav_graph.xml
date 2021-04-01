@@ -30,7 +30,7 @@
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
-        android:name="hu.bme.aut.android.chat_app.RegisterFragment"
+        android:name="hu.bme.aut.android.chat_app.ui.Register.RegisterFragment"
         android:label="RegisterFragment"
         tools:layout="@layout/fragment_register">
         <action
