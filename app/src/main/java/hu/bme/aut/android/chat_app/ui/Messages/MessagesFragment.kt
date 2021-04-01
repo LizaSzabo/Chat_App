@@ -1,16 +1,14 @@
-package hu.bme.aut.android.chat_app
+package hu.bme.aut.android.chat_app.ui.Messages
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.core.widget.doOnTextChanged
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import co.zsmb.rainbowcake.base.RainbowCakeFragment
@@ -19,15 +17,10 @@ import co.zsmb.rainbowcake.extensions.exhaustive
 import hu.bme.aut.android.chat_app.Adapter_Rv.ConversationsAdapter
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentConversation
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentUser
+import hu.bme.aut.android.chat_app.EditConversationDialog
 import hu.bme.aut.android.chat_app.Model.Conversation
-import hu.bme.aut.android.chat_app.databinding.FragmentLoginBinding
+import hu.bme.aut.android.chat_app.R
 import hu.bme.aut.android.chat_app.databinding.FragmentMessagesBinding
-import hu.bme.aut.android.chat_app.ui.Login.*
-import hu.bme.aut.android.chat_app.ui.Messages.DataReady
-import hu.bme.aut.android.chat_app.ui.Messages.Initial
-import hu.bme.aut.android.chat_app.ui.Messages.Loading
-import hu.bme.aut.android.chat_app.ui.Messages.MessagesViewModel
-import hu.bme.aut.android.chat_app.ui.Messages.MessagesViewState
 
 
 class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewModel>(), ConversationsAdapter.ConversationItemClickListener {
@@ -36,10 +29,6 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
     private lateinit var conversationsAdapter: ConversationsAdapter
     private lateinit  var myContext: FragmentActivity
 
-   /* override fun onAttach(activity: Activity) {
-        myContext = activity as FragmentActivity
-        super.onAttach(activity)
-    }*/
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -48,8 +37,8 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
         fragmentBinding= binding
 
         // Inflate the layout for this fragment
-        fragmentBinding.imageButtonWrite.setOnClickListener(View.OnClickListener { openChatActivity() })
-        fragmentBinding.imageButtonProfile.setOnClickListener(View.OnClickListener { openEditProfileActivity() })
+        fragmentBinding.imageButtonWrite.setOnClickListener(View.OnClickListener { viewModel.openChatActivity(findNavController()) })
+        fragmentBinding.imageButtonProfile.setOnClickListener(View.OnClickListener { viewModel.openEditProfileActivity(findNavController()) })
 
         //fragmentBinding.chatListToolbar.inflateMenu(R.menu.messages_toolbar_menu);
 
@@ -94,15 +83,6 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
     }
 
 
-    private fun openChatActivity() {
-         val action = MessagesFragmentDirections.actionMessagesFragmentToChatFragment()
-         findNavController().navigate(action)
-    }
-
-    private fun openEditProfileActivity() {
-         val action = MessagesFragmentDirections.actionMessagesFragmentToEditProfileFragment()
-         findNavController().navigate(action)
-    }
 
     override fun onItemClick(conversation: Conversation) {
         currentConversation = conversation

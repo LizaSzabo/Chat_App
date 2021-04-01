@@ -1,28 +1,31 @@
-package hu.bme.aut.android.chat_app
+package hu.bme.aut.android.chat_app.ui.Chat
 
 import android.os.Bundle
-import android.os.Message
 import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import co.zsmb.rainbowcake.base.RainbowCakeFragment
+import co.zsmb.rainbowcake.dagger.getViewModelFromFactory
+import co.zsmb.rainbowcake.extensions.exhaustive
 import hu.bme.aut.android.chat_app.Adapter_Rv.ChatAdapter
-import hu.bme.aut.android.chat_app.Adapter_Rv.ConversationsAdapter
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentConversation
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentUser
+import hu.bme.aut.android.chat_app.R
 import hu.bme.aut.android.chat_app.databinding.FragmentChatBinding
-import hu.bme.aut.android.chat_app.databinding.FragmentMessagesBinding
 
-
-class ChatFragment : Fragment() {
+class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
 
     private lateinit var fragmentBinding: FragmentChatBinding
     private lateinit var chatAdapter: ChatAdapter
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        fragmentBinding = FragmentChatBinding.inflate(inflater, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val binding = FragmentChatBinding.bind(view)
+        fragmentBinding= binding
+
         (activity as AppCompatActivity).setSupportActionBar(fragmentBinding.chatButtomToolbar)
         setHasOptionsMenu(true)
        // fragmentBinding.chatTopToolbar.inflateMenu(R.menu.chat_menu)
@@ -45,7 +48,6 @@ class ChatFragment : Fragment() {
         fragmentBinding.conversationTitle.text = currentConversation?.name
         initRecyclerView()
 
-        return fragmentBinding.root
     }
     private fun initRecyclerView(){
         chatAdapter = ChatAdapter()
@@ -71,6 +73,21 @@ class ChatFragment : Fragment() {
             findNavController().navigate(action)
         }*/
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun getViewResource() = R.layout.fragment_chat
+
+    override fun provideViewModel()= getViewModelFromFactory()
+
+    override fun render(viewState: ChatViewState) {
+        when(viewState){
+         Initial -> {
+
+         }
+            else ->{
+
+            }
+        }.exhaustive
     }
 
 }

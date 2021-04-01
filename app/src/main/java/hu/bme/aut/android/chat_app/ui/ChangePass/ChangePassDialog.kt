@@ -1,4 +1,4 @@
-package hu.bme.aut.android.chat_app
+package hu.bme.aut.android.chat_app.ui.ChangePass
 
 import android.annotation.SuppressLint
 import android.content.res.ColorStateList
@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import hu.bme.aut.android.chat_app.R
 import hu.bme.aut.android.chat_app.databinding.DialogChangePasswordBinding
 
 class ChangePassDialog : DialogFragment() {
