@@ -30,10 +30,12 @@ class EditUserNameDialog(): DialogFragment() {
                 val name = user?.userName
                 currentUser?.userName = binding.editTextLoginName.text.toString()
                 usersList.find { it == user }?.userName = currentUser?.userName.toString()
-                for(conv in user?.conversations!!) {
-                    for(message in conv.messages){
-                        if(message.sender == name){
-                            message.sender = binding.editTextLoginName.text.toString()
+                if(user?.conversations != null) {
+                    for (conv in user?.conversations!!) {
+                        for (message in conv.messages) {
+                            if (message.sender == name) {
+                                message.sender = binding.editTextLoginName.text.toString()
+                            }
                         }
                     }
                 }
