@@ -104,8 +104,7 @@ class ChatAdapter : ListAdapter<Message, ChatAdapter.ChatViewHolder>(itemCallbac
 
     fun addMessage(message: Message){
         messageList += message
+        currentConversation?.messages?.add(message)
         submitList( messageList)
     }
-
-
 }

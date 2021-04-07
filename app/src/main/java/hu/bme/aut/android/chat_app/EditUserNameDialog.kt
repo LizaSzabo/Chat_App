@@ -35,7 +35,6 @@ class EditUserNameDialog(): DialogFragment() {
                         if(message.sender == name){
                             message.sender = binding.editTextLoginName.text.toString()
                         }
-
                     }
                 }
                 dialog?.dismiss()
