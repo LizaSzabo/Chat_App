@@ -1,6 +1,7 @@
 package hu.bme.aut.android.chat_app.Model
 
 data class Conversation (
-    val name: String,
-    val type: String
+    var name: String,
+    val type: String,
+    val messages: MutableList<Message>
         )

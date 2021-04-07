@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentConversation
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentUser
 import hu.bme.aut.android.chat_app.Model.Conversation
 import hu.bme.aut.android.chat_app.R
@@ -25,8 +26,8 @@ import kotlin.collections.ArrayList
 class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.ConversationViewHolder>(itemCallback)  {
 
     var itemClickListener: ConversationItemClickListener? = null
-    var conv = Conversation("first", "private")
-    var conv2 = Conversation("second", "private")
+   // var conv = Conversation("first", "private")
+   // var conv2 = Conversation("second", "private")
     var conversationList = emptyList<Conversation>()
     //var conversationList = mutableListOf<Conversation>(Conversation("first", "private"), conv2, conv, conv, conv, conv, conv, conv, conv, conv)
 
@@ -120,5 +121,12 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
                     submitList(conversationList)
             }
         }
+    }
+
+    fun UpdateConversation(conv: Conversation, pos: Int){
+        conversationList = conversationList.filterIndexed { index, _ -> index != pos}
+        conversationList += conv
+        currentUser?.conversations = conversationList as MutableList<Conversation>
+        submitList(conversationList)
     }
 }

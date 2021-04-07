@@ -23,7 +23,7 @@ import hu.bme.aut.android.chat_app.R
 import hu.bme.aut.android.chat_app.databinding.FragmentMessagesBinding
 
 
-class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewModel>(), ConversationsAdapter.ConversationItemClickListener {
+class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewModel>(), ConversationsAdapter.ConversationItemClickListener, EditConversationDialog.EditConversationListener {
 
     private lateinit var fragmentBinding: FragmentMessagesBinding
     private lateinit var conversationsAdapter: ConversationsAdapter
@@ -101,7 +101,8 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
             when (item.itemId) {
                R.id.delete -> conversationsAdapter.deleteConversation(position)
                R.id.edit -> {
-                   val conversationDialog = EditConversationDialog()
+                   val conversationDialog = EditConversationDialog(position)
+                   conversationDialog.listener = this
                    conversationDialog.show(parentFragmentManager, "")
                }
             }
@@ -129,5 +130,9 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
             }
             else ->{}
         }.exhaustive
+    }
+
+    override fun onConversationTitleChange(conversation: Conversation, pos: Int) {Log.i("aaa","aaa")
+        conversationsAdapter.UpdateConversation(conversation, pos)
     }
 }

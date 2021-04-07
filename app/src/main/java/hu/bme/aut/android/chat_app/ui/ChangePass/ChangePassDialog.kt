@@ -8,6 +8,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import hu.bme.aut.android.chat_app.ChatApplication
+import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentUser
+import hu.bme.aut.android.chat_app.ChatApplication.Companion.usersList
+import hu.bme.aut.android.chat_app.Model.User
 import hu.bme.aut.android.chat_app.R
 import hu.bme.aut.android.chat_app.databinding.DialogChangePasswordBinding
 
@@ -19,7 +23,20 @@ class ChangePassDialog : DialogFragment() {
         binding = DialogChangePasswordBinding.inflate(inflater, container, false)
 
         binding.btnSave.setOnClickListener{
-            if(ValidateInput()) dialog?.dismiss()
+            if(ValidateInput()) {
+                val user = currentUser
+                currentUser = currentUser?.let { it1 ->
+                    currentUser?.profilePicture?.let { it2 ->
+                        currentUser?.userName?.let { it3 ->
+                            User(
+                                it3, binding.editNewPass.text.toString(),
+                                it2, it1?.conversations )
+                        }
+                    }
+                }
+                usersList.find { it == user }?.password = currentUser?.password.toString()
+                dialog?.dismiss()
+            }
         }
 
         binding.btnCancel.setOnClickListener{

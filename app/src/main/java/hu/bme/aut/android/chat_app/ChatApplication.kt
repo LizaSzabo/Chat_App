@@ -32,8 +32,8 @@ class ChatApplication : RainbowCakeApplication() {
             isDebug = BuildConfig.DEBUG
         }
         Timber.plant(Timber.DebugTree())
-        usersList.add(User("User1", "pass", R.id.profilepicture, mutableListOf(Conversation("first", "private"))))
-        usersList.add(User("User2", "pass", R.id.profilepicture, mutableListOf(Conversation("second", "private"))))
+        usersList.add(User("User1", "pass", R.id.profilepicture, mutableListOf(Conversation("first", "private", mutableListOf<Message>(Message("User1", "second", "Hello"), Message("User1", "second", "Szia"),Message("User2", "first", "Hello"))))))
+        usersList.add(User("User2", "pass", R.id.profilepicture, mutableListOf(Conversation("second", "private", mutableListOf<Message>(Message("User1", "second", "Hello"), Message("User1", "second", "Szia"),Message("User2", "first", "Hello"))))))
     }
 
     override fun setupInjector() {
