@@ -47,7 +47,6 @@ class EditProfileFragment : RainbowCakeFragment<EditProfileViewState, EditProfil
         }
     }
 
-
     override fun getViewResource() = R.layout.fragment_edit_profile
 
     override fun provideViewModel()= getViewModelFromFactory()

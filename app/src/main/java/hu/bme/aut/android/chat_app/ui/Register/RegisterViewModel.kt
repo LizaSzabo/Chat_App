@@ -3,6 +3,10 @@ package hu.bme.aut.android.chat_app.ui.Register
 import android.content.Context
 import androidx.navigation.NavController
 import co.zsmb.rainbowcake.base.RainbowCakeViewModel
+import hu.bme.aut.android.chat_app.ChatApplication.Companion.usersList
+import hu.bme.aut.android.chat_app.Model.Conversation
+import hu.bme.aut.android.chat_app.Model.Message
+import hu.bme.aut.android.chat_app.Model.User
 import hu.bme.aut.android.chat_app.R
 import hu.bme.aut.android.chat_app.databinding.FragmentRegisterBinding
 import javax.inject.Inject
@@ -39,6 +43,16 @@ class RegisterViewModel @Inject constructor(
             fragmentBinding.tvTextPassword2.error = context.getString(R.string.pass_confirmation_failed)
             return false
         }
+
+        var convers =  mutableListOf(
+            Conversation("first", "private", mutableListOf<Message>(
+                Message("User1", "second", "Hello"), Message("User1", "second", "Szia"),
+                Message("User2", "first", "Hello")
+            ))
+        )
+
+        val user: User = User(fragmentBinding.tvTextUserName.text.toString(), fragmentBinding.tvTextPassword.text.toString(), 1, null)
+        usersList.add(user)
         return true
     }
 }

@@ -109,9 +109,11 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
         var  convs = mutableListOf<Conversation>()
         if(conversation.isEmpty()) {
             conversationList = emptyList()
+            if(currentUser?.conversations != null){
             convs = currentUser?.conversations!!
             conversationList += convs
             submitList(conversationList)
+            }
         }
         else{
             conversationList = emptyList()
