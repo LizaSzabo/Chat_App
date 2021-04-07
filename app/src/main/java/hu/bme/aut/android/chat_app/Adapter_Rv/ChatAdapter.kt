@@ -87,11 +87,12 @@ class ChatAdapter : ListAdapter<Message, ChatAdapter.ChatViewHolder>(itemCallbac
     }
 
     fun addAll(){
+        if(currentConversation?.messages != null){
         val messages: MutableList<Message> =
             currentConversation?.messages!!  //(Message("User1", "second", "Hello"), Message("User1", "second", "Szia"),
           //  Message("User2", "second", "naaaaaaaagyon hossszuuuuuuuuuuuuuuuu szoveeeeeeeeeeeeeeeg"))
         messageList += messages
-        submitList(messages)
+        submitList(messages)}
     }
 
     override fun getItemViewType(position: Int): Int {
