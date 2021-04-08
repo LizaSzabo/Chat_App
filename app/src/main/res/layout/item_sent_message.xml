@@ -5,32 +5,32 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="40dp"
-    android:layout_marginTop="5dp">
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="8dp">
 
 
     <TextView
         android:id="@+id/tvMessageSent"
         android:layout_width="wrap_content"
-        android:maxWidth="250dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="3dp"
-        android:layout_marginEnd="3dp"
         android:background="@drawable/message_background"
+        android:maxWidth="250dp"
         android:padding="10dp"
+        android:textColor="@color/lightTextColor"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:textColor="@color/lightTextColor" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/dateSent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginTop="2dp"
+        android:text="date"
+        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvMessageSent"
-        android:text="date"/>
+        app:layout_constraintTop_toBottomOf="@+id/tvMessageSent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -24,7 +24,9 @@ class EditProfileFragment : RainbowCakeFragment<EditProfileViewState, EditProfil
         val binding = FragmentEditProfileBinding.bind(view)
         fragmentBinding= binding
 
-        fragmentBinding.btnEditUserName.setOnClickListener(View.OnClickListener { viewModel.openDialog(parentFragmentManager) })
+        fragmentBinding.btnEditUserName.setOnClickListener(View.OnClickListener {
+            viewModel.openDialog(parentFragmentManager, fragmentBinding)
+        })
         fragmentBinding.btnChanePass.setOnClickListener({viewModel.openChangePassDialog(parentFragmentManager)})
 
         fragmentBinding.imageButtonEditProfile.setOnClickListener {

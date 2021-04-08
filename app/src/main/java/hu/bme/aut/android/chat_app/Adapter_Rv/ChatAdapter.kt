@@ -4,20 +4,17 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentConversation
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentUser
-import hu.bme.aut.android.chat_app.Model.Conversation
 import hu.bme.aut.android.chat_app.Model.Message
-import hu.bme.aut.android.chat_app.R
-import hu.bme.aut.android.chat_app.databinding.ItemConversationBinding
 import hu.bme.aut.android.chat_app.databinding.ItemMessageReceivedBinding
 import hu.bme.aut.android.chat_app.databinding.ItemSentMessageBinding
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ChatAdapter : ListAdapter<Message, ChatAdapter.ChatViewHolder>(itemCallback)  {
 
@@ -45,22 +42,36 @@ class ChatAdapter : ListAdapter<Message, ChatAdapter.ChatViewHolder>(itemCallbac
 
     inner class SentViewHolder(val binding: ItemSentMessageBinding) : ChatViewHolder(binding.root) {
         val tvMessageSent: TextView = binding.tvMessageSent
+        var tvDate: TextView = binding.dateSent
         var message: Message? = null
     }
 
 
     inner class ReceivedViewHolder(val binding: ItemMessageReceivedBinding) : ChatViewHolder(binding.root) {
         val tvMessageReceived: TextView = binding.tvMessageReceived
+        var tvDate: TextView = binding.dateReceived
         var message: Message? = null
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatViewHolder {
         return when (viewType) {
-            TYPE_SENT-> {
-                SentViewHolder(ItemSentMessageBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+            TYPE_SENT -> {
+                SentViewHolder(
+                    ItemSentMessageBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent,
+                        false
+                    )
+                )
             }
             TYPE_RECEIVED -> {
-                ReceivedViewHolder(ItemMessageReceivedBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+                ReceivedViewHolder(
+                    ItemMessageReceivedBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent,
+                        false
+                    )
+                )
             }
             else -> throw IllegalArgumentException("Invalid view type")
         }
@@ -73,10 +84,14 @@ class ChatAdapter : ListAdapter<Message, ChatAdapter.ChatViewHolder>(itemCallbac
             is SentViewHolder -> {
                 holder.tvMessageSent.text = message.content
                 holder.message = message
+               /* val dateFormat = SimpleDateFormat("HH:mm")
+                val time = dateFormat.format(Calendar.getInstance().time)*/
+                holder.tvDate.text = message.date
             }
             is ReceivedViewHolder -> {
                 holder.tvMessageReceived.text = message.content
                 holder.message = message
+                holder.tvDate.text = message.date
             }
             else -> throw IllegalArgumentException()
         }
@@ -106,6 +121,6 @@ class ChatAdapter : ListAdapter<Message, ChatAdapter.ChatViewHolder>(itemCallbac
     fun addMessage(message: Message){
         messageList += message
         currentConversation?.messages?.add(message)
-        submitList( messageList)
+        submitList(messageList)
     }
 }

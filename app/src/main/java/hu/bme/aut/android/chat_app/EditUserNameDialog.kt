@@ -14,8 +14,9 @@ import hu.bme.aut.android.chat_app.ChatApplication.Companion.usersList
 import hu.bme.aut.android.chat_app.Model.Conversation
 import hu.bme.aut.android.chat_app.Model.User
 import hu.bme.aut.android.chat_app.databinding.DialogEditUserNameBinding
+import hu.bme.aut.android.chat_app.databinding.FragmentEditProfileBinding
 
-class EditUserNameDialog(): DialogFragment() {
+class EditUserNameDialog(var editbinding: FragmentEditProfileBinding): DialogFragment() {
     private lateinit var binding: DialogEditUserNameBinding
 
 
@@ -39,6 +40,7 @@ class EditUserNameDialog(): DialogFragment() {
                         }
                     }
                 }
+                editbinding.tvUserName.text = ChatApplication.currentUser?.userName
                 dialog?.dismiss()
             }
         }

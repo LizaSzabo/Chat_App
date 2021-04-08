@@ -32,7 +32,7 @@ class ChatApplication : RainbowCakeApplication() {
             isDebug = BuildConfig.DEBUG
         }
         Timber.plant(Timber.DebugTree())
-        var convers =  mutableListOf(Conversation("first", "private", mutableListOf<Message>(Message("User1", "second", "Hello"), Message("User1", "second", "Szia"),Message("User2", "first", "Hello"))))
+        var convers =  mutableListOf(Conversation("first", "private", mutableListOf<Message>(Message("User1", "second", "Hello", "2021.04.01 14:12"), Message("User1", "second", "Szia", "2021.04.01 14:12"),Message("User2", "first", "Hello", "2021.04.01 14:12"))))
         usersList.add(User("User1", "pass", R.id.profilepicture, convers))
         usersList.add(User("User2", "pass", R.id.profilepicture, convers))
     }

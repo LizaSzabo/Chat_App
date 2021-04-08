@@ -14,6 +14,8 @@ import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentConversation
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentUser
 import hu.bme.aut.android.chat_app.R
 import hu.bme.aut.android.chat_app.databinding.FragmentChatBinding
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
 
@@ -32,11 +34,13 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
         fragmentBinding.chatButtomToolbar.title = ""
         fragmentBinding.ibSend.setOnClickListener{
             if( fragmentBinding.text.text.toString().isNotEmpty()) {
+                val dateFormat = SimpleDateFormat("yyyy.MM.dd HH:mm")
+                 val time = dateFormat.format(Calendar.getInstance().time)
                 var message = currentUser?.userName?.let { it1 ->
                     hu.bme.aut.android.chat_app.Model.Message(
                         it1,
                         "second",
-                        fragmentBinding.text.text.toString()
+                        fragmentBinding.text.text.toString(), time
                     )
                 }
                 if (message != null) {

@@ -46,8 +46,8 @@ class RegisterViewModel @Inject constructor(
 
         var convers =  mutableListOf(
             Conversation("first", "private", mutableListOf<Message>(
-                Message("User1", "second", "Hello"), Message("User1", "second", "Szia"),
-                Message("User2", "first", "Hello")
+                Message("User1", "second", "Hello", "14:12"), Message("User1", "second", "Szia", "14:12"),
+                Message("User2", "first", "Hello", "14:12")
             ))
         )
 
