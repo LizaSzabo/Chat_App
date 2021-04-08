@@ -15,6 +15,7 @@ import co.zsmb.rainbowcake.base.RainbowCakeFragment
 import co.zsmb.rainbowcake.dagger.getViewModelFromFactory
 import co.zsmb.rainbowcake.extensions.exhaustive
 import hu.bme.aut.android.chat_app.Adapter_Rv.ConversationsAdapter
+import hu.bme.aut.android.chat_app.ChangeConversationPictureDialog
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentConversation
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentUser
 import hu.bme.aut.android.chat_app.EditConversationDialog
@@ -107,6 +108,10 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
                    conversationDialog.listener = this
                    conversationDialog.show(parentFragmentManager, "")
                }
+                R.id.editPicture ->{
+                    val changeConversationPictureDialog = ChangeConversationPictureDialog()
+                    changeConversationPictureDialog.show(parentFragmentManager, "")
+                }
             }
             false
         }

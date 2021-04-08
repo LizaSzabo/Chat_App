@@ -11,6 +11,10 @@
         android:title="@string/edit"
         app:showAsAction="always" />
     <item
+        android:id="@+id/editPicture"
+        android:title="CHANGE PICTURE"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/back"
         android:title="@string/back"
         app:showAsAction="always" />
