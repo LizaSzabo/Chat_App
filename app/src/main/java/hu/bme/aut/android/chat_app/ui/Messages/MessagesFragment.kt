@@ -50,7 +50,9 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
         fragmentBinding.ibSearch.setOnClickListener{
             conversationsAdapter.addAll(fragmentBinding.editTextSearch.text.toString())
         }
+
         fragmentBinding.editTextSearch.doOnTextChanged { _, _, _, _ -> conversationsAdapter.addAll(fragmentBinding.editTextSearch.text.toString())  }
+        fragmentBinding.imageButtonProfile.setImageURI(currentUser?.profilePicture)
         initRecyclerView()
 
     }

@@ -26,10 +26,12 @@ class EditConversationDialog(var pos: Int) : DialogFragment() {
             }else {
                 //  currentConversation?.name = binding.editTextConversationTitle.text.toString()
                 currentConversation?.let { it1 ->
-                    Conversation(
-                        binding.editTextConversationTitle.text.toString(),
-                        "", it1?.messages
-                    )
+                    currentConversation?.picture?.let { it2 ->
+                        Conversation(
+                            binding.editTextConversationTitle.text.toString(),
+                            "", it1?.messages, it2
+                        )
+                    }
                 }?.let { it2 ->
                     listener.onConversationTitleChange(
                         it2, pos

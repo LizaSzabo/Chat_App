@@ -1,6 +1,7 @@
 package hu.bme.aut.android.chat_app.ui.Register
 
 import android.content.Context
+import android.net.Uri
 import androidx.navigation.NavController
 import co.zsmb.rainbowcake.base.RainbowCakeViewModel
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.usersList
@@ -17,9 +18,11 @@ class RegisterViewModel @Inject constructor(
 
     lateinit var fragmentBinding: FragmentRegisterBinding
     lateinit var context : Context
+    lateinit var pictureUri : Uri
 
-   fun Registration(navController: NavController, binding: FragmentRegisterBinding, cxt: Context?){
+   fun Registration(navController: NavController, binding: FragmentRegisterBinding, cxt: Context?, uri: Uri){
        fragmentBinding = binding
+       pictureUri = uri
        if (cxt != null) {
            context = cxt
        }
@@ -44,14 +47,14 @@ class RegisterViewModel @Inject constructor(
             return false
         }
 
-        var convers =  mutableListOf(
+    /*    var convers =  mutableListOf(
             Conversation("first", "private", mutableListOf<Message>(
                 Message("User1", "second", "Hello", "14:12"), Message("User1", "second", "Szia", "14:12"),
                 Message("User2", "first", "Hello", "14:12")
             ))
-        )
-
-        val user: User = User(fragmentBinding.tvTextUserName.text.toString(), fragmentBinding.tvTextPassword.text.toString(), 1, null)
+        )*/
+        val uri: Uri = Uri.parse("android.resource://hu.bme.aut.android.chat_app/drawable/addprofile")
+        val user: User = User(fragmentBinding.tvTextUserName.text.toString(), fragmentBinding.tvTextPassword.text.toString(), pictureUri , null)
         usersList.add(user)
         return true
     }

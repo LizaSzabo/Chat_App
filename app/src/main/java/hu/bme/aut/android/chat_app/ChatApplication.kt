@@ -1,6 +1,6 @@
 package hu.bme.aut.android.chat_app
 
-import android.app.Application
+import android.net.Uri
 import co.zsmb.rainbowcake.config.Loggers
 import co.zsmb.rainbowcake.config.rainbowCake
 import co.zsmb.rainbowcake.dagger.RainbowCakeApplication
@@ -32,9 +32,26 @@ class ChatApplication : RainbowCakeApplication() {
             isDebug = BuildConfig.DEBUG
         }
         Timber.plant(Timber.DebugTree())
-        var convers =  mutableListOf(Conversation("first", "private", mutableListOf<Message>(Message("User1", "second", "Hello", "2021.04.01 14:12"), Message("User1", "second", "Szia", "2021.04.01 14:12"),Message("User2", "first", "Hello", "2021.04.01 14:12"))))
-        usersList.add(User("User1", "pass", R.id.profilepicture, convers))
-        usersList.add(User("User2", "pass", R.id.profilepicture, convers))
+        val uri: Uri = Uri.parse("android.resource://hu.bme.aut.android.chat_app/drawable/addprofile")
+        var convers =  mutableListOf(
+            Conversation(
+                "first", "private", mutableListOf<Message>(
+                    Message(
+                        "User1",
+                        "second",
+                        "Hello",
+                        "2021.04.01 14:12"
+                    ), Message("User1", "second", "Szia", "2021.04.01 14:12"), Message(
+                        "User2",
+                        "first",
+                        "Hello",
+                        "2021.04.01 14:12"
+                    )
+                ), uri
+            )
+        )
+        usersList.add(User("User1", "pass", uri, convers))
+        usersList.add(User("User2", "pass", uri, convers))
     }
 
     override fun setupInjector() {

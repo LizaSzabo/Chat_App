@@ -1,9 +1,13 @@
 package hu.bme.aut.android.chat_app.ui.EditProfile
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import androidx.core.graphics.drawable.toIcon
 import co.zsmb.rainbowcake.base.RainbowCakeFragment
 import co.zsmb.rainbowcake.dagger.getViewModelFromFactory
 import co.zsmb.rainbowcake.extensions.exhaustive
@@ -16,7 +20,7 @@ import hu.bme.aut.android.chat_app.databinding.FragmentEditProfileBinding
 
 class EditProfileFragment : RainbowCakeFragment<EditProfileViewState, EditProfileViewModel>() {
     private lateinit var fragmentBinding: FragmentEditProfileBinding
-    private val PICK_IMAGE = 1
+    private val PICK_IMAGE = 101
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -37,17 +41,27 @@ class EditProfileFragment : RainbowCakeFragment<EditProfileViewState, EditProfil
            // currentUser?.profilePicture = imageButtonEditProfile as Int
         }
         fragmentBinding.tvUserName.text = currentUser?.userName
+        fragmentBinding.imageButtonEditProfile.setImageURI(currentUser?.profilePicture)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == PICK_IMAGE) {
             val selectedImageUri: Uri? = data?.data
+           /* val imageBitmap = data?.extras?.get("data") as? Bitmap ?: return
+            fragmentBinding.imageButtonEditProfile.setImageBitmap(imageBitmap)*/
             if (null != selectedImageUri) {
                 // update the preview image in the layout
                 fragmentBinding.imageButtonEditProfile.setImageURI(selectedImageUri)
+               // var bmp = BitmapFactory.decodeFile(selectedImageUri.toString())
+                Log.i("aaa", selectedImageUri.toString())
+               // fragmentBinding.imageButtonEditProfile.setImageBitmap(bmp)
+                currentUser?.profilePicture = selectedImageUri
             }
         }
     }
+
+
 
     override fun getViewResource() = R.layout.fragment_edit_profile
 
