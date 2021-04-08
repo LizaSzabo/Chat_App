@@ -24,7 +24,8 @@ import hu.bme.aut.android.chat_app.R
 import hu.bme.aut.android.chat_app.databinding.FragmentMessagesBinding
 
 
-class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewModel>(), ConversationsAdapter.ConversationItemClickListener, EditConversationDialog.EditConversationListener {
+class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewModel>(), ConversationsAdapter.ConversationItemClickListener, EditConversationDialog.EditConversationListener,
+    ChangeConversationPictureDialog.ChangeConversationPictureListener {
 
     private lateinit var fragmentBinding: FragmentMessagesBinding
     private lateinit var conversationsAdapter: ConversationsAdapter
@@ -94,7 +95,8 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
     }
 
     @SuppressLint("ResourceAsColor")
-    override fun onItemLongClick(position: Int, view: View): Boolean {
+    override fun onItemLongClick(position: Int, view: View, conversation: Conversation): Boolean {
+        currentConversation = conversation
         val popup = PopupMenu(context, view)
         popup.inflate(R.menu.menu_conversation)
         popup.setOnDismissListener(){
@@ -109,7 +111,8 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
                    conversationDialog.show(parentFragmentManager, "")
                }
                 R.id.editPicture ->{
-                    val changeConversationPictureDialog = ChangeConversationPictureDialog()
+                    val changeConversationPictureDialog = ChangeConversationPictureDialog(position)
+                    changeConversationPictureDialog.listener = this
                     changeConversationPictureDialog.show(parentFragmentManager, "")
                 }
             }
@@ -141,5 +144,9 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
 
     override fun onConversationTitleChange(conversation: Conversation, pos: Int) {Log.i("aaa","aaa")
         conversationsAdapter.UpdateConversation(conversation, pos)
+    }
+
+    override fun onConversationPictureChange(conversation: Conversation, pos: Int) {
+        conversationsAdapter.UpdateConversationPicture(conversation, pos)
     }
 }

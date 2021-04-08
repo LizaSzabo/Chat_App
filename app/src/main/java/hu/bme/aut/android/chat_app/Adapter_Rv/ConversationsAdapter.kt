@@ -34,10 +34,10 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
 
     @SuppressLint("ResourceAsColor")
     inner class ConversationViewHolder(val binding: ItemConversationBinding) : RecyclerView.ViewHolder(binding.root) {
-        val ivConversationImage: ImageView = binding.ivConversationImage
+        var ivConversationImage: ImageView = binding.ivConversationImage
         val ibStar: ImageButton = binding.ibStar
         val tvConversationName: TextView = binding.tvConversationName
-
+        val ivConversation: ImageView = binding.ivConversationImage
 
         var conversation: Conversation? = null
 
@@ -48,7 +48,7 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
 
             itemView.setOnLongClickListener { view ->
                 view.setBackgroundResource(R.color.background)
-                itemClickListener?.onItemLongClick(adapterPosition, view)
+                conversation?.let { itemClickListener?.onItemLongClick(adapterPosition, view, it) }
                 true
             }
 
@@ -75,11 +75,12 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
         val conversation = conversationList[position]
         holder.tvConversationName.text = conversation.name
         holder.conversation  = conversation
+        holder.ivConversationImage.setImageURI(conversation.picture)
     }
 
     interface ConversationItemClickListener {
         fun onItemClick(conversation: Conversation)
-        fun onItemLongClick(position: Int, view: View): Boolean
+        fun onItemLongClick(position: Int, view: View, conversation: Conversation): Boolean
     }
 
     companion object {
@@ -126,6 +127,13 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
     }
 
     fun UpdateConversation(conv: Conversation, pos: Int){
+        conversationList = conversationList.filterIndexed { index, _ -> index != pos}
+        conversationList += conv
+        currentUser?.conversations = conversationList as MutableList<Conversation>
+        submitList(conversationList)
+    }
+
+    fun UpdateConversationPicture(conv: Conversation, pos: Int){
         conversationList = conversationList.filterIndexed { index, _ -> index != pos}
         conversationList += conv
         currentUser?.conversations = conversationList as MutableList<Conversation>

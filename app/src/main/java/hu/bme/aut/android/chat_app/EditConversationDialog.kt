@@ -2,6 +2,7 @@ package hu.bme.aut.android.chat_app
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,8 +15,6 @@ import hu.bme.aut.android.chat_app.databinding.DialogEditUserNameBinding
 class EditConversationDialog(var pos: Int) : DialogFragment() {
     private lateinit var binding: DialogEditConversationBinding
      lateinit var listener: EditConversationListener
-
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DialogEditConversationBinding.inflate(inflater, container, false)
@@ -37,6 +36,8 @@ class EditConversationDialog(var pos: Int) : DialogFragment() {
                         it2, pos
                     )
                 }
+
+             //   currentConversation?.name?.let { it1 -> Log.i("aaa", it1) }
                 dialog?.dismiss()
             }
         }

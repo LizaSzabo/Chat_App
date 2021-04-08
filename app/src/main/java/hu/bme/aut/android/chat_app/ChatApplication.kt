@@ -32,7 +32,7 @@ class ChatApplication : RainbowCakeApplication() {
             isDebug = BuildConfig.DEBUG
         }
         Timber.plant(Timber.DebugTree())
-        val uri: Uri = Uri.parse("android.resource://hu.bme.aut.android.chat_app/drawable/addprofile")
+        val uri: Uri = Uri.parse("android.resource://hu.bme.aut.android.chat_app/drawable/default_profilepic")
         var convers =  mutableListOf(
             Conversation(
                 "first", "private", mutableListOf<Message>(
