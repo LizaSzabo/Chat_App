@@ -1,6 +1,8 @@
 package hu.bme.aut.android.chat_app.ui.Messages
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -8,14 +10,12 @@ import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.FragmentActivity
-import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import co.zsmb.rainbowcake.base.RainbowCakeFragment
 import co.zsmb.rainbowcake.dagger.getViewModelFromFactory
 import co.zsmb.rainbowcake.extensions.exhaustive
 import hu.bme.aut.android.chat_app.Adapter_Rv.ConversationsAdapter
-import hu.bme.aut.android.chat_app.ChangeConversationPictureDialog
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentConversation
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentUser
 import hu.bme.aut.android.chat_app.EditConversationDialog
@@ -24,12 +24,14 @@ import hu.bme.aut.android.chat_app.R
 import hu.bme.aut.android.chat_app.databinding.FragmentMessagesBinding
 
 
-class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewModel>(), ConversationsAdapter.ConversationItemClickListener, EditConversationDialog.EditConversationListener,
-    ChangeConversationPictureDialog.ChangeConversationPictureListener {
+class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewModel>(), ConversationsAdapter.ConversationItemClickListener, EditConversationDialog.EditConversationListener
+    {
 
     private lateinit var fragmentBinding: FragmentMessagesBinding
     private lateinit var conversationsAdapter: ConversationsAdapter
     private lateinit  var myContext: FragmentActivity
+    private val PICK_IMAGE = 1
+    var uri: Uri = Uri.parse("android.resource://hu.bme.aut.android.chat_app/drawable/default_profilepic")
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -111,15 +113,40 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
                    conversationDialog.show(parentFragmentManager, "")
                }
                 R.id.editPicture ->{
-                    val changeConversationPictureDialog = ChangeConversationPictureDialog(position)
-                    changeConversationPictureDialog.listener = this
-                    changeConversationPictureDialog.show(parentFragmentManager, "")
+                    val intent = Intent()
+                    intent.type = "image/*"
+                    intent.action = Intent.ACTION_GET_CONTENT
+                    startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE)
+                    conversationsAdapter.UpdateConversationPicture(conversation, position)
+
                 }
             }
             false
         }
         popup.show()
+
         return false
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == PICK_IMAGE) {
+            val selectedImageUri: Uri? = data?.data
+            /* val imageBitmap = data?.extras?.get("data") as? Bitmap ?: return
+             fragmentBinding.imageButtonEditProfile.setImageBitmap(imageBitmap)*/
+            if (null != selectedImageUri) {
+                // update the preview image in the layout
+
+                currentConversation?.name?.let { Log.i("aaa", it) }
+                currentConversation?.picture = selectedImageUri
+                uri = selectedImageUri
+
+            }
+            val action = MessagesFragmentDirections.actionMessagesFragmentSelf()
+            findNavController().navigate(action)
+        }
+
     }
 
 
@@ -146,7 +173,4 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
         conversationsAdapter.UpdateConversation(conversation, pos)
     }
 
-    override fun onConversationPictureChange(conversation: Conversation, pos: Int) {
-        conversationsAdapter.UpdateConversationPicture(conversation, pos)
-    }
 }

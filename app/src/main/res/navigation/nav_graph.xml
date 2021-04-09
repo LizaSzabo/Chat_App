@@ -51,6 +51,9 @@
         <action
             android:id="@+id/action_messagesFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_messagesFragment_self"
+            app:destination="@id/messagesFragment" />
     </fragment>
     <fragment
         android:id="@+id/editProfileFragment"

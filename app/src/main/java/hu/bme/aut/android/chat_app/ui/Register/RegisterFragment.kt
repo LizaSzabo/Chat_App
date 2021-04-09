@@ -19,7 +19,7 @@ class RegisterFragment :  RainbowCakeFragment<RegisterViewState, RegisterViewMod
 
     private lateinit var fragmentBinding: FragmentRegisterBinding
     private val PICK_IMAGE = 1
-    private lateinit var uri: Uri
+    var uri: Uri = Uri.parse("android.resource://hu.bme.aut.android.chat_app/drawable/default_profilepic")
 
 
     override fun onViewCreated(view: View,  savedInstanceState: Bundle?){
@@ -34,7 +34,7 @@ class RegisterFragment :  RainbowCakeFragment<RegisterViewState, RegisterViewMod
             intent.action = Intent.ACTION_GET_CONTENT
             startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE)
         }
-        fragmentBinding.ivAddPicture.setImageURI(currentConversation?.picture)
+        fragmentBinding.ivAddPicture.setImageURI(uri)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
