@@ -51,8 +51,8 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
         }
         fragmentBinding.conversationTitle.text = currentConversation?.name
         initRecyclerView()
-
     }
+
     private fun initRecyclerView(){
         chatAdapter = ChatAdapter()
         fragmentBinding.rvChat.layoutManager = LinearLayoutManager( context)

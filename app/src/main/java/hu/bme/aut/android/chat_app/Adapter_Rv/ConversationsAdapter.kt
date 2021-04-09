@@ -168,7 +168,7 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
                 }
             }
         }
-        
+
         submitList(conversationList)
     }
 }
