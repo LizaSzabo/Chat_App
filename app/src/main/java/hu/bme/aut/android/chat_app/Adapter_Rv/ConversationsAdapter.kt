@@ -2,6 +2,7 @@ package hu.bme.aut.android.chat_app.Adapter_Rv
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentConversation
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentUser
+import hu.bme.aut.android.chat_app.ChatApplication.Companion.usersList
 import hu.bme.aut.android.chat_app.Model.Conversation
 import hu.bme.aut.android.chat_app.R
 import hu.bme.aut.android.chat_app.databinding.ItemConversationBinding
@@ -112,6 +114,10 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
 
     fun deleteConversation(position: Int) {
         conversationList = conversationList.filterIndexed { index, _ -> index != position }
+        currentUser?.conversations?.remove(currentConversation)
+        for(user in usersList){
+            if(user.conversations?.size == 1)    Log.i("aaa", user.userName)
+        }
         submitList(conversationList)
     }
 

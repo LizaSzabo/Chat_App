@@ -52,9 +52,42 @@ class ChatApplication : RainbowCakeApplication() {
                 ), uri, false
             )
         )
+
+        var convers2 =  mutableListOf(
+            Conversation(
+                "first", "private", mutableListOf<Message>(
+                    Message(
+                        "User1",
+                        "second",
+                        "Hello",
+                        "2021.04.01 14:12"
+                    ), Message("User1", "second", "Szia", "2021.04.01 14:12"), Message(
+                        "User2",
+                        "first",
+                        "Hello",
+                        "2021.04.01 14:12"
+                    )
+                ), uri, false
+            ),
+            Conversation(
+                "second", "private", mutableListOf<Message>(
+                    Message(
+                        "User1",
+                        "second",
+                        "Hello",
+                        "2021.04.01 14:12"
+                    ), Message("User1", "second", "Szia", "2021.04.01 14:12"), Message(
+                        "User2",
+                        "first",
+                        "Hello",
+                        "2021.04.01 14:12"
+                    )
+                ), uri, false
+            )
+        )
         var yourBitmap: Bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
         usersList.add(User("User1", "pass",yourBitmap, convers))
-        usersList.add(User("User2", "pass", yourBitmap, convers))
+        usersList.add(User("User2", "pass", yourBitmap, convers2))
     }
 
     override fun setupInjector() {
