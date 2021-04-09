@@ -5,12 +5,14 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import androidx.core.graphics.drawable.toIcon
 import co.zsmb.rainbowcake.base.RainbowCakeFragment
 import co.zsmb.rainbowcake.dagger.getViewModelFromFactory
 import co.zsmb.rainbowcake.extensions.exhaustive
+import hu.bme.aut.android.chat_app.ChatApplication
 import hu.bme.aut.android.chat_app.ui.ChangePass.ChangePassDialog
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentUser
 import hu.bme.aut.android.chat_app.EditUserNameDialog
@@ -41,7 +43,7 @@ class EditProfileFragment : RainbowCakeFragment<EditProfileViewState, EditProfil
            // currentUser?.profilePicture = imageButtonEditProfile as Int
         }
         fragmentBinding.tvUserName.text = currentUser?.userName
-        fragmentBinding.imageButtonEditProfile.setImageURI(currentUser?.profilePicture)
+        fragmentBinding.imageButtonEditProfile.setImageBitmap(currentUser?.profilePicture)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -52,15 +54,31 @@ class EditProfileFragment : RainbowCakeFragment<EditProfileViewState, EditProfil
             fragmentBinding.imageButtonEditProfile.setImageBitmap(imageBitmap)*/
             if (null != selectedImageUri) {
                 // update the preview image in the layout
-                fragmentBinding.imageButtonEditProfile.setImageURI(selectedImageUri)
+              //  fragmentBinding.imageButtonEditProfile.setImageURI(selectedImageUri)
                // var bmp = BitmapFactory.decodeFile(selectedImageUri.toString())
                 Log.i("aaa", selectedImageUri.toString())
                // fragmentBinding.imageButtonEditProfile.setImageBitmap(bmp)
-                currentUser?.profilePicture = selectedImageUri
+              //  currentUser?.profilePicture = selectedImageUri
+                var yourBitmap: Bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, selectedImageUri)
+                //val resized = Bitmap.createScaledBitmap(yourBitmap, fragmentBinding.imageButtonEditProfile.layoutParams.width, fragmentBinding.imageButtonEditProfile.layoutParams.height, true)
+                val resized = yourBitmap.resizeByHeight( fragmentBinding.imageButtonEditProfile.layoutParams.height)
+                currentUser?.profilePicture = resized
+                fragmentBinding.imageButtonEditProfile.setImageBitmap(resized)
             }
         }
     }
 
+    private fun Bitmap.resizeByHeight(height:Int):Bitmap{
+        val ratio:Float = this.height.toFloat() / this.width.toFloat()
+        val width:Int = Math.round(height / ratio)
+
+        return Bitmap.createScaledBitmap(
+            this,
+            width,
+            height,
+            false
+        )
+    }
 
 
     override fun getViewResource() = R.layout.fragment_edit_profile

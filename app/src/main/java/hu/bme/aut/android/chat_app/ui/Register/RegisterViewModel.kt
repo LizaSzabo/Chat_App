@@ -1,9 +1,12 @@
 package hu.bme.aut.android.chat_app.ui.Register
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.net.Uri
+import android.provider.MediaStore
 import androidx.navigation.NavController
 import co.zsmb.rainbowcake.base.RainbowCakeViewModel
+import hu.bme.aut.android.chat_app.ChatApplication
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.usersList
 import hu.bme.aut.android.chat_app.Model.Conversation
 import hu.bme.aut.android.chat_app.Model.Message
@@ -54,7 +57,8 @@ class RegisterViewModel @Inject constructor(
             ))
         )*/
         val uri: Uri = Uri.parse("android.resource://hu.bme.aut.android.chat_app/drawable/addprofile")
-        val user: User = User(fragmentBinding.tvTextUserName.text.toString(), fragmentBinding.tvTextPassword.text.toString(), pictureUri , null)
+        var yourBitmap: Bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, pictureUri)
+        val user: User = User(fragmentBinding.tvTextUserName.text.toString(), fragmentBinding.tvTextPassword.text.toString(), yourBitmap, null)
         usersList.add(user)
         return true
     }

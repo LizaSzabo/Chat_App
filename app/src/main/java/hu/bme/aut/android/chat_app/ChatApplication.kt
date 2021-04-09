@@ -1,6 +1,8 @@
 package hu.bme.aut.android.chat_app
 
+import android.graphics.Bitmap
 import android.net.Uri
+import android.provider.MediaStore
 import co.zsmb.rainbowcake.config.Loggers
 import co.zsmb.rainbowcake.config.rainbowCake
 import co.zsmb.rainbowcake.dagger.RainbowCakeApplication
@@ -50,8 +52,9 @@ class ChatApplication : RainbowCakeApplication() {
                 ), uri, false
             )
         )
-        usersList.add(User("User1", "pass", uri, convers))
-        usersList.add(User("User2", "pass", uri, convers))
+        var yourBitmap: Bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
+        usersList.add(User("User1", "pass",yourBitmap, convers))
+        usersList.add(User("User2", "pass", yourBitmap, convers))
     }
 
     override fun setupInjector() {

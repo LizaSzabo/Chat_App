@@ -2,8 +2,10 @@ package hu.bme.aut.android.chat_app.ui.Messages
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.*
 import android.widget.PopupMenu
@@ -56,10 +58,44 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
         }
 
         fragmentBinding.editTextSearch.doOnTextChanged { _, _, _, _ -> conversationsAdapter.addAll(fragmentBinding.editTextSearch.text.toString())  }
-        fragmentBinding.imageButtonProfile.setImageURI(currentUser?.profilePicture)
+       /* val resized =
+            currentUser?.profilePicture?.let { Bitmap.createScaledBitmap(it, fragmentBinding.imageButtonProfile.layoutParams.width, fragmentBinding.imageButtonProfile.layoutParams.height, true) }
+       */
+        var resized: Bitmap? = null
+        resized = if( currentUser?.profilePicture?.height!! > currentUser?.profilePicture?.width!!){
+            currentUser?.profilePicture?.resizeByWidth( fragmentBinding.imageButtonProfile.layoutParams.width)
+        } else {
+            currentUser?.profilePicture?.resizeByHeight( fragmentBinding.imageButtonProfile.layoutParams.height)
+
+        }
+        fragmentBinding.imageButtonProfile.setImageBitmap(resized)
         initRecyclerView()
 
     }
+
+        private fun Bitmap.resizeByHeight(height:Int):Bitmap{
+            val ratio:Float = this.height.toFloat() / this.width.toFloat()
+            val width:Int = Math.round(height / ratio)
+
+            return Bitmap.createScaledBitmap(
+                this,
+                width,
+                height,
+                false
+            )
+        }
+
+        private fun Bitmap.resizeByWidth(width:Int):Bitmap{
+            val ratio:Float = this.width.toFloat() / this.height.toFloat()
+            val height:Int = Math.round(width / ratio)
+
+            return Bitmap.createScaledBitmap(
+                this,
+                width,
+                height,
+                false
+            )
+        }
 
     private fun initRecyclerView(){
         Log.i("recy" ,"recy")
@@ -141,6 +177,7 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
                 currentConversation?.name?.let { Log.i("aaa", it) }
                 currentConversation?.picture = selectedImageUri
                 uri = selectedImageUri
+
 
             }
             val action = MessagesFragmentDirections.actionMessagesFragmentSelf()
