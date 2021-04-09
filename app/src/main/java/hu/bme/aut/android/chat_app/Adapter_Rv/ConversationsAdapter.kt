@@ -115,9 +115,6 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
     fun deleteConversation(position: Int) {
         conversationList = conversationList.filterIndexed { index, _ -> index != position }
         currentUser?.conversations?.remove(currentConversation)
-        for(user in usersList){
-            if(user.conversations?.size == 1)    Log.i("aaa", user.userName)
-        }
         submitList(conversationList)
     }
 
@@ -143,16 +140,35 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
     }
 
     fun UpdateConversation(conv: Conversation, pos: Int){
-        conversationList = conversationList.filterIndexed { index, _ -> index != pos}
-        conversationList += conv
+       /* conversationList = conversationList.filterIndexed { index, _ -> index != pos}
+        conversationList += conv*/
+
         currentUser?.conversations = conversationList as MutableList<Conversation>
+        for(user in usersList){
+            for(conversation in user?.conversations!!){
+                if(conversation.name == conv.name){
+                    val index = user.conversations!!.indexOf(conversation)
+                    user.conversations!!.set(index, conv)
+                }
+            }
+        }
         submitList(conversationList)
     }
 
     fun UpdateConversationPicture(conv: Conversation, pos: Int){
-        conversationList = conversationList.filterIndexed { index, _ -> index != pos}
-        conversationList += conv
+       /* conversationList = conversationList.filterIndexed { index, _ -> index != pos}
+        conversationList += conv*/
+
         currentUser?.conversations = conversationList as MutableList<Conversation>
+        for(user in usersList){
+            for(conversation in user?.conversations!!){
+                if(conversation.name == conv.name){
+                    val index = user.conversations!!.indexOf(conversation)
+                    user.conversations!!.set(index, conv)
+                }
+            }
+        }
+        
         submitList(conversationList)
     }
 }
