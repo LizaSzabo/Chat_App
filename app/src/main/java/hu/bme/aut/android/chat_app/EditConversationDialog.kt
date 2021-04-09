@@ -1,8 +1,6 @@
 package hu.bme.aut.android.chat_app
 
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +8,6 @@ import androidx.fragment.app.DialogFragment
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentConversation
 import hu.bme.aut.android.chat_app.Model.Conversation
 import hu.bme.aut.android.chat_app.databinding.DialogEditConversationBinding
-import hu.bme.aut.android.chat_app.databinding.DialogEditUserNameBinding
 
 class EditConversationDialog(var pos: Int) : DialogFragment() {
     private lateinit var binding: DialogEditConversationBinding

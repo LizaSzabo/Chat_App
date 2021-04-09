@@ -140,18 +140,19 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
     }
 
     fun UpdateConversation(conv: Conversation, pos: Int){
-       /* conversationList = conversationList.filterIndexed { index, _ -> index != pos}
-        conversationList += conv*/
+        conversationList = conversationList.filterIndexed { index, _ -> index != pos}
+        conversationList += conv
 
         currentUser?.conversations = conversationList as MutableList<Conversation>
         for(user in usersList){
             for(conversation in user?.conversations!!){
-                if(conversation.name == conv.name){
+                if(conversation.name == currentConversation?.name){
                     val index = user.conversations!!.indexOf(conversation)
                     user.conversations!!.set(index, conv)
                 }
             }
         }
+
         submitList(conversationList)
     }
 
@@ -169,6 +170,12 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
             }
         }
 
+        submitList(conversationList)
+    }
+
+    fun AddConversation(conversation: Conversation){
+        conversationList += conversation
+        currentUser?.conversations?.add(conversation)
         submitList(conversationList)
     }
 }

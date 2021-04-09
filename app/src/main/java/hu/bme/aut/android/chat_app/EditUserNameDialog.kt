@@ -33,7 +33,7 @@ class EditUserNameDialog(var editbinding: FragmentEditProfileBinding): DialogFra
                 usersList.find { it == user }?.userName = currentUser?.userName.toString()
                 if(user?.conversations != null) {
                     for (conv in user?.conversations!!) {
-                        for (message in conv.messages) {
+                        for (message in conv.messages!!) {
                             if (message.sender == name) {
                                 message.sender = binding.editTextLoginName.text.toString()
                             }

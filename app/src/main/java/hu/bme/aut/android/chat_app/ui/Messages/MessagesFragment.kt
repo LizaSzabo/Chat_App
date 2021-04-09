@@ -43,7 +43,9 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
         fragmentBinding= binding
 
         // Inflate the layout for this fragment
-        fragmentBinding.imageButtonWrite.setOnClickListener(View.OnClickListener { viewModel.openChatActivity(findNavController()) })
+        fragmentBinding.imageButtonWrite.setOnClickListener(View.OnClickListener { viewModel.openAddConversationDialog(parentFragmentManager, conversationsAdapter)
+
+        })
         fragmentBinding.imageButtonProfile.setOnClickListener(View.OnClickListener { viewModel.openEditProfileActivity(findNavController()) })
 
         //fragmentBinding.chatListToolbar.inflateMenu(R.menu.messages_toolbar_menu);
@@ -209,5 +211,4 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
     override fun onConversationTitleChange(conversation: Conversation, pos: Int) {Log.i("aaa","aaa")
         conversationsAdapter.UpdateConversation(conversation, pos)
     }
-
 }
