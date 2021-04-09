@@ -6,5 +6,6 @@ data class Conversation (
     var name: String,
     val type: String,
     val messages: MutableList<Message>,
-    var picture: Uri
+    var picture: Uri,
+    var favourite: Boolean
         )

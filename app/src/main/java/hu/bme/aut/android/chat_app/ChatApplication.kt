@@ -47,7 +47,7 @@ class ChatApplication : RainbowCakeApplication() {
                         "Hello",
                         "2021.04.01 14:12"
                     )
-                ), uri
+                ), uri, false
             )
         )
         usersList.add(User("User1", "pass", uri, convers))

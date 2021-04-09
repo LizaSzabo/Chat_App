@@ -37,7 +37,7 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
         var ivConversationImage: ImageView = binding.ivConversationImage
         val ibStar: ImageButton = binding.ibStar
         val tvConversationName: TextView = binding.tvConversationName
-        val ivConversation: ImageView = binding.ivConversationImage
+      //  val ivConversation: ImageView = binding.ivConversationImage
 
         var conversation: Conversation? = null
 
@@ -54,14 +54,16 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
 
             ibStar.tag = R.drawable.star_icon
             ibStar.setOnClickListener{
-                when(ibStar.tag){
-                    R.drawable.star_icon-> {
+                when(conversation?.favourite){
+                    false-> {
                         ibStar.tag = R.drawable.ic_baseline_star_24
                         ibStar.setImageResource(R.drawable.ic_baseline_star_24)
+                        conversation?.favourite = true
                     }
-                    R.drawable.ic_baseline_star_24 ->{
+                   true ->{
                         ibStar.tag = R.drawable.star_icon
                         ibStar.setImageResource(R.drawable.star_icon)
+                        conversation?.favourite = false
                     }
                 }
             }
@@ -76,6 +78,14 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
         holder.tvConversationName.text = conversation.name
         holder.conversation  = conversation
         holder.ivConversationImage.setImageURI(conversation.picture)
+        when(conversation?.favourite) {
+            false -> {
+                holder.ibStar.setImageResource(R.drawable.star_icon)
+            }
+            true -> {
+                holder.ibStar.setImageResource(R.drawable.ic_baseline_star_24)
+            }
+        }
     }
 
     interface ConversationItemClickListener {
