@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import co.zsmb.rainbowcake.base.RainbowCakeFragment
 import co.zsmb.rainbowcake.dagger.getViewModelFromFactory
@@ -14,6 +15,7 @@ import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentConversation
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentUser
 import hu.bme.aut.android.chat_app.R
 import hu.bme.aut.android.chat_app.databinding.FragmentChatBinding
+import hu.bme.aut.android.chat_app.ui.Login.LoginFragmentDirections
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -51,6 +53,14 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
                 fragmentBinding.text.setText("")
             }
         }
+
+
+        fragmentBinding.chatTopToolbar.setOnClickListener{
+            val action = ChatFragmentDirections.actionChatFragmentToViewUsersInConversation()
+            findNavController().navigate(action)
+        }
+
+
         fragmentBinding.conversationTitle.text = currentConversation?.name
         initRecyclerView()
     }

@@ -64,5 +64,13 @@
         android:id="@+id/chatFragment"
         android:name="hu.bme.aut.android.chat_app.ui.Chat.ChatFragment"
         android:label="ChatFragment"
-        tools:layout="@layout/fragment_chat"/>
+        tools:layout="@layout/fragment_chat">
+        <action
+            android:id="@+id/action_chatFragment_to_viewUsersInConversation"
+            app:destination="@id/viewUsersInConversation" />
+    </fragment>
+    <fragment
+        android:id="@+id/viewUsersInConversation"
+        android:name="hu.bme.aut.android.chat_app.ViewUsersInConversation"
+        android:label="ViewUsersInConversation" />
 </navigation>
