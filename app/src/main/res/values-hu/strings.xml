@@ -33,6 +33,7 @@
     <string name="edit">SZERKESZTÉS</string>
     <string name="title_not_empty">A Beszélgetés Címe nem lehet üres</string>
     <string name="change_conversation_picture">BESZÉLGETÉS KÉP HOZZÁADÁSA</string>
+    <string name="add_user">HOZZÁADÁS</string>
 
     <string-array name="languages">
         <item>EN</item>

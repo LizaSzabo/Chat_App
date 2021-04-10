@@ -15,7 +15,7 @@
         android:title="CHANGE PICTURE"
         app:showAsAction="always" />
     <item
-        android:id="@+id/back"
-        android:title="@string/back"
+        android:id="@+id/addUser"
+        android:title="@string/add_user"
         app:showAsAction="always" />
 </menu>

@@ -30,6 +30,8 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
 
         (activity as AppCompatActivity).setSupportActionBar(fragmentBinding.chatButtomToolbar)
         setHasOptionsMenu(true)
+
+
        // fragmentBinding.chatTopToolbar.inflateMenu(R.menu.chat_menu)
         fragmentBinding.chatButtomToolbar.title = ""
         fragmentBinding.ibSend.setOnClickListener{

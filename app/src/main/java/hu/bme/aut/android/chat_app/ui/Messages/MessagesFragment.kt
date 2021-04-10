@@ -18,6 +18,7 @@ import co.zsmb.rainbowcake.base.RainbowCakeFragment
 import co.zsmb.rainbowcake.dagger.getViewModelFromFactory
 import co.zsmb.rainbowcake.extensions.exhaustive
 import hu.bme.aut.android.chat_app.Adapter_Rv.ConversationsAdapter
+import hu.bme.aut.android.chat_app.AddUserDialog
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentConversation
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentUser
 import hu.bme.aut.android.chat_app.EditConversationDialog
@@ -26,7 +27,7 @@ import hu.bme.aut.android.chat_app.R
 import hu.bme.aut.android.chat_app.databinding.FragmentMessagesBinding
 
 
-class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewModel>(), ConversationsAdapter.ConversationItemClickListener, EditConversationDialog.EditConversationListener
+class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewModel>(), ConversationsAdapter.ConversationItemClickListener, EditConversationDialog.EditConversationListener, AddUserDialog.AddUserListener
     {
 
     private lateinit var fragmentBinding: FragmentMessagesBinding
@@ -158,6 +159,11 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
                     conversationsAdapter.UpdateConversationPicture(conversation, position)
 
                 }
+                R.id.addUser -> {
+                    val addUserDialog = AddUserDialog()
+                    addUserDialog.listener = this
+                    addUserDialog.show(parentFragmentManager, "")
+                }
             }
             false
         }
@@ -211,4 +217,8 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
     override fun onConversationTitleChange(conversation: Conversation, pos: Int) {Log.i("aaa","aaa")
         conversationsAdapter.UpdateConversation(conversation, pos)
     }
-}
+
+        override fun onAddUser(userName: String) {
+            conversationsAdapter.AddConversationToUser(userName)
+        }
+    }

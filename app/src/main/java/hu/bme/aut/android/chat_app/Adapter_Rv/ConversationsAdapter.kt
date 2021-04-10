@@ -175,7 +175,32 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
 
     fun AddConversation(conversation: Conversation){
         conversationList += conversation
-        currentUser?.conversations?.add(conversation)
+
+        for(user in usersList){
+            if(user.userName ==  currentUser?.userName){
+                user.conversations?.add(conversation)
+                currentUser = user
+            }
+        }
         submitList(conversationList)
+    }
+
+    fun AddConversationToUser(username : String){
+        for(user in usersList){
+                if(user.userName == username){
+                    val conversation = currentConversation?.name?.let {
+                        currentConversation?.type?.let { it1 ->
+                            currentConversation?.picture?.let { it2 ->
+                                Conversation(
+                                    it, it1, currentConversation?.messages,
+                                    it2, false)
+                            }
+                        }
+                    }
+                    if (conversation != null) {
+                        user.conversations?.add(conversation)
+                    }
+                }
+        }
     }
 }

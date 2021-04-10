@@ -50,15 +50,16 @@ class RegisterViewModel @Inject constructor(
             return false
         }
 
-    /*    var convers =  mutableListOf(
+        val uri: Uri = Uri.parse("android.resource://hu.bme.aut.android.chat_app/drawable/addprofile")
+        var convers =  mutableListOf(
             Conversation("first", "private", mutableListOf<Message>(
                 Message("User1", "second", "Hello", "14:12"), Message("User1", "second", "Szia", "14:12"),
                 Message("User2", "first", "Hello", "14:12")
-            ))
-        )*/
-        val uri: Uri = Uri.parse("android.resource://hu.bme.aut.android.chat_app/drawable/addprofile")
+            ), uri, false)
+        )
+
         var yourBitmap: Bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, pictureUri)
-        val user: User = User(fragmentBinding.tvTextUserName.text.toString(), fragmentBinding.tvTextPassword.text.toString(), yourBitmap, null)
+        val user: User = User(fragmentBinding.tvTextUserName.text.toString(), fragmentBinding.tvTextPassword.text.toString(), yourBitmap, convers)
         usersList.add(user)
         return true
     }
