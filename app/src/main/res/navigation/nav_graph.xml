@@ -71,6 +71,6 @@
     </fragment>
     <fragment
         android:id="@+id/viewUsersInConversation"
-        android:name="hu.bme.aut.android.chat_app.ViewUsersInConversation"
+        android:name="hu.bme.aut.android.chat_app.ui.ViewUsers.ViewUsersInConversation"
         android:label="ViewUsersInConversation" />
 </navigation>

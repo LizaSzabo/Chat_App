@@ -60,6 +60,7 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
             findNavController().navigate(action)
         }
 
+       // fragmentBinding.profilepicture.setImageURI(currentConversation?.picture)
 
         fragmentBinding.conversationTitle.text = currentConversation?.name
         initRecyclerView()

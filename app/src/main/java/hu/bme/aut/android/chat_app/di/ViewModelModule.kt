@@ -10,6 +10,7 @@ import hu.bme.aut.android.chat_app.ui.EditProfile.EditProfileViewModel
 import hu.bme.aut.android.chat_app.ui.Login.LoginViewModel
 import hu.bme.aut.android.chat_app.ui.Messages.MessagesViewModel
 import hu.bme.aut.android.chat_app.ui.Register.RegisterViewModel
+import hu.bme.aut.android.chat_app.ui.ViewUsers.ViewUsersViewModel
 
 @Suppress("unused")
 @Module
@@ -38,4 +39,9 @@ abstract class ViewModelModule{
     @IntoMap
     @ViewModelKey(EditProfileViewModel::class)
     abstract fun bindEditProfileViewModel(userViewModel: EditProfileViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ViewUsersViewModel::class)
+    abstract fun bindViewUsersViewModel(userViewModel: ViewUsersViewModel): ViewModel
 }
