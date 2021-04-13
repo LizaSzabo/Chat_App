@@ -1,4 +1,4 @@
-package hu.bme.aut.android.chat_app
+package hu.bme.aut.android.chat_app.ui
 
 import android.net.Uri
 import android.os.Bundle
@@ -9,14 +9,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentConversation
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.usersList
-import hu.bme.aut.android.chat_app.Model.Conversation
 import hu.bme.aut.android.chat_app.databinding.DialogAddUserToConversationBinding
-import hu.bme.aut.android.chat_app.databinding.DialogAddconversationBinding
 
 class AddUserDialog: DialogFragment() {
 
     private lateinit var binding: DialogAddUserToConversationBinding
-    lateinit var listener: AddUserDialog.AddUserListener
+    lateinit var listener: AddUserListener
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DialogAddUserToConversationBinding.inflate(inflater, container, false)

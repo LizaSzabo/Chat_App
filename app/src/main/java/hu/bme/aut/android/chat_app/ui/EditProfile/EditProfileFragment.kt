@@ -2,20 +2,15 @@ package hu.bme.aut.android.chat_app.ui.EditProfile
 
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
-import androidx.core.graphics.drawable.toIcon
 import co.zsmb.rainbowcake.base.RainbowCakeFragment
 import co.zsmb.rainbowcake.dagger.getViewModelFromFactory
 import co.zsmb.rainbowcake.extensions.exhaustive
-import hu.bme.aut.android.chat_app.ChatApplication
-import hu.bme.aut.android.chat_app.ui.ChangePass.ChangePassDialog
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentUser
-import hu.bme.aut.android.chat_app.EditUserNameDialog
 import hu.bme.aut.android.chat_app.R
 import hu.bme.aut.android.chat_app.databinding.FragmentEditProfileBinding
 

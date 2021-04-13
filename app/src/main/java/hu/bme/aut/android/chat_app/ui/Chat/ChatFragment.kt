@@ -1,6 +1,8 @@
 package hu.bme.aut.android.chat_app.ui.Chat
 
+import android.graphics.Bitmap
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -55,7 +57,7 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
         }
 
 
-        fragmentBinding.chatTopToolbar.setOnClickListener{
+        fragmentBinding.iwConversationPicture.setOnClickListener{
             val action = ChatFragmentDirections.actionChatFragmentToViewUsersInConversation()
             findNavController().navigate(action)
         }
@@ -63,6 +65,17 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
        // fragmentBinding.profilepicture.setImageURI(currentConversation?.picture)
 
         fragmentBinding.conversationTitle.text = currentConversation?.name
+
+
+        var resized: Bitmap? = null
+        var picture = MediaStore.Images.Media.getBitmap(context?.contentResolver, currentConversation?.picture)
+        resized = if( picture.height!! > picture.width!!){
+            picture.resizeByWidth( fragmentBinding.iwConversationPicture.layoutParams.width)
+        } else {
+            picture.resizeByHeight( fragmentBinding.iwConversationPicture.layoutParams.height)
+
+        }
+        fragmentBinding.iwConversationPicture.setImageBitmap(resized)
         initRecyclerView()
     }
 
@@ -72,6 +85,31 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
         fragmentBinding.rvChat.adapter =  chatAdapter
        // chatAdapter.itemClickListener = this
         chatAdapter.addAll()
+    }
+
+
+    private fun Bitmap.resizeByHeight(height:Int):Bitmap{
+        val ratio:Float = this.height.toFloat() / this.width.toFloat()
+        val width:Int = Math.round(height / ratio)
+
+        return Bitmap.createScaledBitmap(
+            this,
+            width,
+            height,
+            false
+        )
+    }
+
+    private fun Bitmap.resizeByWidth(width:Int):Bitmap{
+        val ratio:Float = this.width.toFloat() / this.height.toFloat()
+        val height:Int = Math.round(width / ratio)
+
+        return Bitmap.createScaledBitmap(
+            this,
+            width,
+            height,
+            false
+        )
     }
 
     override  fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

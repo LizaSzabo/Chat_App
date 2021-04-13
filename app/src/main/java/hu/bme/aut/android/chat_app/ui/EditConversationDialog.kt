@@ -1,4 +1,4 @@
-package hu.bme.aut.android.chat_app
+package hu.bme.aut.android.chat_app.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,6 +8,7 @@ import androidx.fragment.app.DialogFragment
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.convid
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentConversation
 import hu.bme.aut.android.chat_app.Model.Conversation
+import hu.bme.aut.android.chat_app.R
 import hu.bme.aut.android.chat_app.databinding.DialogEditConversationBinding
 
 class EditConversationDialog(var pos: Int) : DialogFragment() {

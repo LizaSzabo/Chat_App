@@ -54,23 +54,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/text" />
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/chat_top_toolbar"
-        android:layout_width="60dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="25dp"
-        android:foreground="@drawable/default_profilepic"
+    <ImageView
+        android:id="@+id/iwConversationPicture"
+        android:layout_width="68dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/addprofile"
+        app:layout_constraintBottom_toTopOf="@+id/line"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            android:id="@+id/profilepicture"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-
-    </androidx.appcompat.widget.Toolbar>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/conversationTitle"
@@ -80,7 +74,7 @@
         android:layout_marginTop="40dp"
         android:text="TextView"
         android:textSize="24sp"
-        app:layout_constraintStart_toEndOf="@+id/chat_top_toolbar"
+        app:layout_constraintStart_toEndOf="@+id/iwConversationPicture"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView

@@ -1,16 +1,12 @@
-package hu.bme.aut.android.chat_app.ui.ChangePass
+package hu.bme.aut.android.chat_app.ui
 
 import android.annotation.SuppressLint
-import android.content.res.ColorStateList
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import hu.bme.aut.android.chat_app.ChatApplication
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentUser
-import hu.bme.aut.android.chat_app.ChatApplication.Companion.userid
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.usersList
 import hu.bme.aut.android.chat_app.Model.User
 import hu.bme.aut.android.chat_app.R

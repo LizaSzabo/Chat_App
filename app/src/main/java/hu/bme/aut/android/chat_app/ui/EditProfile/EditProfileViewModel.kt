@@ -2,10 +2,9 @@ package hu.bme.aut.android.chat_app.ui.EditProfile
 
 import androidx.fragment.app.FragmentManager
 import co.zsmb.rainbowcake.base.RainbowCakeViewModel
-import hu.bme.aut.android.chat_app.ChatApplication
-import hu.bme.aut.android.chat_app.EditUserNameDialog
+import hu.bme.aut.android.chat_app.ui.EditUserNameDialog
 import hu.bme.aut.android.chat_app.databinding.FragmentEditProfileBinding
-import hu.bme.aut.android.chat_app.ui.ChangePass.ChangePassDialog
+import hu.bme.aut.android.chat_app.ui.ChangePassDialog
 
 import javax.inject.Inject
 
