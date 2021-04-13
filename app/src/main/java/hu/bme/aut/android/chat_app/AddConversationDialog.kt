@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import hu.bme.aut.android.chat_app.ChatApplication.Companion.convid
 import hu.bme.aut.android.chat_app.Model.Conversation
 import hu.bme.aut.android.chat_app.Model.Message
 import hu.bme.aut.android.chat_app.databinding.DialogAddconversationBinding
@@ -21,10 +22,11 @@ class AddConversationDialog: DialogFragment() {
         binding.btnSave.setOnClickListener {
             val uri: Uri = Uri.parse("android.resource://hu.bme.aut.android.chat_app/drawable/default_profilepic")
 
-            if (ValidateNewConversation()) {
-               val default_messages = mutableListOf<Message>()
-                    listener.onAddConversation(Conversation(binding.editTextConversationTitle.text.toString(),
-                        binding.editTextTypeTitle.text.toString(), default_messages,  uri, false))
+            if (validateNewConversation()) {
+               val defaultMessages = mutableListOf<Message>()
+                convid++
+                    listener.onAddConversation(Conversation(convid, binding.editTextConversationTitle.text.toString(),
+                        binding.editTextTypeTitle.text.toString(), defaultMessages,  uri, false))
                 dialog?.dismiss()
             }
         }
@@ -35,7 +37,7 @@ class AddConversationDialog: DialogFragment() {
         return binding.root
     }
 
-    private fun ValidateNewConversation(): Boolean{
+    private fun validateNewConversation(): Boolean{
         if (binding.editTextConversationTitle.text.toString().isEmpty()) {
             binding.editTextConversationTitle.error = getString(R.string.title_not_empty)
             return false

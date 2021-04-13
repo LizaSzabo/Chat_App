@@ -19,7 +19,7 @@ class RegisterFragment :  RainbowCakeFragment<RegisterViewState, RegisterViewMod
 
     private lateinit var fragmentBinding: FragmentRegisterBinding
     private val PICK_IMAGE = 1
-    var uri: Uri = Uri.parse("android.resource://hu.bme.aut.android.chat_app/drawable/default_profilepic")
+    var uri: Uri = Uri.parse("android.resource://hu.bme.aut.android.chat_app/drawable/addprofile")
 
 
     override fun onViewCreated(view: View,  savedInstanceState: Bundle?){

@@ -37,8 +37,10 @@ class UsersAdapter: ListAdapter<User, UsersAdapter.UsersViewHolder>(itemCallback
         if(currentConversation != null){
             var users : MutableList<User> = mutableListOf()
             for(user in usersList){
-                if(user.conversations?.contains(currentConversation) == true)
-                    users.add(user)
+                for(conversation in user.conversations!!) {
+                    if (conversation.id == currentConversation?.id)
+                        users.add(user)
+                }
             }
             usersviewList += users
             submitList(usersviewList)

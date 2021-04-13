@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import hu.bme.aut.android.chat_app.ChatApplication.Companion.convid
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentConversation
 import hu.bme.aut.android.chat_app.Model.Conversation
 import hu.bme.aut.android.chat_app.databinding.DialogEditConversationBinding
@@ -21,11 +22,12 @@ class EditConversationDialog(var pos: Int) : DialogFragment() {
                 binding.editTextConversationTitle.error = getString(R.string.title_not_empty)
             }else {
                 //  currentConversation?.name = binding.editTextConversationTitle.text.toString()
+                    convid++
                 currentConversation?.let { it1 ->
                     currentConversation?.picture?.let { it2 ->
                         currentConversation?.favourite?.let { it3 ->
                             Conversation(
-                                binding.editTextConversationTitle.text.toString(),
+                                convid, binding.editTextConversationTitle.text.toString(),
                                 "", it1?.messages, it2, it3
                             )
                         }

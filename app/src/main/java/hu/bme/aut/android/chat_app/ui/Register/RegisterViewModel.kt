@@ -4,9 +4,11 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
 import android.provider.MediaStore
+import androidx.compose.ui.autofill.AutofillType
 import androidx.navigation.NavController
 import co.zsmb.rainbowcake.base.RainbowCakeViewModel
 import hu.bme.aut.android.chat_app.ChatApplication
+import hu.bme.aut.android.chat_app.ChatApplication.Companion.userid
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.usersList
 import hu.bme.aut.android.chat_app.Model.Conversation
 import hu.bme.aut.android.chat_app.Model.Message
@@ -29,17 +31,23 @@ class RegisterViewModel @Inject constructor(
        if (cxt != null) {
            context = cxt
        }
-        if(ValidateRegistration()){
+        if(validateRegistration()){
             val action = RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
             navController.navigate(action)
         }
     }
 
-    private fun ValidateRegistration(): Boolean{
+    private fun validateRegistration(): Boolean{
 
         if(fragmentBinding.tvTextUserName.text.toString().isEmpty()){
             fragmentBinding.tvTextUserName.error = context.getString(R.string.user_name_required)
             return false
+        }
+        for(user in usersList){
+            if(user.userName == fragmentBinding.tvTextUserName.text.toString()){
+                fragmentBinding.tvTextUserName.error = "User Name already exists"
+                return false
+            }
         }
         if( fragmentBinding.tvTextPassword.text.toString().isEmpty()){
             fragmentBinding.tvTextPassword.error = context.getString(R.string.pass_required)
@@ -51,15 +59,12 @@ class RegisterViewModel @Inject constructor(
         }
 
         val uri: Uri = Uri.parse("android.resource://hu.bme.aut.android.chat_app/drawable/addprofile")
-        var convers =  mutableListOf(
-            Conversation("first", "private", mutableListOf<Message>(
-                Message("User1", "second", "Hello", "14:12"), Message("User1", "second", "Szia", "14:12"),
-                Message("User2", "first", "Hello", "14:12")
-            ), uri, false)
-        )
+        var convers =  mutableListOf<Conversation>()
+
 
         var yourBitmap: Bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, pictureUri)
-        val user: User = User(fragmentBinding.tvTextUserName.text.toString(), fragmentBinding.tvTextPassword.text.toString(), yourBitmap, convers)
+        userid++
+        val user: User = User( fragmentBinding.tvTextUserName.text.toString(), fragmentBinding.tvTextPassword.text.toString(), yourBitmap, convers)
         usersList.add(user)
         return true
     }

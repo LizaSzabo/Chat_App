@@ -24,7 +24,7 @@ class AddUserDialog: DialogFragment() {
         binding.btnSave.setOnClickListener {
             val uri: Uri = Uri.parse("android.resource://hu.bme.aut.android.chat_app/drawable/default_profilepic")
 
-            if (ValidateNewUser()) {
+            if (validateNewUser()) {
                     listener.onAddUser(binding.editTextUserName.text.toString())
                 dialog?.dismiss()
             }
@@ -38,7 +38,7 @@ class AddUserDialog: DialogFragment() {
         return binding.root
     }
 
-    private fun ValidateNewUser(): Boolean {
+    private fun validateNewUser(): Boolean {
         if (binding.editTextUserName.text.toString().isEmpty()) {
             binding.editTextUserName.error = "User Name cannot be empty"
             return false
@@ -47,9 +47,11 @@ class AddUserDialog: DialogFragment() {
         for(user in usersList){
             Log.i("users", user.userName)
             if(user.userName == binding.editTextUserName.text.toString() ) {
-                if (currentConversation?.let { user.conversations?.contains(it) } == true) {
-                    binding.editTextUserName.error = "User already added"
-                    return false
+                for(conversation in user.conversations!!) {
+                    if (conversation.id == currentConversation?.id) {
+                        binding.editTextUserName.error = "User already added"
+                        return false
+                    }
                 }
                 return true
             }

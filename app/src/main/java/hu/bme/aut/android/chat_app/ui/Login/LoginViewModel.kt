@@ -42,13 +42,13 @@ class LoginViewModel @Inject constructor(
         if (cxt != null) {
             context = cxt
         }
-        if(ValidateLogin()){
+        if(validateLogin()){
             val action = LoginFragmentDirections.actionLoginFragmentToMessagesFragment()
             navController.navigate(action)
         }
     }
 
-    private fun ValidateLogin(): Boolean{
+    private fun validateLogin(): Boolean{
         if(fragmentBinding.editTextLoginName.text.toString().isEmpty()){
             fragmentBinding.editTextLoginName.error = context.getString(R.string.user_name_required)
             return false

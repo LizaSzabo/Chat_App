@@ -146,7 +146,7 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
         currentUser?.conversations = conversationList as MutableList<Conversation>
         for(user in usersList){
             for(conversation in user?.conversations!!){
-                if(conversation.name == currentConversation?.name){
+                if(conversation.id == currentConversation?.id){
                     val index = user.conversations!!.indexOf(conversation)
                     user.conversations!!.set(index, conv)
                 }
@@ -163,7 +163,7 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
         currentUser?.conversations = conversationList as MutableList<Conversation>
         for(user in usersList){
             for(conversation in user?.conversations!!){
-                if(conversation.name == conv.name){
+                if(conversation.id == conv.id){
                     val index = user.conversations!!.indexOf(conversation)
                     user.conversations!!.set(index, conv)
                 }
@@ -192,7 +192,7 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
                         currentConversation?.type?.let { it1 ->
                             currentConversation?.picture?.let { it2 ->
                                 Conversation(
-                                    it, it1, currentConversation?.messages,
+                                   currentConversation!!.id, it, it1, currentConversation?.messages,
                                     it2, false)
                             }
                         }

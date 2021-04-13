@@ -54,7 +54,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="30dp"
         android:gravity="bottom"
-        android:text="Receiver"
+        android:text="Conversation Type"
         android:textSize="18dp" />
 
 

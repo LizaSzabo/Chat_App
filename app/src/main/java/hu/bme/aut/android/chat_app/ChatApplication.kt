@@ -21,6 +21,8 @@ class ChatApplication : RainbowCakeApplication() {
             private set
         var currentUser: User? = null
         var currentConversation: Conversation? = null
+        var convid = 2
+        var userid = 2
     }
 
     override lateinit var injector: RainbowCakeComponent
@@ -34,9 +36,9 @@ class ChatApplication : RainbowCakeApplication() {
             isDebug = BuildConfig.DEBUG
         }
         Timber.plant(Timber.DebugTree())
-        val uri: Uri = Uri.parse("android.resource://hu.bme.aut.android.chat_app/drawable/default_profilepic")
+        val uri: Uri = Uri.parse("android.resource://hu.bme.aut.android.chat_app/drawable/addprofile")
         var convers =  mutableListOf(
-            Conversation(
+            Conversation(1,
                 "first", "private", mutableListOf<Message>(
                     Message(
                         "User1",
@@ -55,7 +57,7 @@ class ChatApplication : RainbowCakeApplication() {
 
         var convers2 =  mutableListOf(
             Conversation(
-                "first", "private", mutableListOf<Message>(
+                1,"first", "private", mutableListOf<Message>(
                     Message(
                         "User1",
                         "second",
@@ -70,7 +72,7 @@ class ChatApplication : RainbowCakeApplication() {
                 ), uri, false
             ),
             Conversation(
-                "second", "private", mutableListOf<Message>(
+                2,"second", "private", mutableListOf<Message>(
                     Message(
                         "User1",
                         "second",

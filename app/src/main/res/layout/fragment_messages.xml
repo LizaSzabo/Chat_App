@@ -61,7 +61,8 @@
             android:layout_height="62dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtTitle"
-            app:srcCompat="@drawable/default_profilepic" />
+            app:srcCompat="@drawable/default_profilepic"
+            android:layout_marginEnd="15dp"/>
 
         <TextView
             android:id="@+id/txtTitle"
