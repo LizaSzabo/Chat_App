@@ -28,18 +28,13 @@ import kotlin.collections.ArrayList
 class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.ConversationViewHolder>(itemCallback)  {
 
     var itemClickListener: ConversationItemClickListener? = null
-   // var conv = Conversation("first", "private")
-   // var conv2 = Conversation("second", "private")
     var conversationList = emptyList<Conversation>()
-    //var conversationList = mutableListOf<Conversation>(Conversation("first", "private"), conv2, conv, conv, conv, conv, conv, conv, conv, conv)
-
 
     @SuppressLint("ResourceAsColor")
     inner class ConversationViewHolder(val binding: ItemConversationBinding) : RecyclerView.ViewHolder(binding.root) {
         var ivConversationImage: ImageView = binding.ivConversationImage
         val ibStar: ImageButton = binding.ibStar
         val tvConversationName: TextView = binding.tvConversationName
-      //  val ivConversation: ImageView = binding.ivConversationImage
 
         var conversation: Conversation? = null
 
@@ -119,8 +114,7 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
     }
 
     fun addAll(conversation: String){
-        //val convs = mutableListOf<Conversation>(Conversation("first", "private"), conv2, conv, conv, conv, conv, conv, conv, conv, conv)
-        var  convs = mutableListOf<Conversation>()
+        var  convs: MutableList<Conversation>
         if(conversation.isEmpty()) {
             conversationList = emptyList()
             if(currentUser?.conversations != null){
@@ -139,7 +133,7 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
         }
     }
 
-    fun UpdateConversation(conv: Conversation, pos: Int){
+    fun updateConversation(conv: Conversation, pos: Int){
         conversationList = conversationList.filterIndexed { index, _ -> index != pos}
         conversationList += conv
 
@@ -147,8 +141,9 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
         for(user in usersList){
             for(conversation in user?.conversations!!){
                 if(conversation.id == currentConversation?.id){
+                    val con = Conversation(conv.id, conv.name, conv.type, conv.messages, conv.picture, conversation.favourite)
                     val index = user.conversations!!.indexOf(conversation)
-                    user.conversations!!.set(index, conv)
+                    user.conversations!![index] = con
                 }
             }
         }
@@ -156,16 +151,13 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
         submitList(conversationList)
     }
 
-    fun UpdateConversationPicture(conv: Conversation, pos: Int){
-       /* conversationList = conversationList.filterIndexed { index, _ -> index != pos}
-        conversationList += conv*/
-
+    fun updateConversationPicture(conv: Conversation, pos: Int){
         currentUser?.conversations = conversationList as MutableList<Conversation>
         for(user in usersList){
             for(conversation in user?.conversations!!){
                 if(conversation.id == conv.id){
                     val index = user.conversations!!.indexOf(conversation)
-                    user.conversations!!.set(index, conv)
+                    user.conversations!![index] = conv
                 }
             }
         }
@@ -173,7 +165,7 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
         submitList(conversationList)
     }
 
-    fun AddConversation(conversation: Conversation){
+    fun addConversation(conversation: Conversation){
         conversationList += conversation
 
         for(user in usersList){
@@ -185,7 +177,7 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
         submitList(conversationList)
     }
 
-    fun AddConversationToUser(username : String){
+    fun addConversationToUser(username : String){
         for(user in usersList){
                 if(user.userName == username){
                     val conversation = currentConversation?.name?.let {

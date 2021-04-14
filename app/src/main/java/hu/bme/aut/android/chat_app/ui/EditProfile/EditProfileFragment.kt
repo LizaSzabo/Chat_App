@@ -45,17 +45,8 @@ class EditProfileFragment : RainbowCakeFragment<EditProfileViewState, EditProfil
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == PICK_IMAGE) {
             val selectedImageUri: Uri? = data?.data
-           /* val imageBitmap = data?.extras?.get("data") as? Bitmap ?: return
-            fragmentBinding.imageButtonEditProfile.setImageBitmap(imageBitmap)*/
             if (null != selectedImageUri) {
-                // update the preview image in the layout
-              //  fragmentBinding.imageButtonEditProfile.setImageURI(selectedImageUri)
-               // var bmp = BitmapFactory.decodeFile(selectedImageUri.toString())
-                Log.i("aaa", selectedImageUri.toString())
-               // fragmentBinding.imageButtonEditProfile.setImageBitmap(bmp)
-              //  currentUser?.profilePicture = selectedImageUri
                 var yourBitmap: Bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, selectedImageUri)
-                //val resized = Bitmap.createScaledBitmap(yourBitmap, fragmentBinding.imageButtonEditProfile.layoutParams.width, fragmentBinding.imageButtonEditProfile.layoutParams.height, true)
                 val resized = yourBitmap.resizeByHeight( fragmentBinding.imageButtonEditProfile.layoutParams.height)
                 currentUser?.profilePicture = resized
                 fragmentBinding.imageButtonEditProfile.setImageBitmap(resized)

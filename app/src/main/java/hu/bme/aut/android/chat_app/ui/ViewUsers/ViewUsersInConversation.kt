@@ -36,11 +36,9 @@ class ViewUsersInConversation: RainbowCakeFragment<ViewUsersViewState, ViewUsers
     }
 
     private fun initRecyclerView(){
-        Log.i("recy" ,"recy")
         usersAdapter = UsersAdapter()
         fragmentBinding.rvUsers.layoutManager = LinearLayoutManager( context)
         fragmentBinding.rvUsers.adapter = usersAdapter
-      //  conversationsAdapter.itemClickListener = this
         usersAdapter.addAll()
     }
 
@@ -57,5 +55,4 @@ class ViewUsersInConversation: RainbowCakeFragment<ViewUsersViewState, ViewUsers
             else -> {}
         }
     }
-
 }

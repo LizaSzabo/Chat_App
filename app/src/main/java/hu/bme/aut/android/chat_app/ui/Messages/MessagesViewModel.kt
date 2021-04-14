@@ -27,6 +27,6 @@ class MessagesViewModel@Inject constructor(
     }
 
     override fun onAddConversation(conversation: Conversation) {
-        conversationsAdapter.AddConversation(conversation)
+        conversationsAdapter.addConversation(conversation)
     }
 }

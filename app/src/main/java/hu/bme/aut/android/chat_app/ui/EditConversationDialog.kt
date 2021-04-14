@@ -22,15 +22,15 @@ class EditConversationDialog(var pos: Int) : DialogFragment() {
             if(binding.editTextConversationTitle.text.toString().isEmpty()){
                 binding.editTextConversationTitle.error = getString(R.string.title_not_empty)
             }else {
-                //  currentConversation?.name = binding.editTextConversationTitle.text.toString()
-                    convid++
                 currentConversation?.let { it1 ->
                     currentConversation?.picture?.let { it2 ->
                         currentConversation?.favourite?.let { it3 ->
-                            Conversation(
-                                convid, binding.editTextConversationTitle.text.toString(),
-                                "", it1?.messages, it2, it3
-                            )
+                            currentConversation?.id?.let { it4 ->
+                                Conversation(
+                                    it4, binding.editTextConversationTitle.text.toString(),
+                                    "", it1?.messages, it2, it3
+                                )
+                            }
                         }
                     }
                 }?.let { it2 ->
@@ -39,7 +39,6 @@ class EditConversationDialog(var pos: Int) : DialogFragment() {
                     )
                 }
 
-             //   currentConversation?.name?.let { it1 -> Log.i("aaa", it1) }
                 dialog?.dismiss()
             }
         }

@@ -20,9 +20,7 @@ class ChatAdapter : ListAdapter<Message, ChatAdapter.ChatViewHolder>(itemCallbac
 
     var messageList = emptyList<Message>()
 
-    abstract class ChatViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-    }
+    abstract class ChatViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {}
 
     companion object {
         private const val TYPE_SENT = 0
@@ -84,8 +82,6 @@ class ChatAdapter : ListAdapter<Message, ChatAdapter.ChatViewHolder>(itemCallbac
             is SentViewHolder -> {
                 holder.tvMessageSent.text = message.content
                 holder.message = message
-               /* val dateFormat = SimpleDateFormat("HH:mm")
-                val time = dateFormat.format(Calendar.getInstance().time)*/
                 holder.tvDate.text = message.date
             }
             is ReceivedViewHolder -> {
@@ -103,16 +99,13 @@ class ChatAdapter : ListAdapter<Message, ChatAdapter.ChatViewHolder>(itemCallbac
 
     fun addAll(){
         if(currentConversation?.messages != null){
-        val messages: MutableList<Message> =
-            currentConversation?.messages!!  //(Message("User1", "second", "Hello"), Message("User1", "second", "Szia"),
-          //  Message("User2", "second", "naaaaaaaagyon hossszuuuuuuuuuuuuuuuu szoveeeeeeeeeeeeeeeg"))
+        val messages: MutableList<Message> = currentConversation?.messages!!
         messageList += messages
         submitList(messages)}
     }
 
     override fun getItemViewType(position: Int): Int {
-        val comparable = messageList[position].sender
-        return when (comparable) {
+        return when (messageList[position].sender) {
             currentUser?.userName -> TYPE_SENT
             else -> TYPE_RECEIVED
         }

@@ -1,5 +1,6 @@
 package hu.bme.aut.android.chat_app.ui.EditProfile
 
+import android.graphics.Bitmap
 import androidx.fragment.app.FragmentManager
 import co.zsmb.rainbowcake.base.RainbowCakeViewModel
 import hu.bme.aut.android.chat_app.ui.EditUserNameDialog
@@ -15,13 +16,12 @@ class EditProfileViewModel @Inject constructor(
     private lateinit var fragmentBinding: FragmentEditProfileBinding
 
      fun openDialog(parentFragmentManager: FragmentManager, binding : FragmentEditProfileBinding ) {
-        val CreateFragment = EditUserNameDialog(binding)
-        CreateFragment.show(parentFragmentManager, "")
+        val createFragment = EditUserNameDialog(binding)
+        createFragment.show(parentFragmentManager, "")
     }
 
     fun openChangePassDialog(parentFragmentManager: FragmentManager) {
-        val CreateFragment = ChangePassDialog()
-        CreateFragment.show(parentFragmentManager, "")
-
+        val createFragment = ChangePassDialog()
+        createFragment.show(parentFragmentManager, "")
     }
 }

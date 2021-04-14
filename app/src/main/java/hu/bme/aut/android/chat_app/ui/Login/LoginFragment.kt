@@ -24,14 +24,11 @@ class LoginFragment : RainbowCakeFragment<LoginViewState, LoginViewModel>(), Ada
     private lateinit var fragmentBinding: FragmentLoginBinding
     private var last_selected by Delegates.notNull<Int>()
 
-
-
     override fun onViewCreated(view: View,  savedInstanceState: Bundle?){
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentLoginBinding.bind(view)
         fragmentBinding= binding
 
-        Log.i("pos", args.pos.toString())
         last_selected = args.pos
 
         fragmentBinding.buttonOk.background.alpha = 170
@@ -56,8 +53,6 @@ class LoginFragment : RainbowCakeFragment<LoginViewState, LoginViewModel>(), Ada
         spinner.onItemSelectedListener = this
         spinner.setSelection(args.pos)
         spinner.dropDownHorizontalOffset = -20
-
-
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {

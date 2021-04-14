@@ -42,13 +42,10 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
         val binding = FragmentMessagesBinding.bind(view)
         fragmentBinding= binding
 
-        // Inflate the layout for this fragment
         fragmentBinding.imageButtonWrite.setOnClickListener(View.OnClickListener { viewModel.openAddConversationDialog(parentFragmentManager, conversationsAdapter)
 
         })
         fragmentBinding.imageButtonProfile.setOnClickListener(View.OnClickListener { viewModel.openEditProfileActivity(findNavController()) })
-
-        //fragmentBinding.chatListToolbar.inflateMenu(R.menu.messages_toolbar_menu);
 
         (activity as AppCompatActivity).setSupportActionBar(fragmentBinding.chatListToolbar)
         setHasOptionsMenu(true)
@@ -60,9 +57,7 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
         }
 
         fragmentBinding.editTextSearch.doOnTextChanged { _, _, _, _ -> conversationsAdapter.addAll(fragmentBinding.editTextSearch.text.toString())  }
-       /* val resized =
-            currentUser?.profilePicture?.let { Bitmap.createScaledBitmap(it, fragmentBinding.imageButtonProfile.layoutParams.width, fragmentBinding.imageButtonProfile.layoutParams.height, true) }
-       */
+
         var resized: Bitmap? = null
         resized = if( currentUser?.profilePicture?.height!! > currentUser?.profilePicture?.width!!){
             currentUser?.profilePicture?.resizeByWidth( fragmentBinding.imageButtonProfile.layoutParams.width)
@@ -71,8 +66,8 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
 
         }
         fragmentBinding.imageButtonProfile.setImageBitmap(resized)
-        initRecyclerView()
 
+        initRecyclerView()
     }
 
         private fun Bitmap.resizeByHeight(height:Int):Bitmap{
@@ -100,7 +95,6 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
         }
 
     private fun initRecyclerView(){
-        Log.i("recy" ,"recy")
         conversationsAdapter = ConversationsAdapter()
         fragmentBinding.rvConversations.layoutManager = LinearLayoutManager( context)
         fragmentBinding.rvConversations.adapter = conversationsAdapter
@@ -109,7 +103,6 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
     }
 
    override  fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-       Log.i("log out", "log out")
         inflater.inflate(R.menu.messages_toolbar_menu, menu)
         super.onCreateOptionsMenu(menu!!, inflater)
     }
@@ -125,7 +118,6 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
         }
         return super.onOptionsItemSelected(item)
     }
-
 
 
     override fun onItemClick(conversation: Conversation) {
@@ -155,7 +147,7 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
                     intent.type = "image/*"
                     intent.action = Intent.ACTION_GET_CONTENT
                     startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE)
-                    conversationsAdapter.UpdateConversationPicture(conversation, position)
+                    conversationsAdapter.updateConversationPicture(conversation, position)
 
                 }
                 R.id.addUser -> {
@@ -176,23 +168,14 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
 
         if (requestCode == PICK_IMAGE) {
             val selectedImageUri: Uri? = data?.data
-            /* val imageBitmap = data?.extras?.get("data") as? Bitmap ?: return
-             fragmentBinding.imageButtonEditProfile.setImageBitmap(imageBitmap)*/
             if (null != selectedImageUri) {
-                // update the preview image in the layout
-
-                currentConversation?.name?.let { Log.i("aaa", it) }
                 currentConversation?.picture = selectedImageUri
                 uri = selectedImageUri
-
-
             }
             val action = MessagesFragmentDirections.actionMessagesFragmentSelf()
             findNavController().navigate(action)
         }
-
     }
-
 
     override fun getViewResource() = R.layout.fragment_messages
 
@@ -213,11 +196,11 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
         }.exhaustive
     }
 
-    override fun onConversationTitleChange(conversation: Conversation, pos: Int) {Log.i("aaa","aaa")
-        conversationsAdapter.UpdateConversation(conversation, pos)
+    override fun onConversationTitleChange(conversation: Conversation, pos: Int) {
+        conversationsAdapter.updateConversation(conversation, pos)
     }
 
         override fun onAddUser(userName: String) {
-            conversationsAdapter.AddConversationToUser(userName)
+            conversationsAdapter.addConversationToUser(userName)
         }
     }
