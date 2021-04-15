@@ -1,17 +1,12 @@
 package hu.bme.aut.android.chat_app.Adapter_Rv
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Filter
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.annotation.IntegerRes
-import androidx.compose.ui.graphics.Color
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -21,14 +16,11 @@ import hu.bme.aut.android.chat_app.ChatApplication.Companion.usersList
 import hu.bme.aut.android.chat_app.Model.Conversation
 import hu.bme.aut.android.chat_app.R
 import hu.bme.aut.android.chat_app.databinding.ItemConversationBinding
-import kotlinx.android.synthetic.main.dialog_change_password.*
-import java.util.*
-import kotlin.collections.ArrayList
 
-class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.ConversationViewHolder>(itemCallback)  {
+class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.ConversationViewHolder>(ItemCallback)  {
 
     var itemClickListener: ConversationItemClickListener? = null
-    var conversationList = emptyList<Conversation>()
+    private var conversationList = emptyList<Conversation>()
 
     @SuppressLint("ResourceAsColor")
     inner class ConversationViewHolder(val binding: ItemConversationBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -75,7 +67,7 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
         holder.tvConversationName.text = conversation.name
         holder.conversation  = conversation
         holder.ivConversationImage.setImageURI(conversation.picture)
-        when(conversation?.favourite) {
+        when(conversation.favourite) {
             false -> {
                 holder.ibStar.setImageResource(R.drawable.star_icon)
             }
@@ -91,7 +83,7 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
     }
 
     companion object {
-        object itemCallback : DiffUtil.ItemCallback<Conversation>() {
+        object ItemCallback : DiffUtil.ItemCallback<Conversation>() {
             override fun areItemsTheSame(oldItem: Conversation, newItem: Conversation): Boolean {
                 return oldItem == newItem
             }
@@ -114,7 +106,7 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
     }
 
     fun addAll(conversation: String){
-        var  convs: MutableList<Conversation>
+        val convs: MutableList<Conversation>
         if(conversation.isEmpty()) {
             conversationList = emptyList()
             if(currentUser?.conversations != null){
@@ -139,7 +131,7 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
 
         currentUser?.conversations = conversationList as MutableList<Conversation>
         for(user in usersList){
-            for(conversation in user?.conversations!!){
+            for(conversation in user.conversations!!){
                 if(conversation.id == currentConversation?.id){
                     val con = Conversation(conv.id, conv.name, conv.type, conv.messages, conv.picture, conversation.favourite)
                     val index = user.conversations!!.indexOf(conversation)
@@ -154,7 +146,7 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
     fun updateConversationPicture(conv: Conversation, pos: Int){
         currentUser?.conversations = conversationList as MutableList<Conversation>
         for(user in usersList){
-            for(conversation in user?.conversations!!){
+            for(conversation in user.conversations!!){
                 if(conversation.id == conv.id){
                     val index = user.conversations!!.indexOf(conversation)
                     user.conversations!![index] = conv

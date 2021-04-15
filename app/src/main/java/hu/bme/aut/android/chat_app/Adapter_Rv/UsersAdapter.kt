@@ -8,19 +8,14 @@ import androidx.recyclerview.widget.ListAdapter
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import hu.bme.aut.android.chat_app.ChatApplication
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentConversation
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.usersList
-import hu.bme.aut.android.chat_app.Model.Conversation
-import hu.bme.aut.android.chat_app.Model.Message
 import hu.bme.aut.android.chat_app.Model.User
-import hu.bme.aut.android.chat_app.R
-import hu.bme.aut.android.chat_app.databinding.ItemConversationBinding
 import hu.bme.aut.android.chat_app.databinding.ItemUserBinding
 
-class UsersAdapter: ListAdapter<User, UsersAdapter.UsersViewHolder>(itemCallback)  {
+class UsersAdapter: ListAdapter<User, UsersAdapter.UsersViewHolder>(ItemCallback)  {
 
-    var usersviewList = emptyList<User>()
+    private var usersViewList = emptyList<User>()
 
     inner class UsersViewHolder(val binding: ItemUserBinding) : RecyclerView.ViewHolder(binding.root) {
         var ivUserImage: ImageView = binding.ivUserImage
@@ -35,28 +30,28 @@ class UsersAdapter: ListAdapter<User, UsersAdapter.UsersViewHolder>(itemCallback
 
     fun addAll(){
         if(currentConversation != null){
-            var users : MutableList<User> = mutableListOf()
+            val users : MutableList<User> = mutableListOf()
             for(user in usersList){
                 for(conversation in user.conversations!!) {
                     if (conversation.id == currentConversation?.id)
                         users.add(user)
                 }
             }
-            usersviewList += users
-            submitList(usersviewList)
+            usersViewList += users
+            submitList(usersViewList)
         }
     }
 
 
     override fun getItemCount(): Int {
-        return usersviewList.size
+        return usersViewList.size
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         UsersViewHolder(ItemUserBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun onBindViewHolder(holder: UsersAdapter.UsersViewHolder, position: Int) {
-        val user = usersviewList[position]
+        val user = usersViewList[position]
         holder.tvUserName.text = user.userName
         holder.user  = user
         holder.ivUserImage.setImageBitmap(user.profilePicture)
@@ -64,7 +59,7 @@ class UsersAdapter: ListAdapter<User, UsersAdapter.UsersViewHolder>(itemCallback
     }
 
     companion object {
-        object itemCallback : DiffUtil.ItemCallback<User>() {
+        object ItemCallback : DiffUtil.ItemCallback<User>() {
             override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {
                 return oldItem == newItem
             }

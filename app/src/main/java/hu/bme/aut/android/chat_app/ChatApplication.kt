@@ -37,9 +37,9 @@ class ChatApplication : RainbowCakeApplication() {
         }
         Timber.plant(Timber.DebugTree())
         val uri: Uri = Uri.parse("android.resource://hu.bme.aut.android.chat_app/drawable/addprofile")
-        var convers =  mutableListOf(
+        val convers =  mutableListOf(
             Conversation(1,
-                "first", "private", mutableListOf<Message>(
+                "first", "private", mutableListOf(
                     Message(
                         "User1",
                         "second",
@@ -55,9 +55,9 @@ class ChatApplication : RainbowCakeApplication() {
             )
         )
 
-        var convers2 =  mutableListOf(
+       val convers2 =  mutableListOf(
             Conversation(
-                1,"first", "private", mutableListOf<Message>(
+                1,"first", "private", mutableListOf(
                     Message(
                         "User1",
                         "second",
@@ -72,7 +72,7 @@ class ChatApplication : RainbowCakeApplication() {
                 ), uri, false
             ),
             Conversation(
-                2,"second", "private", mutableListOf<Message>(
+                2,"second", "private", mutableListOf(
                     Message(
                         "User1",
                         "second",
@@ -87,7 +87,7 @@ class ChatApplication : RainbowCakeApplication() {
                 ), uri, false
             )
         )
-        var yourBitmap: Bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
+        val yourBitmap: Bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
         usersList.add(User("User1", "pass",yourBitmap, convers))
         usersList.add(User("User2", "pass", yourBitmap, convers2))
     }

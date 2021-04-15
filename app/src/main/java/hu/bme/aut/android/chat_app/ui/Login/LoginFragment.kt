@@ -1,9 +1,7 @@
 package hu.bme.aut.android.chat_app.ui.Login
 
-import android.graphics.Color
-import android.os.Build
+
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -34,8 +32,18 @@ class LoginFragment : RainbowCakeFragment<LoginViewState, LoginViewModel>(), Ada
         fragmentBinding.buttonOk.background.alpha = 170
         fragmentBinding.buttonRegister.background.alpha = 100
 
-        fragmentBinding.buttonRegister.setOnClickListener(View.OnClickListener { viewModel.openRegisterActivity(findNavController()) })
-        fragmentBinding.buttonOk.setOnClickListener(View.OnClickListener { viewModel.openMessagesActivity(findNavController(), fragmentBinding, context) })
+        fragmentBinding.buttonRegister.setOnClickListener {
+            viewModel.openRegisterActivity(
+                findNavController()
+            )
+        }
+        fragmentBinding.buttonOk.setOnClickListener {
+            viewModel.openMessagesActivity(
+                findNavController(),
+                fragmentBinding,
+                context
+            )
+        }
 
 
         val spinner: Spinner = fragmentBinding.spinnerLanguages

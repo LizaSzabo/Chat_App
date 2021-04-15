@@ -35,14 +35,12 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
         (activity as AppCompatActivity).setSupportActionBar(fragmentBinding.chatButtomToolbar)
         setHasOptionsMenu(true)
 
-
-       // fragmentBinding.chatTopToolbar.inflateMenu(R.menu.chat_menu)
         fragmentBinding.chatButtomToolbar.title = ""
         fragmentBinding.ibSend.setOnClickListener{
             if( fragmentBinding.text.text.toString().isNotEmpty()) {
                 val dateFormat = SimpleDateFormat("yyyy.MM.dd HH:mm")
-                 val time = dateFormat.format(Calendar.getInstance().time)
-                var message = currentUser?.userName?.let { it1 ->
+                val time = dateFormat.format(Calendar.getInstance().time)
+                val message = currentUser?.userName?.let { it1 ->
                     hu.bme.aut.android.chat_app.Model.Message(
                         it1,
                         "second",
@@ -67,9 +65,9 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
         fragmentBinding.conversationTitle.text = currentConversation?.name
 
 
-        var resized: Bitmap? = null
-        var picture = MediaStore.Images.Media.getBitmap(context?.contentResolver, currentConversation?.picture)
-        resized = if( picture.height!! > picture.width!!){
+        val resized: Bitmap?
+        val picture = MediaStore.Images.Media.getBitmap(context?.contentResolver, currentConversation?.picture)
+        resized = if( picture.height > picture.width){
             picture.resizeByWidth( fragmentBinding.iwConversationPicture.layoutParams.width)
         } else {
             picture.resizeByHeight( fragmentBinding.iwConversationPicture.layoutParams.height)
@@ -113,9 +111,8 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
     }
 
     override  fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        Log.i("log out", "log out")
         inflater.inflate(R.menu.chat_menu, menu)
-        super.onCreateOptionsMenu(menu!!, inflater)
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

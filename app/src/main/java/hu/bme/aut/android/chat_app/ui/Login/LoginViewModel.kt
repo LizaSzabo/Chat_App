@@ -1,10 +1,10 @@
 package hu.bme.aut.android.chat_app.ui.Login
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.os.Build
 import androidx.navigation.NavController
-import androidx.navigation.fragment.findNavController
 import co.zsmb.rainbowcake.base.RainbowCakeViewModel
 import com.google.android.material.snackbar.Snackbar
 import hu.bme.aut.android.chat_app.ChatApplication
@@ -15,6 +15,7 @@ import java.util.*
 import javax.inject.Inject
 import kotlin.properties.Delegates
 
+@SuppressLint("StaticFieldLeak")
 class LoginViewModel @Inject constructor(
     private val loginPresenter: LoginPresenter
 ) : RainbowCakeViewModel<LoginViewState>(Initial){
@@ -108,8 +109,5 @@ class LoginViewModel @Inject constructor(
             config.locale = Locale(locale.toLowerCase())
         }
         resources.updateConfiguration(config, dm)
-
     }
-
-
 }

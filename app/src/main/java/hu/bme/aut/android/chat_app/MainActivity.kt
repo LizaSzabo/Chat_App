@@ -21,17 +21,5 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        /*if (savedInstanceState == null) {
-            supportFragmentManager.commit {
-                setReorderingAllowed(true)
-                add<LoginFragment>(R.id.fragment_container)
-            }
-        }*/
-
-       /* val intent = Intent(this, LoginActivity::class.java)
-        this.startActivity(intent)*/
-
-
     }
 }
