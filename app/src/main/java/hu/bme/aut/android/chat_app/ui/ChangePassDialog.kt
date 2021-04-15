@@ -2,10 +2,13 @@ package hu.bme.aut.android.chat_app.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import com.amplifyframework.core.Amplify
+import com.amplifyframework.core.model.query.Where
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentUser
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.usersList
 import hu.bme.aut.android.chat_app.Model.User
@@ -32,6 +35,24 @@ class ChangePassDialog : DialogFragment() {
                     }
                 }
                 usersList.find { it == user }?.password = currentUser?.password.toString()
+
+                Amplify.DataStore.query(com.amplifyframework.datastore.generated.model.User::class.java,
+                    Where.matches(com.amplifyframework.datastore.generated.model.User.USER_NAME.eq(user?.userName)),
+                    { matches ->
+                        if (matches.hasNext()) {
+                            val original = matches.next()
+                            val edited = original.copyOfBuilder()
+                                .password(currentUser?.password.toString())
+                                .build()
+                            Amplify.DataStore.save(edited,
+                                { Log.i("MyAmplifyApp", "Updated a post") },
+                                { Log.e("MyAmplifyApp", "Update failed", it) }
+                            )
+                        }
+                    },
+                    { Log.e("MyAmplifyApp", "Query failed", it) }
+                )
+
                 dialog?.dismiss()
             }
         }

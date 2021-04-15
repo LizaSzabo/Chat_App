@@ -115,7 +115,7 @@ class ChatApplication : RainbowCakeApplication() {
             { matches ->
                 while (matches.hasNext()) {
                     val user = matches.next()
-                    usersList.add(User(user.userName, user.password, yourBitmap, convers))
+                    usersList.add(User(user.userName, user.password, yourBitmap, convers2))
                     Log.i("MyAmplifyApp", "Title: ${user.userName}")
                 }
             },
