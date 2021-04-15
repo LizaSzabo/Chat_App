@@ -24,10 +24,20 @@ class EditUserNameDialog(var editbinding: FragmentEditProfileBinding): DialogFra
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DialogEditUserNameBinding.inflate(inflater, container, false)
 
+
         binding.btnSave.setOnClickListener{
+            var ok = true
+            for(user in usersList){
+                if(user.userName == binding.editTextLoginName.text.toString()){
+                    binding.editTextLoginName.error = "User Name already exists"
+                    ok = false
+                }
+            }
             if(binding.editTextLoginName.text.toString().isEmpty()){
                 binding.editTextLoginName.error = getString(R.string.user_not_empty)
-            }else {
+                ok = false
+            }
+            if(ok) {
                 val user = currentUser
                 val name = user?.userName
                 currentUser?.userName = binding.editTextLoginName.text.toString()

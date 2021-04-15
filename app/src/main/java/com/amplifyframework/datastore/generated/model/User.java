@@ -22,9 +22,11 @@ public final class User implements Model {
   public static final QueryField ID = field("User", "id");
   public static final QueryField USER_NAME = field("User", "userName");
   public static final QueryField PASSWORD = field("User", "password");
+  public static final QueryField PROFILE_PICTURE = field("User", "profilePicture");
   private final @ModelField(targetType="ID", isRequired = true) String id;
   private final @ModelField(targetType="String") String userName;
   private final @ModelField(targetType="String") String password;
+  private final @ModelField(targetType="String") String profilePicture;
   public String getId() {
       return id;
   }
@@ -37,10 +39,15 @@ public final class User implements Model {
       return password;
   }
   
-  private User(String id, String userName, String password) {
+  public String getProfilePicture() {
+      return profilePicture;
+  }
+  
+  private User(String id, String userName, String password, String profilePicture) {
     this.id = id;
     this.userName = userName;
     this.password = password;
+    this.profilePicture = profilePicture;
   }
   
   @Override
@@ -53,7 +60,8 @@ public final class User implements Model {
       User user = (User) obj;
       return ObjectsCompat.equals(getId(), user.getId()) &&
               ObjectsCompat.equals(getUserName(), user.getUserName()) &&
-              ObjectsCompat.equals(getPassword(), user.getPassword());
+              ObjectsCompat.equals(getPassword(), user.getPassword()) &&
+              ObjectsCompat.equals(getProfilePicture(), user.getProfilePicture());
       }
   }
   
@@ -63,6 +71,7 @@ public final class User implements Model {
       .append(getId())
       .append(getUserName())
       .append(getPassword())
+      .append(getProfilePicture())
       .toString()
       .hashCode();
   }
@@ -73,7 +82,8 @@ public final class User implements Model {
       .append("User {")
       .append("id=" + String.valueOf(getId()) + ", ")
       .append("userName=" + String.valueOf(getUserName()) + ", ")
-      .append("password=" + String.valueOf(getPassword()))
+      .append("password=" + String.valueOf(getPassword()) + ", ")
+      .append("profilePicture=" + String.valueOf(getProfilePicture()))
       .append("}")
       .toString();
   }
@@ -104,6 +114,7 @@ public final class User implements Model {
     return new User(
       id,
       null,
+      null,
       null
     );
   }
@@ -111,13 +122,15 @@ public final class User implements Model {
   public CopyOfBuilder copyOfBuilder() {
     return new CopyOfBuilder(id,
       userName,
-      password);
+      password,
+      profilePicture);
   }
   public interface BuildStep {
     User build();
     BuildStep id(String id) throws IllegalArgumentException;
     BuildStep userName(String userName);
     BuildStep password(String password);
+    BuildStep profilePicture(String profilePicture);
   }
   
 
@@ -125,6 +138,7 @@ public final class User implements Model {
     private String id;
     private String userName;
     private String password;
+    private String profilePicture;
     @Override
      public User build() {
         String id = this.id != null ? this.id : UUID.randomUUID().toString();
@@ -132,7 +146,8 @@ public final class User implements Model {
         return new User(
           id,
           userName,
-          password);
+          password,
+          profilePicture);
     }
     
     @Override
@@ -144,6 +159,12 @@ public final class User implements Model {
     @Override
      public BuildStep password(String password) {
         this.password = password;
+        return this;
+    }
+    
+    @Override
+     public BuildStep profilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
         return this;
     }
     
@@ -170,10 +191,11 @@ public final class User implements Model {
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, String userName, String password) {
+    private CopyOfBuilder(String id, String userName, String password, String profilePicture) {
       super.id(id);
       super.userName(userName)
-        .password(password);
+        .password(password)
+        .profilePicture(profilePicture);
     }
     
     @Override
@@ -184,6 +206,11 @@ public final class User implements Model {
     @Override
      public CopyOfBuilder password(String password) {
       return (CopyOfBuilder) super.password(password);
+    }
+    
+    @Override
+     public CopyOfBuilder profilePicture(String profilePicture) {
+      return (CopyOfBuilder) super.profilePicture(profilePicture);
     }
   }
   

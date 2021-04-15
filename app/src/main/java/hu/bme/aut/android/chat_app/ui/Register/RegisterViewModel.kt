@@ -4,19 +4,18 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
 import android.provider.MediaStore
+import android.util.Base64
 import android.util.Log
-import androidx.compose.ui.autofill.AutofillType
 import androidx.navigation.NavController
 import co.zsmb.rainbowcake.base.RainbowCakeViewModel
 import com.amplifyframework.core.Amplify
-import hu.bme.aut.android.chat_app.ChatApplication
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.userid
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.usersList
 import hu.bme.aut.android.chat_app.Model.Conversation
-import hu.bme.aut.android.chat_app.Model.Message
 import hu.bme.aut.android.chat_app.Model.User
 import hu.bme.aut.android.chat_app.R
 import hu.bme.aut.android.chat_app.databinding.FragmentRegisterBinding
+import java.io.ByteArrayOutputStream
 import javax.inject.Inject
 
 class RegisterViewModel @Inject constructor(
@@ -27,7 +26,12 @@ class RegisterViewModel @Inject constructor(
     lateinit var context : Context
     lateinit var pictureUri : Uri
 
-   fun Registration(navController: NavController, binding: FragmentRegisterBinding, cxt: Context?, uri: Uri){
+   fun Registration(
+       navController: NavController,
+       binding: FragmentRegisterBinding,
+       cxt: Context?,
+       uri: Uri
+   ){
        fragmentBinding = binding
        pictureUri = uri
        if (cxt != null) {
@@ -64,12 +68,22 @@ class RegisterViewModel @Inject constructor(
         var convers =  mutableListOf<Conversation>()
 
 
-        var yourBitmap: Bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, pictureUri)
+        var yourBitmap: Bitmap = MediaStore.Images.Media.getBitmap(
+            context?.contentResolver,
+            pictureUri
+        )
         userid++
-        val user: User = User( fragmentBinding.tvTextUserName.text.toString(), fragmentBinding.tvTextPassword.text.toString(), yourBitmap, convers)
+        val user: User = User(
+            fragmentBinding.tvTextUserName.text.toString(),
+            fragmentBinding.tvTextPassword.text.toString(),
+            yourBitmap,
+            convers
+        )
+
         val userBackend = com.amplifyframework.datastore.generated.model.User.builder()
             .userName(fragmentBinding.tvTextUserName.text.toString())
             .password(fragmentBinding.tvTextPassword.text.toString())
+            .profilePicture(BitMapToString(yourBitmap))
             .build()
 
         Amplify.DataStore.save(userBackend,
@@ -84,7 +98,7 @@ class RegisterViewModel @Inject constructor(
                     Log.i("MyAmplifyApp", "Title: ${user.userName}")
                 }
             },
-            { Log.e("MyAmplifyApp",  "Error retrieving posts", it) }
+            { Log.e("MyAmplifyApp", "Error retrieving posts", it) }
         )
 /*
         Amplify.DataStore.query(com.amplifyframework.datastore.generated.model.User::class.java,
@@ -102,5 +116,12 @@ class RegisterViewModel @Inject constructor(
 
         usersList.add(user)
         return true
+    }
+
+    fun BitMapToString(bitmap: Bitmap): String? {
+        val baos = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
+        val b: ByteArray = baos.toByteArray()
+        return Base64.encodeToString(b, Base64.DEFAULT)
     }
 }

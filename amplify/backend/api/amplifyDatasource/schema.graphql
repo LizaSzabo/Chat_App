@@ -1,4 +1,5 @@
 type User @model{
   userName: String,
-  password: String
+  password: String,
+  profilePicture: String
 }

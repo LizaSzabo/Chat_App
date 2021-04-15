@@ -1,8 +1,10 @@
 package hu.bme.aut.android.chat_app
 
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.provider.MediaStore
+import android.util.Base64
 import android.util.Log
 import co.zsmb.rainbowcake.config.Loggers
 import co.zsmb.rainbowcake.config.rainbowCake
@@ -18,6 +20,7 @@ import hu.bme.aut.android.chat_app.Model.Message
 import hu.bme.aut.android.chat_app.Model.User
 import hu.bme.aut.android.chat_app.di.DaggerAppComponent
 import timber.log.Timber
+
 
 class ChatApplication : RainbowCakeApplication() {
 
@@ -43,7 +46,8 @@ class ChatApplication : RainbowCakeApplication() {
         Timber.plant(Timber.DebugTree())
         val uri: Uri = Uri.parse("android.resource://hu.bme.aut.android.chat_app/drawable/addprofile")
         val convers =  mutableListOf(
-            Conversation(1,
+            Conversation(
+                1,
                 "first", "private", mutableListOf(
                     Message(
                         "User1",
@@ -61,37 +65,37 @@ class ChatApplication : RainbowCakeApplication() {
         )
 
        val convers2 =  mutableListOf(
-            Conversation(
-                1,"first", "private", mutableListOf(
-                    Message(
-                        "User1",
-                        "second",
-                        "Hello",
-                        "2021.04.01 14:12"
-                    ), Message("User1", "second", "Szia", "2021.04.01 14:12"), Message(
-                        "User2",
-                        "first",
-                        "Hello",
-                        "2021.04.01 14:12"
-                    )
-                ), uri, false
-            ),
-            Conversation(
-                2,"second", "private", mutableListOf(
-                    Message(
-                        "User1",
-                        "second",
-                        "Hello",
-                        "2021.04.01 14:12"
-                    ), Message("User1", "second", "Szia", "2021.04.01 14:12"), Message(
-                        "User2",
-                        "first",
-                        "Hello",
-                        "2021.04.01 14:12"
-                    )
-                ), uri, false
-            )
-        )
+           Conversation(
+               1, "first", "private", mutableListOf(
+                   Message(
+                       "User1",
+                       "second",
+                       "Hello",
+                       "2021.04.01 14:12"
+                   ), Message("User1", "second", "Szia", "2021.04.01 14:12"), Message(
+                       "User2",
+                       "first",
+                       "Hello",
+                       "2021.04.01 14:12"
+                   )
+               ), uri, false
+           ),
+           Conversation(
+               2, "second", "private", mutableListOf(
+                   Message(
+                       "User1",
+                       "second",
+                       "Hello",
+                       "2021.04.01 14:12"
+                   ), Message("User1", "second", "Szia", "2021.04.01 14:12"), Message(
+                       "User2",
+                       "first",
+                       "Hello",
+                       "2021.04.01 14:12"
+                   )
+               ), uri, false
+           )
+       )
         val yourBitmap: Bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
         try {
             Amplify.addPlugin(AWSDataStorePlugin())
@@ -115,11 +119,13 @@ class ChatApplication : RainbowCakeApplication() {
             { matches ->
                 while (matches.hasNext()) {
                     val user = matches.next()
-                    usersList.add(User(user.userName, user.password, yourBitmap, convers2))
+                    val decodedString: ByteArray = Base64.decode(user.profilePicture, Base64.DEFAULT)
+                    val decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
+                    usersList.add(User(user.userName, user.password, decodedByte, convers2))
                     Log.i("MyAmplifyApp", "Title: ${user.userName}")
                 }
             },
-            { Log.e("MyAmplifyApp",  "Error retrieving posts", it) }
+            { Log.e("MyAmplifyApp", "Error retrieving posts", it) }
         )
 
 
