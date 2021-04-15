@@ -10,7 +10,10 @@ android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
 
+
     compileOptions {
+        // Support for Java 8 features
+        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -100,4 +103,9 @@ dependencies {
     implementation "com.google.dagger:dagger:$dagger_version"
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
     kaptTest "com.google.dagger:dagger-compiler:$dagger_version"
+
+    implementation 'com.amplifyframework:aws-datastore:1.17.1'
+
+    // Support for Java 8 features
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
 }

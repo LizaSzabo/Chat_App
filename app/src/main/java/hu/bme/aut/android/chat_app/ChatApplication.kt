@@ -3,11 +3,16 @@ package hu.bme.aut.android.chat_app
 import android.graphics.Bitmap
 import android.net.Uri
 import android.provider.MediaStore
+import android.util.Log
 import co.zsmb.rainbowcake.config.Loggers
 import co.zsmb.rainbowcake.config.rainbowCake
 import co.zsmb.rainbowcake.dagger.RainbowCakeApplication
 import co.zsmb.rainbowcake.dagger.RainbowCakeComponent
 import co.zsmb.rainbowcake.timber.TIMBER
+import com.amplifyframework.AmplifyException
+import com.amplifyframework.core.Amplify
+import com.amplifyframework.datastore.AWSDataStorePlugin
+import com.amplifyframework.datastore.generated.model.User.builder
 import hu.bme.aut.android.chat_app.Model.Conversation
 import hu.bme.aut.android.chat_app.Model.Message
 import hu.bme.aut.android.chat_app.Model.User
@@ -88,8 +93,49 @@ class ChatApplication : RainbowCakeApplication() {
             )
         )
         val yourBitmap: Bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
-        usersList.add(User("User1", "pass",yourBitmap, convers))
-        usersList.add(User("User2", "pass", yourBitmap, convers2))
+        try {
+            Amplify.addPlugin(AWSDataStorePlugin())
+            Amplify.configure(applicationContext)
+
+            Log.i("MyAmplifyApp", "Initialized Amplify")
+        } catch (error: AmplifyException) {
+            Log.e("MyAmplifyApp", "Could not initialize Amplify", error)
+        }
+        val user = builder()
+            .userName("User1")
+            .password("pass")
+            .build()
+
+   /*    Amplify.DataStore.save(user,
+            { Log.i("MyAmplifyApp", "Created a new post successfully") },
+            { Log.e("MyAmplifyApp", "Error creating post") }
+        )*/
+
+        Amplify.DataStore.query(com.amplifyframework.datastore.generated.model.User::class.java,
+            { matches ->
+                while (matches.hasNext()) {
+                    val user = matches.next()
+                    usersList.add(User(user.userName, user.password, yourBitmap, convers))
+                    Log.i("MyAmplifyApp", "Title: ${user.userName}")
+                }
+            },
+            { Log.e("MyAmplifyApp",  "Error retrieving posts", it) }
+        )
+
+
+       /* Amplify.DataStore.query(com.amplifyframework.datastore.generated.model.User::class.java,
+            { matches ->
+                while (matches.hasNext()) {
+                    val post = matches.next()
+                    Amplify.DataStore.delete(post,
+                        { Log.i("MyAmplifyApp", "Deleted a post.") },
+                        { Log.e("MyAmplifyApp", "Delete failed.", it) }
+                    )
+                }
+            },
+            { Log.e("MyAmplifyApp", "Query failed.", it) }
+        )*/
+
     }
 
     override fun setupInjector() {
