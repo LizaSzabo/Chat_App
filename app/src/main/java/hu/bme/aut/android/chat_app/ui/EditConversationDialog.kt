@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import hu.bme.aut.android.chat_app.ChatApplication.Companion.convid
+import com.amplifyframework.core.Amplify
+import com.amplifyframework.core.model.query.Where
+import com.amplifyframework.datastore.generated.model.User
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentConversation
 import hu.bme.aut.android.chat_app.Model.Conversation
 import hu.bme.aut.android.chat_app.R
@@ -38,6 +40,8 @@ class EditConversationDialog(var pos: Int) : DialogFragment() {
                         it2, pos
                     )
                 }
+
+
 
                 dialog?.dismiss()
             }

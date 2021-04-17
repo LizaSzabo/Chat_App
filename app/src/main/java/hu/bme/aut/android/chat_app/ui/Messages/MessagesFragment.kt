@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.*
 import android.widget.PopupMenu
@@ -22,6 +23,7 @@ import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentConversation
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentUser
 import hu.bme.aut.android.chat_app.ui.EditConversationDialog
 import hu.bme.aut.android.chat_app.Model.Conversation
+import hu.bme.aut.android.chat_app.Network.UpdateUser
 import hu.bme.aut.android.chat_app.R
 import hu.bme.aut.android.chat_app.databinding.FragmentMessagesBinding
 
@@ -169,7 +171,10 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
         if (requestCode == PICK_IMAGE) {
             val selectedImageUri: Uri? = data?.data
             if (null != selectedImageUri) {
-                currentConversation?.picture = selectedImageUri
+                var yourBitmap: Bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, selectedImageUri)
+                currentConversation?.picture = yourBitmap
+              //  currentUser?.let { UpdateUser(it) }
+
                 uri = selectedImageUri
             }
             val action = MessagesFragmentDirections.actionMessagesFragmentSelf()

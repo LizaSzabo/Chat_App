@@ -66,8 +66,8 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
 
 
         val resized: Bitmap?
-        val picture = MediaStore.Images.Media.getBitmap(context?.contentResolver, currentConversation?.picture)
-        resized = if( picture.height > picture.width){
+        val picture =  currentConversation?.picture
+        resized = if( picture!!.height > picture!!.width){
             picture.resizeByWidth( fragmentBinding.iwConversationPicture.layoutParams.width)
         } else {
             picture.resizeByHeight( fragmentBinding.iwConversationPicture.layoutParams.height)

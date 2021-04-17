@@ -30,7 +30,7 @@ class ViewUsersInConversation: RainbowCakeFragment<ViewUsersViewState, ViewUsers
         val binding = FragmentViewUsersBinding.bind(view)
         fragmentBinding = binding
 
-        fragmentBinding.iwConversationPicture.setImageURI(currentConversation?.picture)
+        fragmentBinding.iwConversationPicture.setImageBitmap(currentConversation?.picture)
 
         initRecyclerView()
     }

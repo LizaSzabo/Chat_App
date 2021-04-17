@@ -14,7 +14,6 @@ import co.zsmb.rainbowcake.timber.TIMBER
 import com.amplifyframework.AmplifyException
 import com.amplifyframework.core.Amplify
 import com.amplifyframework.datastore.AWSDataStorePlugin
-import com.amplifyframework.datastore.generated.model.User.builder
 import hu.bme.aut.android.chat_app.Model.Conversation
 import hu.bme.aut.android.chat_app.Model.Message
 import hu.bme.aut.android.chat_app.Model.User
@@ -29,6 +28,8 @@ class ChatApplication : RainbowCakeApplication() {
             private set
         var currentUser: User? = null
         var currentConversation: Conversation? = null
+        var allConversationList: MutableList<com.amplifyframework.datastore.generated.model.Conversation> = mutableListOf()
+            private set
         var convid = 2
         var userid = 2
     }
@@ -45,9 +46,10 @@ class ChatApplication : RainbowCakeApplication() {
         }
         Timber.plant(Timber.DebugTree())
         val uri: Uri = Uri.parse("android.resource://hu.bme.aut.android.chat_app/drawable/addprofile")
+        val b: Bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
         val convers =  mutableListOf(
             Conversation(
-                1,
+                "1",
                 "first", "private", mutableListOf(
                     Message(
                         "User1",
@@ -60,13 +62,13 @@ class ChatApplication : RainbowCakeApplication() {
                         "Hello",
                         "2021.04.01 14:12"
                     )
-                ), uri, false
+                ), b, false
             )
         )
 
        val convers2 =  mutableListOf(
            Conversation(
-               1, "first", "private", mutableListOf(
+               "1", "first", "private", mutableListOf(
                    Message(
                        "User1",
                        "second",
@@ -78,10 +80,10 @@ class ChatApplication : RainbowCakeApplication() {
                        "Hello",
                        "2021.04.01 14:12"
                    )
-               ), uri, false
+               ), b, false
            ),
            Conversation(
-               2, "second", "private", mutableListOf(
+               "2", "second", "private", mutableListOf(
                    Message(
                        "User1",
                        "second",
@@ -93,7 +95,7 @@ class ChatApplication : RainbowCakeApplication() {
                        "Hello",
                        "2021.04.01 14:12"
                    )
-               ), uri, false
+               ), b, false
            )
        )
         val yourBitmap: Bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
@@ -105,10 +107,10 @@ class ChatApplication : RainbowCakeApplication() {
         } catch (error: AmplifyException) {
             Log.e("MyAmplifyApp", "Could not initialize Amplify", error)
         }
-        val user = builder()
+      /*  val user = builder()
             .userName("User1")
             .password("pass")
-            .build()
+            .build()*/
 
    /*    Amplify.DataStore.save(user,
             { Log.i("MyAmplifyApp", "Created a new post successfully") },
@@ -121,7 +123,39 @@ class ChatApplication : RainbowCakeApplication() {
                     val user = matches.next()
                     val decodedString: ByteArray = Base64.decode(user.profilePicture, Base64.DEFAULT)
                     val decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
-                    usersList.add(User(user.userName, user.password, decodedByte, convers2))
+                    var  conv2 : MutableList<Conversation> = mutableListOf()
+                    if (user.conversations != null){
+                    conv2.add(Conversation("1", user.conversations[0].name, user.conversations[0].type, mutableListOf(
+                        Message(
+                            "User1",
+                            "second",
+                            "Hello",
+                            "2021.04.01 14:12"
+                        ), Message("User1", "second", "Szia", "2021.04.01 14:12"), Message(
+                            "User2",
+                            "first",
+                            "Hello",
+                            "2021.04.01 14:12"
+                        )
+                    ), b, user.conversations[0].favourite
+                    ))}
+                    /*for (con in user.conversations){
+                        conv2.add(Conversation(1, con.name, con.type, mutableListOf(
+                            Message(
+                                "User1",
+                                "second",
+                                "Hello",
+                                "2021.04.01 14:12"
+                            ), Message("User1", "second", "Szia", "2021.04.01 14:12"), Message(
+                                "User2",
+                                "first",
+                                "Hello",
+                                "2021.04.01 14:12"
+                            )
+                        ), uri, con.favourite
+                        ))
+                    }*/
+                    usersList.add(User(user.userName, user.password, decodedByte, conv2))
                     Log.i("MyAmplifyApp", "Title: ${user.userName}")
                 }
             },
@@ -129,7 +163,7 @@ class ChatApplication : RainbowCakeApplication() {
         )
 
 
-       /* Amplify.DataStore.query(com.amplifyframework.datastore.generated.model.User::class.java,
+      /* Amplify.DataStore.query(com.amplifyframework.datastore.generated.model.User::class.java,
             { matches ->
                 while (matches.hasNext()) {
                     val post = matches.next()
@@ -141,6 +175,17 @@ class ChatApplication : RainbowCakeApplication() {
             },
             { Log.e("MyAmplifyApp", "Query failed.", it) }
         )*/
+
+        Amplify.DataStore.query(com.amplifyframework.datastore.generated.model.Conversation::class.java,
+            { matches ->
+                while (matches.hasNext()) {
+                    val conversation = matches.next()
+                    Log.i("MyAmplifyApp", "Conversation:${conversation.id} ${conversation.name} ${conversation.user.userName}")
+                    allConversationList.add(conversation)
+                }
+            },
+            { Log.e("MyAmplifyApp", "Query failed", it) }
+        )
 
     }
 

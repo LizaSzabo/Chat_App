@@ -1,5 +1,6 @@
 package com.amplifyframework.datastore.generated.model;
 
+import com.amplifyframework.core.model.annotations.HasMany;
 
 import java.util.List;
 import java.util.UUID;
@@ -24,9 +25,10 @@ public final class User implements Model {
   public static final QueryField PASSWORD = field("User", "password");
   public static final QueryField PROFILE_PICTURE = field("User", "profilePicture");
   private final @ModelField(targetType="ID", isRequired = true) String id;
-  private final @ModelField(targetType="String") String userName;
-  private final @ModelField(targetType="String") String password;
-  private final @ModelField(targetType="String") String profilePicture;
+  private final @ModelField(targetType="String", isRequired = true) String userName;
+  private final @ModelField(targetType="String", isRequired = true) String password;
+  private final @ModelField(targetType="String", isRequired = true) String profilePicture;
+  private final @ModelField(targetType="Conversation") @HasMany(associatedWith = "user", type = Conversation.class) List<Conversation> conversations = null;
   public String getId() {
       return id;
   }
@@ -41,6 +43,10 @@ public final class User implements Model {
   
   public String getProfilePicture() {
       return profilePicture;
+  }
+  
+  public List<Conversation> getConversations() {
+      return conversations;
   }
   
   private User(String id, String userName, String password, String profilePicture) {
@@ -88,7 +94,7 @@ public final class User implements Model {
       .toString();
   }
   
-  public static BuildStep builder() {
+  public static UserNameStep builder() {
       return new Builder();
   }
   
@@ -125,16 +131,28 @@ public final class User implements Model {
       password,
       profilePicture);
   }
-  public interface BuildStep {
-    User build();
-    BuildStep id(String id) throws IllegalArgumentException;
-    BuildStep userName(String userName);
-    BuildStep password(String password);
+  public interface UserNameStep {
+    PasswordStep userName(String userName);
+  }
+  
+
+  public interface PasswordStep {
+    ProfilePictureStep password(String password);
+  }
+  
+
+  public interface ProfilePictureStep {
     BuildStep profilePicture(String profilePicture);
   }
   
 
-  public static class Builder implements BuildStep {
+  public interface BuildStep {
+    User build();
+    BuildStep id(String id) throws IllegalArgumentException;
+  }
+  
+
+  public static class Builder implements UserNameStep, PasswordStep, ProfilePictureStep, BuildStep {
     private String id;
     private String userName;
     private String password;
@@ -151,19 +169,22 @@ public final class User implements Model {
     }
     
     @Override
-     public BuildStep userName(String userName) {
+     public PasswordStep userName(String userName) {
+        Objects.requireNonNull(userName);
         this.userName = userName;
         return this;
     }
     
     @Override
-     public BuildStep password(String password) {
+     public ProfilePictureStep password(String password) {
+        Objects.requireNonNull(password);
         this.password = password;
         return this;
     }
     
     @Override
      public BuildStep profilePicture(String profilePicture) {
+        Objects.requireNonNull(profilePicture);
         this.profilePicture = profilePicture;
         return this;
     }

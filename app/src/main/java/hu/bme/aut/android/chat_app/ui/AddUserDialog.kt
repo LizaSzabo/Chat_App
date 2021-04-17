@@ -24,6 +24,9 @@ class AddUserDialog: DialogFragment() {
 
             if (validateNewUser()) {
                     listener.onAddUser(binding.editTextUserName.text.toString())
+
+
+
                 dialog?.dismiss()
             }
 

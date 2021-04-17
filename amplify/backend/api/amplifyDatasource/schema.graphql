@@ -1,5 +1,18 @@
 type User @model{
-  userName: String,
-  password: String,
-  profilePicture: String
+  id: ID!
+  userName: String!
+  password: String!
+  profilePicture: String!
+  conversations: [Conversation] @connection(keyName: "byUser", fields: ["id"])
+}
+
+type Conversation @model
+  @key(name: "byUser", fields: ["userID"]) {
+  id: ID!
+  userID: ID!
+  name: String!
+  type: String!
+  picture: String!
+  favourite: Boolean!
+  user: User @connection(fields: ["userID"])
 }

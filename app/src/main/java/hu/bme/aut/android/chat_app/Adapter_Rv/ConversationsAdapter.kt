@@ -1,6 +1,9 @@
 package hu.bme.aut.android.chat_app.Adapter_Rv
 
 import android.annotation.SuppressLint
+import android.graphics.Bitmap
+import android.util.Base64
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,12 +13,17 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.amplifyframework.core.Amplify
+import com.amplifyframework.core.model.query.Where
+import com.amplifyframework.datastore.generated.model.User
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentConversation
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentUser
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.usersList
 import hu.bme.aut.android.chat_app.Model.Conversation
+import hu.bme.aut.android.chat_app.Network.UpdateUser
 import hu.bme.aut.android.chat_app.R
 import hu.bme.aut.android.chat_app.databinding.ItemConversationBinding
+import java.io.ByteArrayOutputStream
 
 class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.ConversationViewHolder>(ItemCallback)  {
 
@@ -66,7 +74,7 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
         val conversation = conversationList[position]
         holder.tvConversationName.text = conversation.name
         holder.conversation  = conversation
-        holder.ivConversationImage.setImageURI(conversation.picture)
+        holder.ivConversationImage.setImageBitmap(conversation.picture)
         when(conversation.favourite) {
             false -> {
                 holder.ibStar.setImageResource(R.drawable.star_icon)
@@ -129,13 +137,14 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
         conversationList = conversationList.filterIndexed { index, _ -> index != pos}
         conversationList += conv
 
-        currentUser?.conversations = conversationList as MutableList<Conversation>
         for(user in usersList){
             for(conversation in user.conversations!!){
-                if(conversation.id == currentConversation?.id){
+                if(conversation.name == currentConversation?.name){
                     val con = Conversation(conv.id, conv.name, conv.type, conv.messages, conv.picture, conversation.favourite)
                     val index = user.conversations!!.indexOf(conversation)
                     user.conversations!![index] = con
+
+                    UpdateUser(user)
                 }
             }
         }
@@ -144,12 +153,14 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
     }
 
     fun updateConversationPicture(conv: Conversation, pos: Int){
-        currentUser?.conversations = conversationList as MutableList<Conversation>
+
         for(user in usersList){
             for(conversation in user.conversations!!){
-                if(conversation.id == conv.id){
+                if(conversation.name == conv.name){
                     val index = user.conversations!!.indexOf(conversation)
                     user.conversations!![index] = conv
+
+                    UpdateUser(user)
                 }
             }
         }
@@ -164,6 +175,7 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
             if(user.userName ==  currentUser?.userName){
                 user.conversations?.add(conversation)
                 currentUser = user
+                UpdateUser(user)
             }
         }
         submitList(conversationList)
@@ -184,7 +196,18 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
                     if (conversation != null) {
                         user.conversations?.add(conversation)
                     }
+
+                    UpdateUser(user)
+
                 }
         }
+    }
+
+
+    fun BitMapToString(bitmap: Bitmap): String? {
+        val baos = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
+        val b: ByteArray = baos.toByteArray()
+        return Base64.encodeToString(b, Base64.DEFAULT)
     }
 }
