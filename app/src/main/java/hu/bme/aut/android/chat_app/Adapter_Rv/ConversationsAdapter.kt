@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.amplifyframework.core.Amplify
 import com.amplifyframework.core.model.query.Where
 import com.amplifyframework.datastore.generated.model.User
+import hu.bme.aut.android.chat_app.ChatApplication
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentConversation
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentUser
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.usersList
@@ -56,11 +57,13 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
                         ibStar.tag = R.drawable.ic_baseline_star_24
                         ibStar.setImageResource(R.drawable.ic_baseline_star_24)
                         conversation?.favourite = true
+                    //    currentUser?.let { it1 -> UpdateUser(it1) }
                     }
                    true ->{
                         ibStar.tag = R.drawable.star_icon
                         ibStar.setImageResource(R.drawable.star_icon)
                         conversation?.favourite = false
+                       // currentUser?.let { it1 -> UpdateUser(it1) }
                     }
                 }
             }
@@ -111,6 +114,14 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
         conversationList = conversationList.filterIndexed { index, _ -> index != position }
         currentUser?.conversations?.remove(currentConversation)
         submitList(conversationList)
+
+        for(user in usersList){
+            if(user.userName == currentUser?.userName){
+                user.conversations?.remove(currentConversation)
+                UpdateUser(user)
+            }
+        }
+
     }
 
     fun addAll(conversation: String){
@@ -204,10 +215,13 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
     }
 
 
-    fun BitMapToString(bitmap: Bitmap): String? {
-        val baos = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
-        val b: ByteArray = baos.toByteArray()
-        return Base64.encodeToString(b, Base64.DEFAULT)
+    fun updateOnFavourite(){
+        for(user in ChatApplication.usersList){
+            for(conversation in user.conversations!!){
+                if(conversation.name == currentConversation?.name){
+                    UpdateUser(user)
+                }
+            }
+        }
     }
 }
