@@ -160,7 +160,7 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
                     val index = user.conversations!!.indexOf(conversation)
                     user.conversations!![index] = conv
 
-                    UpdateUser(user)
+                  //  UpdateUser(user)
                 }
             }
         }

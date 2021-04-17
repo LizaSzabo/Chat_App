@@ -18,6 +18,7 @@ import co.zsmb.rainbowcake.base.RainbowCakeFragment
 import co.zsmb.rainbowcake.dagger.getViewModelFromFactory
 import co.zsmb.rainbowcake.extensions.exhaustive
 import hu.bme.aut.android.chat_app.Adapter_Rv.ConversationsAdapter
+import hu.bme.aut.android.chat_app.ChatApplication
 import hu.bme.aut.android.chat_app.ui.AddUserDialog
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentConversation
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentUser
@@ -174,6 +175,14 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
                 var yourBitmap: Bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, selectedImageUri)
                 currentConversation?.picture = yourBitmap
               //  currentUser?.let { UpdateUser(it) }
+                for(user in ChatApplication.usersList){
+                    for(conversation in user.conversations!!){
+                        if(conversation.name == currentConversation?.name){
+                             UpdateUser(user)
+                        }
+                    }
+                }
+
 
                 uri = selectedImageUri
             }
