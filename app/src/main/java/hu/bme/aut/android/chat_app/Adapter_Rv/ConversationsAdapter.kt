@@ -225,14 +225,4 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
         }
     }
 
-
-    fun updateOnFavourite(){
-        for(user in ChatApplication.usersList){
-            for(conversation in user.conversations!!){
-                if(conversation.name == currentConversation?.name){
-                    UpdateUser(user)
-                }
-            }
-        }
-    }
 }

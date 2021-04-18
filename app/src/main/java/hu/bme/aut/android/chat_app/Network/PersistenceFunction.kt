@@ -5,6 +5,8 @@ import android.util.Base64
 import android.util.Log
 import com.amplifyframework.core.Amplify
 import com.amplifyframework.core.model.query.Where
+import hu.bme.aut.android.chat_app.ChatApplication
+import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentUser
 import hu.bme.aut.android.chat_app.Model.User
 import java.io.ByteArrayOutputStream
 
@@ -58,6 +60,67 @@ import java.io.ByteArrayOutputStream
     )
 }
 
+
+fun updateUserPicture(picture: Bitmap){
+    Amplify.DataStore.query(com.amplifyframework.datastore.generated.model.User::class.java,
+        Where.matches(com.amplifyframework.datastore.generated.model.User.USER_NAME.eq(
+            ChatApplication.currentUser?.userName)),
+        { matches ->
+            if (matches.hasNext()) {
+                val original = matches.next()
+                val edited = original.copyOfBuilder()
+                    .profilePicture(bitMapToString(picture))
+                    .build()
+                Amplify.DataStore.save(edited,
+                    { Log.i("MyAmplifyApp", "Updated a user picture") },
+                    { Log.e("MyAmplifyApp", "Update failed", it) }
+                )
+            }
+        },
+        { Log.e("MyAmplifyApp", "Query failed", it) }
+    )
+
+}
+
+
+fun updateUserName(newName : String, oldName: String?){
+    Amplify.DataStore.query(com.amplifyframework.datastore.generated.model.User::class.java,
+        Where.matches(com.amplifyframework.datastore.generated.model.User.USER_NAME.eq(oldName)),
+        { matches ->
+            if (matches.hasNext()) {
+                val original = matches.next()
+                val edited = original.copyOfBuilder()
+                    .userName(newName)
+                    .build()
+                Amplify.DataStore.save(edited,
+                    { Log.i("MyAmplifyApp", "Updated user name") },
+                    { Log.e("MyAmplifyApp", "Update failed", it) }
+                )
+            }
+        },
+        { Log.e("MyAmplifyApp", "Query failed", it) }
+    )
+}
+
+
+fun updateUserPassword(newPassword: String){
+    Amplify.DataStore.query(com.amplifyframework.datastore.generated.model.User::class.java,
+        Where.matches(com.amplifyframework.datastore.generated.model.User.USER_NAME.eq(currentUser?.userName)),
+        { matches ->
+            if (matches.hasNext()) {
+                val original = matches.next()
+                val edited = original.copyOfBuilder()
+                    .password(newPassword)
+                    .build()
+                Amplify.DataStore.save(edited,
+                    { Log.i("MyAmplifyApp", "Updated a user password") },
+                    { Log.e("MyAmplifyApp", "Update failed", it) }
+                )
+            }
+        },
+        { Log.e("MyAmplifyApp", "Query failed", it) }
+    )
+}
 
 fun bitMapToString(bitmap: Bitmap): String? {
     val baos = ByteArrayOutputStream()

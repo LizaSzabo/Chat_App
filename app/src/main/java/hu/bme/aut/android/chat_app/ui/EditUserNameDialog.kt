@@ -13,6 +13,8 @@ import com.amplifyframework.datastore.generated.model.User.USER_NAME
 import hu.bme.aut.android.chat_app.ChatApplication
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentUser
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.usersList
+import hu.bme.aut.android.chat_app.Network.updateUserName
+import hu.bme.aut.android.chat_app.Network.updateUserPicture
 import hu.bme.aut.android.chat_app.R
 import hu.bme.aut.android.chat_app.databinding.DialogEditUserNameBinding
 import hu.bme.aut.android.chat_app.databinding.FragmentEditProfileBinding
@@ -53,23 +55,7 @@ class EditUserNameDialog(var editbinding: FragmentEditProfileBinding): DialogFra
                 }
                 editbinding.tvUserName.text = ChatApplication.currentUser?.userName
 
-
-                Amplify.DataStore.query(com.amplifyframework.datastore.generated.model.User::class.java,
-                    Where.matches(com.amplifyframework.datastore.generated.model.User.USER_NAME.eq(name)),
-                    { matches ->
-                        if (matches.hasNext()) {
-                            val original = matches.next()
-                            val edited = original.copyOfBuilder()
-                                .userName(binding.editTextLoginName.text.toString())
-                                .build()
-                            Amplify.DataStore.save(edited,
-                                { Log.i("MyAmplifyApp", "Updated a post") },
-                                { Log.e("MyAmplifyApp", "Update failed", it) }
-                            )
-                        }
-                    },
-                    { Log.e("MyAmplifyApp", "Query failed", it) }
-                )
+                updateUserName(binding.editTextLoginName.text.toString(), name)
 
                 dialog?.dismiss()
             }
@@ -80,6 +66,4 @@ class EditUserNameDialog(var editbinding: FragmentEditProfileBinding): DialogFra
         }
         return binding.root
     }
-
-
 }

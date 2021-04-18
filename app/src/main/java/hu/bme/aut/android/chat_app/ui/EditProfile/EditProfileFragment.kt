@@ -14,6 +14,7 @@ import co.zsmb.rainbowcake.extensions.exhaustive
 import com.amplifyframework.core.Amplify
 import com.amplifyframework.core.model.query.Where
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentUser
+import hu.bme.aut.android.chat_app.Network.updateUserPicture
 import hu.bme.aut.android.chat_app.R
 import hu.bme.aut.android.chat_app.databinding.FragmentEditProfileBinding
 import java.io.ByteArrayOutputStream
@@ -54,34 +55,13 @@ class EditProfileFragment : RainbowCakeFragment<EditProfileViewState, EditProfil
                 val resized = yourBitmap.resizeByHeight( fragmentBinding.imageButtonEditProfile.layoutParams.height)
                 currentUser?.profilePicture = resized
 
-                Amplify.DataStore.query(com.amplifyframework.datastore.generated.model.User::class.java,
-                    Where.matches(com.amplifyframework.datastore.generated.model.User.USER_NAME.eq(currentUser?.userName)),
-                    { matches ->
-                        if (matches.hasNext()) {
-                            val original = matches.next()
-                            val edited = original.copyOfBuilder()
-                                .profilePicture(BitMapToString(resized))
-                                .build()
-                            Amplify.DataStore.save(edited,
-                                { Log.i("MyAmplifyApp", "Updated a post") },
-                                { Log.e("MyAmplifyApp", "Update failed", it) }
-                            )
-                        }
-                    },
-                    { Log.e("MyAmplifyApp", "Query failed", it) }
-                )
+                updateUserPicture(resized)
 
                 fragmentBinding.imageButtonEditProfile.setImageBitmap(resized)
             }
         }
     }
 
-    fun BitMapToString(bitmap: Bitmap): String? {
-        val baos = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
-        val b: ByteArray = baos.toByteArray()
-        return Base64.encodeToString(b, Base64.DEFAULT)
-    }
 
     private fun Bitmap.resizeByHeight(height:Int):Bitmap{
         val ratio:Float = this.height.toFloat() / this.width.toFloat()
