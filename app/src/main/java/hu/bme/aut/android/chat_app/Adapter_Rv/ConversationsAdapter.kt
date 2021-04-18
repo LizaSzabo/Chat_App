@@ -2,6 +2,9 @@ package hu.bme.aut.android.chat_app.Adapter_Rv
 
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
+import android.provider.MediaStore
 import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
@@ -137,6 +140,8 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
 
     fun addAll(conversation: String){
         val convs: MutableList<Conversation>
+
+
         if(conversation.isEmpty()) {
             conversationList = emptyList()
             if(currentUser?.conversations != null){

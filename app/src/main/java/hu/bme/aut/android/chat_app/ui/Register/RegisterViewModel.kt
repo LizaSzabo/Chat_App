@@ -13,6 +13,7 @@ import hu.bme.aut.android.chat_app.ChatApplication.Companion.userid
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.usersList
 import hu.bme.aut.android.chat_app.Model.Conversation
 import hu.bme.aut.android.chat_app.Model.User
+import hu.bme.aut.android.chat_app.Network.addNewRegisteredUser
 import hu.bme.aut.android.chat_app.R
 import hu.bme.aut.android.chat_app.databinding.FragmentRegisterBinding
 import java.io.ByteArrayOutputStream
@@ -80,39 +81,7 @@ class RegisterViewModel @Inject constructor(
             convers
         )
 
-        val userBackend = com.amplifyframework.datastore.generated.model.User.builder()
-            .userName(fragmentBinding.tvTextUserName.text.toString())
-            .password(fragmentBinding.tvTextPassword.text.toString())
-            .profilePicture(BitMapToString(yourBitmap))
-            .build()
-
-        Amplify.DataStore.save(userBackend,
-            { Log.i("MyAmplifyApp", "Created a new user successfully") },
-            { Log.e("MyAmplifyApp", "Error creating post") }
-        )
-
-        Amplify.DataStore.query(com.amplifyframework.datastore.generated.model.User::class.java,
-            { matches ->
-                while (matches.hasNext()) {
-                    val user = matches.next()
-                    Log.i("MyAmplifyApp", "Title: ${user.userName}")
-                }
-            },
-            { Log.e("MyAmplifyApp", "Error retrieving posts", it) }
-        )
-/*
-        Amplify.DataStore.query(com.amplifyframework.datastore.generated.model.User::class.java,
-            { matches ->
-                while (matches.hasNext()) {
-                    val post = matches.next()
-                    Amplify.DataStore.delete(post,
-                        { Log.i("MyAmplifyApp", "Deleted a post.") },
-                        { Log.e("MyAmplifyApp", "Delete failed.", it) }
-                    )
-                }
-            },
-            { Log.e("MyAmplifyApp", "Query failed.", it) }
-        )*/
+        addNewRegisteredUser(fragmentBinding.tvTextUserName.text.toString(), fragmentBinding.tvTextPassword.text.toString(), yourBitmap )
 
         usersList.add(user)
         return true

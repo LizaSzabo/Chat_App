@@ -17,6 +17,7 @@ import com.amplifyframework.datastore.AWSDataStorePlugin
 import hu.bme.aut.android.chat_app.Model.Conversation
 import hu.bme.aut.android.chat_app.Model.Message
 import hu.bme.aut.android.chat_app.Model.User
+import hu.bme.aut.android.chat_app.Network.initializeUserData
 import hu.bme.aut.android.chat_app.di.DaggerAppComponent
 import timber.log.Timber
 
@@ -158,6 +159,7 @@ class ChatApplication : RainbowCakeApplication() {
                     usersList.add(User(user.userName, user.password, decodedByte, conv2))
                     Log.i("MyAmplifyApp", "Title: ${user.userName}")
                 }
+
             },
             { Log.e("MyAmplifyApp", "Error retrieving posts", it) }
         )
@@ -183,9 +185,11 @@ class ChatApplication : RainbowCakeApplication() {
                     Log.i("MyAmplifyApp", "Conversation:${conversation.id} ${conversation.name} ${conversation.user.userName}")
                     allConversationList.add(conversation)
                 }
+                initializeUserData(b)
             },
             { Log.e("MyAmplifyApp", "Query failed", it) }
         )
+
 
     }
 

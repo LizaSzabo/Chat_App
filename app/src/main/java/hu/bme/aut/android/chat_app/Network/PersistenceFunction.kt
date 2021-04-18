@@ -1,12 +1,16 @@
 package hu.bme.aut.android.chat_app.Network
 
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
+import android.provider.MediaStore
 import android.util.Base64
 import android.util.Log
 import com.amplifyframework.core.Amplify
 import com.amplifyframework.core.model.query.Where
 import hu.bme.aut.android.chat_app.ChatApplication
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentUser
+import hu.bme.aut.android.chat_app.Model.Conversation
 import hu.bme.aut.android.chat_app.Model.User
 import java.io.ByteArrayOutputStream
 
@@ -120,6 +124,46 @@ fun updateUserPassword(newPassword: String){
         },
         { Log.e("MyAmplifyApp", "Query failed", it) }
     )
+}
+
+
+fun addNewRegisteredUser(newUserName: String, newUserPassword: String, newUserPicture: Bitmap){
+
+    val userBackend = com.amplifyframework.datastore.generated.model.User.builder()
+        .userName(newUserName)
+        .password(newUserPassword)
+        .profilePicture(bitMapToString(newUserPicture))
+        .build()
+
+    Amplify.DataStore.save(userBackend,
+        { Log.i("MyAmplifyApp", "Created a new user successfully") },
+        { Log.e("MyAmplifyApp", "Error creating post") }
+    )
+
+    Amplify.DataStore.query(com.amplifyframework.datastore.generated.model.User::class.java,
+        { matches ->
+            while (matches.hasNext()) {
+                val user = matches.next()
+                Log.i("MyAmplifyApp", "Title: ${user.userName}")
+            }
+        },
+        { Log.e("MyAmplifyApp", "Error retrieving posts", it) }
+    )
+}
+
+
+fun initializeUserData(b: Bitmap){
+
+    for(conv in ChatApplication.allConversationList){
+        for(user in ChatApplication.usersList){
+            if(conv.user.userName == user.userName){
+                val decodedString: ByteArray = Base64.decode(conv.picture, Base64.DEFAULT)
+                var decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
+                if(decodedByte == null) decodedByte = b
+                user.conversations?.add(Conversation(conv.id, conv.name, conv.type, mutableListOf(), decodedByte, conv.favourite))
+            }
+        }
+    }
 }
 
 fun bitMapToString(bitmap: Bitmap): String? {
