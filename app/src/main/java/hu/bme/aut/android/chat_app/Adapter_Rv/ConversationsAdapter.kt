@@ -52,20 +52,31 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
 
             ibStar.tag = R.drawable.star_icon
             ibStar.setOnClickListener{
+                var index = 0
+                var u: hu.bme.aut.android.chat_app.Model.User? = null
+                for(user in usersList){
+                    if(user.userName == currentUser?.userName){
+                        index = user.conversations!!.indexOf(conversation)
+                        u = user
+                    }
+                }
                 when(conversation?.favourite){
                     false-> {
                         ibStar.tag = R.drawable.ic_baseline_star_24
                         ibStar.setImageResource(R.drawable.ic_baseline_star_24)
                         conversation?.favourite = true
-                    //    currentUser?.let { it1 -> UpdateUser(it1) }
                     }
                    true ->{
                         ibStar.tag = R.drawable.star_icon
                         ibStar.setImageResource(R.drawable.star_icon)
                         conversation?.favourite = false
-                       // currentUser?.let { it1 -> UpdateUser(it1) }
                     }
+
                 }
+
+                u?.conversations!![index] = conversation!!
+                UpdateUser(u)
+
             }
         }
     }
