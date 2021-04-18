@@ -10,7 +10,9 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentConversation
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentUser
+import hu.bme.aut.android.chat_app.ChatApplication.Companion.usersList
 import hu.bme.aut.android.chat_app.Model.Message
+import hu.bme.aut.android.chat_app.Network.UpdateUser
 import hu.bme.aut.android.chat_app.databinding.ItemMessageReceivedBinding
 import hu.bme.aut.android.chat_app.databinding.ItemSentMessageBinding
 import java.text.SimpleDateFormat
@@ -114,6 +116,17 @@ class ChatAdapter : ListAdapter<Message, ChatAdapter.ChatViewHolder>(itemCallbac
     fun addMessage(message: Message){
         messageList += message
         currentConversation?.messages?.add(message)
+
+        for(user in usersList){
+            for(conversation in user.conversations!!){
+                if(conversation.name == currentConversation?.name){
+                    val index = user.conversations!!.indexOf(conversation)
+                    user.conversations!![index] = currentConversation!!
+
+                    UpdateUser(user)
+                }
+            }
+        }
         submitList(messageList)
     }
 }

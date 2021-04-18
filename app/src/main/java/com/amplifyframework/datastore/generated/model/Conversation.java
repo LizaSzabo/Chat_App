@@ -1,6 +1,7 @@
 package com.amplifyframework.datastore.generated.model;
 
 import com.amplifyframework.core.model.annotations.BelongsTo;
+import com.amplifyframework.core.model.annotations.HasMany;
 
 import java.util.List;
 import java.util.UUID;
@@ -33,6 +34,7 @@ public final class Conversation implements Model {
   private final @ModelField(targetType="String", isRequired = true) String picture;
   private final @ModelField(targetType="Boolean", isRequired = true) Boolean favourite;
   private final @ModelField(targetType="User") @BelongsTo(targetName = "userID", type = User.class) User user;
+  private final @ModelField(targetType="Message") @HasMany(associatedWith = "conversation", type = Message.class) List<Message> messages = null;
   public String getId() {
       return id;
   }
@@ -55,6 +57,10 @@ public final class Conversation implements Model {
   
   public User getUser() {
       return user;
+  }
+  
+  public List<Message> getMessages() {
+      return messages;
   }
   
   private Conversation(String id, String name, String type, String picture, Boolean favourite, User user) {

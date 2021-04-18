@@ -15,4 +15,16 @@ type Conversation @model
   picture: String!
   favourite: Boolean!
   user: User @connection(fields: ["userID"])
+  messages: [Message]  @connection(keyName: "byConversation", fields: ["id"])
+}
+
+type Message @model
+@key(name: "byConversation", fields: ["conversationID"]) {
+  id: ID!
+  conversationID: ID!
+  sender: String!
+  receivers: String
+  content: String!
+  date: String!
+  conversation: Conversation @connection(fields: ["conversationID"])
 }

@@ -31,6 +31,8 @@ class ChatApplication : RainbowCakeApplication() {
         var currentConversation: Conversation? = null
         var allConversationList: MutableList<com.amplifyframework.datastore.generated.model.Conversation> = mutableListOf()
             private set
+        var allMessagesList: MutableList<com.amplifyframework.datastore.generated.model.Message> = mutableListOf()
+            private set
         var convid = 2
         var userid = 2
     }
@@ -178,6 +180,8 @@ class ChatApplication : RainbowCakeApplication() {
             { Log.e("MyAmplifyApp", "Query failed.", it) }
         )*/
 
+
+
         Amplify.DataStore.query(com.amplifyframework.datastore.generated.model.Conversation::class.java,
             { matches ->
                 while (matches.hasNext()) {
@@ -185,10 +189,23 @@ class ChatApplication : RainbowCakeApplication() {
                     Log.i("MyAmplifyApp", "Conversation:${conversation.id} ${conversation.name} ${conversation.user.userName}")
                     allConversationList.add(conversation)
                 }
-                initializeUserData(b)
+                Amplify.DataStore.query(com.amplifyframework.datastore.generated.model.Message::class.java,
+                    { matches ->
+                        while (matches.hasNext()) {
+                            val message = matches.next()
+                            Log.i("MyAmplifyApp", "Message:${message.id} ${message.content} ${message.conversation.name}")
+                            allMessagesList.add(message)
+                        }
+                        initializeUserData(b)
+                    },
+                    { Log.e("MyAmplifyApp", "Query failed", it) }
+                )
+              //  initializeUserData(b)
             },
             { Log.e("MyAmplifyApp", "Query failed", it) }
         )
+
+
 
 
     }

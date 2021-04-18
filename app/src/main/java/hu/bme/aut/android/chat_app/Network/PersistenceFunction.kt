@@ -9,8 +9,11 @@ import android.util.Log
 import com.amplifyframework.core.Amplify
 import com.amplifyframework.core.model.query.Where
 import hu.bme.aut.android.chat_app.ChatApplication
+import hu.bme.aut.android.chat_app.ChatApplication.Companion.allConversationList
+import hu.bme.aut.android.chat_app.ChatApplication.Companion.allMessagesList
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentUser
 import hu.bme.aut.android.chat_app.Model.Conversation
+import hu.bme.aut.android.chat_app.Model.Message
 import hu.bme.aut.android.chat_app.Model.User
 import java.io.ByteArrayOutputStream
 
@@ -55,7 +58,23 @@ import java.io.ByteArrayOutputStream
                   //  .id(conversation.id)
                     .build()
                 Amplify.DataStore.save(c,
-                    { Log.i("MyAmplifyApp", "Conversation saved") },
+                    { Log.i("MyAmplifyApp", "Conversation saved")
+
+                        for(message in conversation.messages!!){
+                            val m = com.amplifyframework.datastore.generated.model.Message.builder()
+                                .sender(message.sender)
+                                .content(message.content)
+                                .date(message.date)
+                                .conversation(c)
+                                .receivers(message.receivers)
+                                .build()
+                            Amplify.DataStore.save(m,
+                                { Log.i("MyAmplifyApp", "Message saved") },
+                                { Log.e("MyAmplifyApp", "message not saved", it) }
+                            )
+                        }
+
+                    },
                     { Log.e("MyAmplifyApp", "Conversation not saved", it) }
                 )
             }
@@ -160,11 +179,25 @@ fun initializeUserData(b: Bitmap){
                 val decodedString: ByteArray = Base64.decode(conv.picture, Base64.DEFAULT)
                 var decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
                 if(decodedByte == null) decodedByte = b
-                user.conversations?.add(Conversation(conv.id, conv.name, conv.type, mutableListOf(), decodedByte, conv.favourite))
+
+
+                var messageList: MutableList<Message> = mutableListOf<Message>()
+
+                for(message in allMessagesList){
+                    val mess = Message(message.sender, message.receivers, message.content, message.date)
+                    if((message.conversation.name == conv.name) && (!messageList.contains(mess)))
+                        messageList.add(mess)
+                }
+
+
+
+                user.conversations?.add(Conversation(conv.id, conv.name, conv.type, messageList, decodedByte, conv.favourite))
             }
         }
     }
 }
+
+
 
 fun bitMapToString(bitmap: Bitmap): String? {
     val baos = ByteArrayOutputStream()
