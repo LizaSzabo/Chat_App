@@ -177,7 +177,7 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
               //  currentUser?.let { UpdateUser(it) }
                 for(user in ChatApplication.usersList){
                     for(conversation in user.conversations!!){
-                        if(conversation.name == currentConversation?.name){
+                        if(conversation.code == currentConversation?.code){
                              UpdateUser(user)
                         }
                     }

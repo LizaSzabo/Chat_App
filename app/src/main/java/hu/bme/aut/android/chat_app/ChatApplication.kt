@@ -65,7 +65,7 @@ class ChatApplication : RainbowCakeApplication() {
                         "Hello",
                         "2021.04.01 14:12"
                     )
-                ), b, false
+                ), b, false, "1234"
             )
         )
 
@@ -83,7 +83,7 @@ class ChatApplication : RainbowCakeApplication() {
                        "Hello",
                        "2021.04.01 14:12"
                    )
-               ), b, false
+               ), b, false, "1234"
            ),
            Conversation(
                "2", "second", "private", mutableListOf(
@@ -98,7 +98,7 @@ class ChatApplication : RainbowCakeApplication() {
                        "Hello",
                        "2021.04.01 14:12"
                    )
-               ), b, false
+               ), b, false, "1234"
            )
        )
         val yourBitmap: Bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
@@ -140,7 +140,7 @@ class ChatApplication : RainbowCakeApplication() {
                             "Hello",
                             "2021.04.01 14:12"
                         )
-                    ), b, user.conversations[0].favourite
+                    ), b, user.conversations[0].favourite, "1234"
                     ))}
                     /*for (con in user.conversations){
                         conv2.add(Conversation(1, con.name, con.type, mutableListOf(
@@ -186,7 +186,7 @@ class ChatApplication : RainbowCakeApplication() {
             { matches ->
                 while (matches.hasNext()) {
                     val conversation = matches.next()
-                    Log.i("MyAmplifyApp", "Conversation:${conversation.id} ${conversation.name} ${conversation.user.userName}")
+                    Log.i("MyAmplifyApp", "Conversation:${conversation.code} ${conversation.name} ${conversation.user.userName}")
                     allConversationList.add(conversation)
                 }
                 Amplify.DataStore.query(com.amplifyframework.datastore.generated.model.Message::class.java,

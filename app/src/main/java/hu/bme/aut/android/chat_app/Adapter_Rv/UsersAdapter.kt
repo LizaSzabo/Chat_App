@@ -33,7 +33,7 @@ class UsersAdapter: ListAdapter<User, UsersAdapter.UsersViewHolder>(ItemCallback
             val users : MutableList<User> = mutableListOf()
             for(user in usersList){
                 for(conversation in user.conversations!!) {
-                    if (conversation.name == currentConversation?.name)
+                    if (conversation.code == currentConversation?.code)
                         users.add(user)
                 }
             }

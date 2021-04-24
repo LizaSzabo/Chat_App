@@ -15,8 +15,7 @@ import hu.bme.aut.android.chat_app.Model.Message
 import hu.bme.aut.android.chat_app.Network.UpdateUser
 import hu.bme.aut.android.chat_app.databinding.ItemMessageReceivedBinding
 import hu.bme.aut.android.chat_app.databinding.ItemSentMessageBinding
-import java.text.SimpleDateFormat
-import java.util.*
+
 
 class ChatAdapter : ListAdapter<Message, ChatAdapter.ChatViewHolder>(itemCallback)  {
 
@@ -119,7 +118,7 @@ class ChatAdapter : ListAdapter<Message, ChatAdapter.ChatViewHolder>(itemCallbac
 
         for(user in usersList){
             for(conversation in user.conversations!!){
-                if(conversation.name == currentConversation?.name){
+                if(conversation.code == currentConversation?.code){
                     val index = user.conversations!!.indexOf(conversation)
                     user.conversations!![index] = currentConversation!!
 

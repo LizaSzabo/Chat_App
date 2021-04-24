@@ -38,4 +38,8 @@
         <item>EN</item>
         <item>HU</item>
     </string-array>
+    <string-array name="types">
+        <item>Private</item>
+        <item>Group</item>
+    </string-array>
 </resources>

@@ -54,6 +54,7 @@ import java.io.ByteArrayOutputStream
                     .type(conversation.type)
                     .picture(bitMapToString(conversation.picture))
                     .favourite(conversation.favourite)
+                    .code(conversation.code)
                     .user(u)
                   //  .id(conversation.id)
                     .build()
@@ -185,13 +186,11 @@ fun initializeUserData(b: Bitmap){
 
                 for(message in allMessagesList){
                     val mess = Message(message.sender, message.receivers, message.content, message.date)
-                    if((message.conversation.name == conv.name) && (!messageList.contains(mess)))
+                    if((message.conversation.code == conv.code) && (!messageList.contains(mess)))
                         messageList.add(mess)
                 }
-
-
-
-                user.conversations?.add(Conversation(conv.id, conv.name, conv.type, messageList, decodedByte, conv.favourite))
+                
+                user.conversations?.add(Conversation(conv.id, conv.name, conv.type, messageList, decodedByte, conv.favourite, conv.code))
             }
         }
     }

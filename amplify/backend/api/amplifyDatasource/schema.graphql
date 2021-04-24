@@ -14,6 +14,7 @@ type Conversation @model
   type: String!
   picture: String!
   favourite: Boolean!
+  code: String
   user: User @connection(fields: ["userID"])
   messages: [Message]  @connection(keyName: "byConversation", fields: ["id"])
 }

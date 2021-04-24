@@ -166,8 +166,8 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
 
         for(user in usersList){
             for(conversation in user.conversations!!){
-                if(conversation.name == currentConversation?.name){
-                    val con = Conversation(conv.id, conv.name, conv.type, conv.messages, conv.picture, conversation.favourite)
+                if(conversation.code == currentConversation?.code){
+                    val con = Conversation(conv.id, conv.name, conv.type, conv.messages, conv.picture, conversation.favourite, conv.code)
                     val index = user.conversations!!.indexOf(conversation)
                     user.conversations!![index] = con
 
@@ -183,7 +183,7 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
 
         for(user in usersList){
             for(conversation in user.conversations!!){
-                if(conversation.name == conv.name){
+                if(conversation.code == conv.code){
                     val index = user.conversations!!.indexOf(conversation)
                     user.conversations!![index] = conv
 
@@ -214,9 +214,12 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
                     val conversation = currentConversation?.name?.let {
                         currentConversation?.type?.let { it1 ->
                             currentConversation?.picture?.let { it2 ->
-                                Conversation(
-                                   currentConversation!!.id, it, it1, currentConversation?.messages,
-                                    it2, false)
+                                currentConversation?.code?.let { it3 ->
+                                    Conversation(
+                                        currentConversation!!.id, it, it1, currentConversation?.messages,
+                                        it2, false, it3
+                                    )
+                                }
                             }
                         }
                     }

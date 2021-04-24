@@ -49,7 +49,7 @@ class AddUserDialog: DialogFragment() {
             Log.i("users", user.userName)
             if(user.userName == binding.editTextUserName.text.toString() ) {
                 for(conversation in user.conversations!!) {
-                    if (conversation.id == currentConversation?.id) {
+                    if (conversation.code == currentConversation?.code) {
                         binding.editTextUserName.error = "User already added"
                         return false
                     }

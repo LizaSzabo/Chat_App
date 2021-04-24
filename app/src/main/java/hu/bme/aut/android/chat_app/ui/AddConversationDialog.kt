@@ -4,25 +4,22 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Base64
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import androidx.fragment.app.DialogFragment
-import com.amplifyframework.core.Amplify
-import com.amplifyframework.core.model.query.Where
-import com.amplifyframework.datastore.generated.model.User
-import com.amplifyframework.datastore.generated.model.User.*
+import hu.bme.aut.android.chat_app.ChatApplication.Companion.allConversationList
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.convid
-import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentUser
 import hu.bme.aut.android.chat_app.Model.Conversation
 import hu.bme.aut.android.chat_app.Model.Message
 import hu.bme.aut.android.chat_app.R
 import hu.bme.aut.android.chat_app.databinding.DialogAddconversationBinding
-import java.io.ByteArrayOutputStream
+import java.util.*
 
-class AddConversationDialog: DialogFragment() {
+class AddConversationDialog: DialogFragment(), AdapterView.OnItemSelectedListener  {
     private lateinit var binding: DialogAddconversationBinding
     lateinit var listener: AddConversationListener
 
@@ -35,8 +32,9 @@ class AddConversationDialog: DialogFragment() {
             if (validateNewConversation()) {
                val defaultMessages = mutableListOf<Message>()
                 convid++
-                    listener.onAddConversation(Conversation("0", binding.editTextConversationTitle.text.toString(),
-                        binding.editTextTypeTitle.text.toString(), defaultMessages,  b, false))
+                    listener.onAddConversation(Conversation(
+                        UUID.randomUUID().toString(), binding.editTextConversationTitle.text.toString(),
+                        binding.editTextTypeTitle.text.toString(), defaultMessages,  b, false, binding.editTextCode.text.toString()))
 
                 dialog?.dismiss()
             }
@@ -45,6 +43,21 @@ class AddConversationDialog: DialogFragment() {
         binding.btnCancel.setOnClickListener{
             dialog?.dismiss()
         }
+
+        val spinner: Spinner = binding.spinnerCategory
+        context?.let {
+            ArrayAdapter.createFromResource(
+                it,
+                R.array.types,
+                android.R.layout.simple_spinner_item
+            )
+                .also { adapter ->
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    spinner.adapter = adapter
+                }
+        }
+        spinner.onItemSelectedListener = this
+        spinner.dropDownHorizontalOffset = -20
         return binding.root
     }
 
@@ -58,20 +71,33 @@ class AddConversationDialog: DialogFragment() {
             binding.editTextTypeTitle.error = "conversation type cannot be empty"
             return false
         }
-       /* if(!validUserAndPass()){
-            Snackbar.make(
-                fragmentBinding.root, context.getString(R.string.wrong_input),
-                Snackbar.LENGTH_LONG
-            )
-                .setBackgroundTint(Color.RED)
-                .show()
-            return false
-        }*/
+
+        for(conversation in allConversationList){
+            if(conversation.code == binding.editTextCode.text.toString()) {
+                binding.editTextCode.error = "code already exists"
+                return false
+            }
+        }
 
         return true
     }
 
     interface AddConversationListener{
         fun onAddConversation(conversation: Conversation)
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        when(position){
+            0 -> setSelectedItem("Private")
+            1 -> setSelectedItem("Group")
+        }
+
+    }
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+        TODO("Not yet implemented")
+    }
+
+    private fun  setSelectedItem(categorySelected: String){
+        binding.editTextTypeTitle.setText(categorySelected)
     }
 }

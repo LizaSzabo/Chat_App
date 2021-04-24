@@ -28,10 +28,12 @@ class EditConversationDialog(var pos: Int) : DialogFragment() {
                     currentConversation?.picture?.let { it2 ->
                         currentConversation?.favourite?.let { it3 ->
                             currentConversation?.id?.let { it4 ->
-                                Conversation(
-                                    it4, binding.editTextConversationTitle.text.toString(),
-                                    "", it1?.messages, it2, it3
-                                )
+                                currentConversation?.code?.let { it5 ->
+                                    Conversation(
+                                        it4, binding.editTextConversationTitle.text.toString(),
+                                        "", it1?.messages, it2, it3, it5
+                                    )
+                                }
                             }
                         }
                     }

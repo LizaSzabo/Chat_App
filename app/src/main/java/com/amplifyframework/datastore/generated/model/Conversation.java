@@ -27,12 +27,14 @@ public final class Conversation implements Model {
   public static final QueryField TYPE = field("Conversation", "type");
   public static final QueryField PICTURE = field("Conversation", "picture");
   public static final QueryField FAVOURITE = field("Conversation", "favourite");
+  public static final QueryField CODE = field("Conversation", "code");
   public static final QueryField USER = field("Conversation", "userID");
   private final @ModelField(targetType="ID", isRequired = true) String id;
   private final @ModelField(targetType="String", isRequired = true) String name;
   private final @ModelField(targetType="String", isRequired = true) String type;
   private final @ModelField(targetType="String", isRequired = true) String picture;
   private final @ModelField(targetType="Boolean", isRequired = true) Boolean favourite;
+  private final @ModelField(targetType="String") String code;
   private final @ModelField(targetType="User") @BelongsTo(targetName = "userID", type = User.class) User user;
   private final @ModelField(targetType="Message") @HasMany(associatedWith = "conversation", type = Message.class) List<Message> messages = null;
   public String getId() {
@@ -55,6 +57,10 @@ public final class Conversation implements Model {
       return favourite;
   }
   
+  public String getCode() {
+      return code;
+  }
+  
   public User getUser() {
       return user;
   }
@@ -63,12 +69,13 @@ public final class Conversation implements Model {
       return messages;
   }
   
-  private Conversation(String id, String name, String type, String picture, Boolean favourite, User user) {
+  private Conversation(String id, String name, String type, String picture, Boolean favourite, String code, User user) {
     this.id = id;
     this.name = name;
     this.type = type;
     this.picture = picture;
     this.favourite = favourite;
+    this.code = code;
     this.user = user;
   }
   
@@ -85,6 +92,7 @@ public final class Conversation implements Model {
               ObjectsCompat.equals(getType(), conversation.getType()) &&
               ObjectsCompat.equals(getPicture(), conversation.getPicture()) &&
               ObjectsCompat.equals(getFavourite(), conversation.getFavourite()) &&
+              ObjectsCompat.equals(getCode(), conversation.getCode()) &&
               ObjectsCompat.equals(getUser(), conversation.getUser());
       }
   }
@@ -97,6 +105,7 @@ public final class Conversation implements Model {
       .append(getType())
       .append(getPicture())
       .append(getFavourite())
+      .append(getCode())
       .append(getUser())
       .toString()
       .hashCode();
@@ -111,6 +120,7 @@ public final class Conversation implements Model {
       .append("type=" + String.valueOf(getType()) + ", ")
       .append("picture=" + String.valueOf(getPicture()) + ", ")
       .append("favourite=" + String.valueOf(getFavourite()) + ", ")
+      .append("code=" + String.valueOf(getCode()) + ", ")
       .append("user=" + String.valueOf(getUser()))
       .append("}")
       .toString();
@@ -145,6 +155,7 @@ public final class Conversation implements Model {
       null,
       null,
       null,
+      null,
       null
     );
   }
@@ -155,6 +166,7 @@ public final class Conversation implements Model {
       type,
       picture,
       favourite,
+      code,
       user);
   }
   public interface NameStep {
@@ -180,6 +192,7 @@ public final class Conversation implements Model {
   public interface BuildStep {
     Conversation build();
     BuildStep id(String id) throws IllegalArgumentException;
+    BuildStep code(String code);
     BuildStep user(User user);
   }
   
@@ -190,6 +203,7 @@ public final class Conversation implements Model {
     private String type;
     private String picture;
     private Boolean favourite;
+    private String code;
     private User user;
     @Override
      public Conversation build() {
@@ -201,6 +215,7 @@ public final class Conversation implements Model {
           type,
           picture,
           favourite,
+          code,
           user);
     }
     
@@ -233,6 +248,12 @@ public final class Conversation implements Model {
     }
     
     @Override
+     public BuildStep code(String code) {
+        this.code = code;
+        return this;
+    }
+    
+    @Override
      public BuildStep user(User user) {
         this.user = user;
         return this;
@@ -261,12 +282,13 @@ public final class Conversation implements Model {
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, String name, String type, String picture, Boolean favourite, User user) {
+    private CopyOfBuilder(String id, String name, String type, String picture, Boolean favourite, String code, User user) {
       super.id(id);
       super.name(name)
         .type(type)
         .picture(picture)
         .favourite(favourite)
+        .code(code)
         .user(user);
     }
     
@@ -288,6 +310,11 @@ public final class Conversation implements Model {
     @Override
      public CopyOfBuilder favourite(Boolean favourite) {
       return (CopyOfBuilder) super.favourite(favourite);
+    }
+    
+    @Override
+     public CopyOfBuilder code(String code) {
+      return (CopyOfBuilder) super.code(code);
     }
     
     @Override
