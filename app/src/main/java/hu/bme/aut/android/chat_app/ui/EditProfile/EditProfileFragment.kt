@@ -5,19 +5,14 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Base64
-import android.util.Log
 import android.view.View
 import co.zsmb.rainbowcake.base.RainbowCakeFragment
 import co.zsmb.rainbowcake.dagger.getViewModelFromFactory
 import co.zsmb.rainbowcake.extensions.exhaustive
-import com.amplifyframework.core.Amplify
-import com.amplifyframework.core.model.query.Where
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentUser
 import hu.bme.aut.android.chat_app.Network.updateUserPicture
 import hu.bme.aut.android.chat_app.R
 import hu.bme.aut.android.chat_app.databinding.FragmentEditProfileBinding
-import java.io.ByteArrayOutputStream
 
 
 class EditProfileFragment : RainbowCakeFragment<EditProfileViewState, EditProfileViewModel>() {

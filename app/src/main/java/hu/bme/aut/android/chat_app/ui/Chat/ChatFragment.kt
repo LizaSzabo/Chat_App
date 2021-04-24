@@ -67,7 +67,7 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
 
         val resized: Bitmap?
         val picture =  currentConversation?.picture
-        resized = if( picture!!.height > picture!!.width){
+        resized = if( picture!!.height > picture.width){
             picture.resizeByWidth( fragmentBinding.iwConversationPicture.layoutParams.width)
         } else {
             picture.resizeByHeight( fragmentBinding.iwConversationPicture.layoutParams.height)
@@ -115,17 +115,6 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-      /*  if (item.itemId == R.id.Log_out) {
-            val action = MessagesFragmentDirections.actionMessagesFragmentToLoginFragment()
-            findNavController().navigate(action)
-        }
-        else if(item.itemId == R.id.settings){
-            val action = MessagesFragmentDirections.actionMessagesFragmentToEditProfileFragment()
-            findNavController().navigate(action)
-        }*/
-        return super.onOptionsItemSelected(item)
-    }
 
     override fun getViewResource() = R.layout.fragment_chat
 

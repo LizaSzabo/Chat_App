@@ -108,4 +108,6 @@ dependencies {
 
     // Support for Java 8 features
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
+
+    implementation 'com.amplifyframework:aws-api:1.17.1'
 }

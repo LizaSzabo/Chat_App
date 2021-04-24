@@ -107,7 +107,7 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
 
    override  fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.messages_toolbar_menu, menu)
-        super.onCreateOptionsMenu(menu!!, inflater)
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -172,7 +172,7 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
         if (requestCode == PICK_IMAGE) {
             val selectedImageUri: Uri? = data?.data
             if (null != selectedImageUri) {
-                var yourBitmap: Bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, selectedImageUri)
+                val yourBitmap: Bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, selectedImageUri)
                 currentConversation?.picture = yourBitmap
               //  currentUser?.let { UpdateUser(it) }
                 for(user in ChatApplication.usersList){

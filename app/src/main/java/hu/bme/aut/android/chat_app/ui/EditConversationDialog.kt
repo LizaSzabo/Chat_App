@@ -5,15 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import com.amplifyframework.core.Amplify
-import com.amplifyframework.core.model.query.Where
-import com.amplifyframework.datastore.generated.model.User
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentConversation
 import hu.bme.aut.android.chat_app.Model.Conversation
 import hu.bme.aut.android.chat_app.R
 import hu.bme.aut.android.chat_app.databinding.DialogEditConversationBinding
 
-class EditConversationDialog(var pos: Int) : DialogFragment() {
+class EditConversationDialog(private var pos: Int) : DialogFragment() {
     private lateinit var binding: DialogEditConversationBinding
      lateinit var listener: EditConversationListener
 
@@ -31,7 +28,7 @@ class EditConversationDialog(var pos: Int) : DialogFragment() {
                                 currentConversation?.code?.let { it5 ->
                                     Conversation(
                                         it4, binding.editTextConversationTitle.text.toString(),
-                                        "", it1?.messages, it2, it3, it5
+                                        "", it1.messages, it2, it3, it5
                                     )
                                 }
                             }

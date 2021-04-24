@@ -2,16 +2,16 @@ package hu.bme.aut.android.chat_app.Network
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.net.Uri
-import android.provider.MediaStore
 import android.util.Base64
 import android.util.Log
 import com.amplifyframework.core.Amplify
 import com.amplifyframework.core.model.query.Where
+import com.amplifyframework.datastore.DataStoreItemChange
 import hu.bme.aut.android.chat_app.ChatApplication
-import hu.bme.aut.android.chat_app.ChatApplication.Companion.allConversationList
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.allMessagesList
+import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentConversation
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentUser
+import hu.bme.aut.android.chat_app.ChatApplication.Companion.usersList
 import hu.bme.aut.android.chat_app.Model.Conversation
 import hu.bme.aut.android.chat_app.Model.Message
 import hu.bme.aut.android.chat_app.Model.User
@@ -79,16 +79,19 @@ import java.io.ByteArrayOutputStream
                     { Log.e("MyAmplifyApp", "Conversation not saved", it) }
                 )
             }
+
         },
         { Log.e("MyAmplifyApp", "User not saved", it) }
     )
+
+
 }
 
 
 fun updateUserPicture(picture: Bitmap){
     Amplify.DataStore.query(com.amplifyframework.datastore.generated.model.User::class.java,
         Where.matches(com.amplifyframework.datastore.generated.model.User.USER_NAME.eq(
-            ChatApplication.currentUser?.userName)),
+            currentUser?.userName)),
         { matches ->
             if (matches.hasNext()) {
                 val original = matches.next()
@@ -182,7 +185,7 @@ fun initializeUserData(b: Bitmap){
                 if(decodedByte == null) decodedByte = b
 
 
-                var messageList: MutableList<Message> = mutableListOf<Message>()
+                val messageList: MutableList<Message> = mutableListOf()
 
                 for(message in allMessagesList){
                     val mess = Message(message.sender, message.receivers, message.content, message.date)
@@ -196,7 +199,35 @@ fun initializeUserData(b: Bitmap){
     }
 }
 
+fun observeData(){
+    Amplify.DataStore.observe(com.amplifyframework.datastore.generated.model.User::class.java,
+        { Log.i("MyAmplifyApp", "Observation began") },
+        {
 
+        },
+        { Log.e("MyAmplifyApp", "Observation failed", it) },
+        { Log.i("MyAmplifyApp", "Observation complete") }
+    )
+    Amplify.DataStore.observe(com.amplifyframework.datastore.generated.model.Conversation::class.java,
+        { Log.i("MyAmplifyApp", "Observation began") },
+        {
+
+        },
+        { Log.e("MyAmplifyApp", "Observation failed", it) },
+        { Log.i("MyAmplifyApp", "Observation complete") }
+    )
+    Amplify.DataStore.observe(com.amplifyframework.datastore.generated.model.Message::class.java,
+        { Log.i("MyAmplifyApp", "Observation began") },
+        {
+            val post = it
+            Log.i("MyAmplifyApp", "Post: $post")
+
+
+        },
+        { Log.e("MyAmplifyApp", "Observation failed", it) },
+        { Log.i("MyAmplifyApp", "Observation complete") }
+    )
+}
 
 fun bitMapToString(bitmap: Bitmap): String? {
     val baos = ByteArrayOutputStream()

@@ -20,7 +20,7 @@ class AddUserDialog: DialogFragment() {
         binding = DialogAddUserToConversationBinding.inflate(inflater, container, false)
         Log.i("users", "user.userName")
         binding.btnSave.setOnClickListener {
-            val uri: Uri = Uri.parse("android.resource://hu.bme.aut.android.chat_app/drawable/default_profilepic")
+         //   val uri: Uri = Uri.parse("android.resource://hu.bme.aut.android.chat_app/drawable/default_profilepic")
 
             if (validateNewUser()) {
                     listener.onAddUser(binding.editTextUserName.text.toString())

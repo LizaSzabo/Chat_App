@@ -2,13 +2,10 @@ package hu.bme.aut.android.chat_app.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import com.amplifyframework.core.Amplify
-import com.amplifyframework.core.model.query.Where
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentUser
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.usersList
 import hu.bme.aut.android.chat_app.Model.User
@@ -31,7 +28,7 @@ class ChangePassDialog : DialogFragment() {
                         currentUser?.userName?.let { it3 ->
                             User(
                                  it3, binding.editNewPass.text.toString(),
-                                it2, it1?.conversations )
+                                it2, it1.conversations )
                         }
                     }
                 }

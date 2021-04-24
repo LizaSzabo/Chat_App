@@ -12,11 +12,14 @@ import co.zsmb.rainbowcake.dagger.RainbowCakeApplication
 import co.zsmb.rainbowcake.dagger.RainbowCakeComponent
 import co.zsmb.rainbowcake.timber.TIMBER
 import com.amplifyframework.AmplifyException
+import com.amplifyframework.api.aws.AWSApiPlugin
 import com.amplifyframework.core.Amplify
 import com.amplifyframework.datastore.AWSDataStorePlugin
+import com.amplifyframework.datastore.DataStoreConfiguration
 import hu.bme.aut.android.chat_app.Model.Conversation
 import hu.bme.aut.android.chat_app.Model.Message
 import hu.bme.aut.android.chat_app.Model.User
+import hu.bme.aut.android.chat_app.Network.UpdateUser
 import hu.bme.aut.android.chat_app.Network.initializeUserData
 import hu.bme.aut.android.chat_app.di.DaggerAppComponent
 import timber.log.Timber
@@ -47,6 +50,11 @@ class ChatApplication : RainbowCakeApplication() {
             consumeExecuteExceptions = false
             isDebug = BuildConfig.DEBUG
         }
+
+
+
+
+
         Timber.plant(Timber.DebugTree())
         val uri: Uri = Uri.parse("android.resource://hu.bme.aut.android.chat_app/drawable/addprofile")
         val b: Bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
@@ -104,7 +112,13 @@ class ChatApplication : RainbowCakeApplication() {
         val yourBitmap: Bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
         try {
             Amplify.addPlugin(AWSDataStorePlugin())
+            Amplify.addPlugin(AWSApiPlugin())
+            Amplify.addPlugin(AWSDataStorePlugin(DataStoreConfiguration.builder()
+                .syncExpression(com.amplifyframework.datastore.generated.model.Message::class.java)
+                { com.amplifyframework.datastore.generated.model.Message.CONVERSATION.eq(
+                    currentConversation) }.build()))
             Amplify.configure(applicationContext)
+
 
             Log.i("MyAmplifyApp", "Initialized Amplify")
         } catch (error: AmplifyException) {
@@ -161,9 +175,33 @@ class ChatApplication : RainbowCakeApplication() {
                     usersList.add(User(user.userName, user.password, decodedByte, conv2))
                     Log.i("MyAmplifyApp", "Title: ${user.userName}")
                 }
+                Amplify.DataStore.query(com.amplifyframework.datastore.generated.model.Conversation::class.java,
+                    { matches ->
+                        while (matches.hasNext()) {
+                            val conversation = matches.next()
+                            Log.i("MyAmplifyApp", "Conversation:${conversation.code} ${conversation.name} ${conversation.user.userName}")
+                            allConversationList.add(conversation)
+                        }
+                        Amplify.DataStore.query(com.amplifyframework.datastore.generated.model.Message::class.java,
+                            { matches ->
+                                while (matches.hasNext()) {
+                                    val message = matches.next()
+                                 //   Log.i("MyAmplifyApp", "Message:${message.id} ${message.content} ${message.conversation.name}")
+                                    allMessagesList.add(message)
+                                }
+                                initializeUserData(b)
+                            },
+                            { Log.e("MyAmplifyApp", "Query failed", it) }
+                        )
+                        //  initializeUserData(b)
+                    },
+                    { Log.e("MyAmplifyApp", "Query failed", it) }
+                )
+
 
             },
             { Log.e("MyAmplifyApp", "Error retrieving posts", it) }
+
         )
 
 
@@ -181,29 +219,6 @@ class ChatApplication : RainbowCakeApplication() {
         )*/
 
 
-
-        Amplify.DataStore.query(com.amplifyframework.datastore.generated.model.Conversation::class.java,
-            { matches ->
-                while (matches.hasNext()) {
-                    val conversation = matches.next()
-                    Log.i("MyAmplifyApp", "Conversation:${conversation.code} ${conversation.name} ${conversation.user.userName}")
-                    allConversationList.add(conversation)
-                }
-                Amplify.DataStore.query(com.amplifyframework.datastore.generated.model.Message::class.java,
-                    { matches ->
-                        while (matches.hasNext()) {
-                            val message = matches.next()
-                            Log.i("MyAmplifyApp", "Message:${message.id} ${message.content} ${message.conversation.name}")
-                            allMessagesList.add(message)
-                        }
-                        initializeUserData(b)
-                    },
-                    { Log.e("MyAmplifyApp", "Query failed", it) }
-                )
-              //  initializeUserData(b)
-            },
-            { Log.e("MyAmplifyApp", "Query failed", it) }
-        )
 
 
 

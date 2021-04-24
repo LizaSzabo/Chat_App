@@ -1,25 +1,18 @@
 package hu.bme.aut.android.chat_app.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import com.amplifyframework.core.Amplify
-import com.amplifyframework.core.model.query.Where
-import com.amplifyframework.datastore.generated.model.User
-import com.amplifyframework.datastore.generated.model.User.USER_NAME
-import hu.bme.aut.android.chat_app.ChatApplication
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentUser
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.usersList
 import hu.bme.aut.android.chat_app.Network.updateUserName
-import hu.bme.aut.android.chat_app.Network.updateUserPicture
 import hu.bme.aut.android.chat_app.R
 import hu.bme.aut.android.chat_app.databinding.DialogEditUserNameBinding
 import hu.bme.aut.android.chat_app.databinding.FragmentEditProfileBinding
 
-class EditUserNameDialog(var editbinding: FragmentEditProfileBinding): DialogFragment() {
+class EditUserNameDialog(private var editbinding: FragmentEditProfileBinding): DialogFragment() {
     private lateinit var binding: DialogEditUserNameBinding
 
 
@@ -45,7 +38,7 @@ class EditUserNameDialog(var editbinding: FragmentEditProfileBinding): DialogFra
                 currentUser?.userName = binding.editTextLoginName.text.toString()
                 usersList.find { it == user }?.userName = currentUser?.userName.toString()
                 if(user?.conversations != null) {
-                    for (conv in user?.conversations!!) {
+                    for (conv in user.conversations!!) {
                         for (message in conv.messages!!) {
                             if (message.sender == name) {
                                 message.sender = binding.editTextLoginName.text.toString()
@@ -53,7 +46,7 @@ class EditUserNameDialog(var editbinding: FragmentEditProfileBinding): DialogFra
                         }
                     }
                 }
-                editbinding.tvUserName.text = ChatApplication.currentUser?.userName
+                editbinding.tvUserName.text = currentUser?.userName
 
                 updateUserName(binding.editTextLoginName.text.toString(), name)
 
