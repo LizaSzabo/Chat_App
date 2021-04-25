@@ -18,6 +18,8 @@ import hu.bme.aut.android.chat_app.ChatApplication.Companion.usersList
 import hu.bme.aut.android.chat_app.Model.Conversation
 import hu.bme.aut.android.chat_app.Model.Message
 import hu.bme.aut.android.chat_app.Model.User
+import hu.bme.aut.android.chat_app.R
+import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
 
  fun UpdateUser(user: User) {
@@ -202,7 +204,7 @@ fun initializeUserData(b: Bitmap){
     }
 }
 
-fun observeData(){
+fun observeData(b: Bitmap){
     Amplify.DataStore.observe(com.amplifyframework.datastore.generated.model.User::class.java,
         { Log.i("MyAmplifyApp", "Observation began") },
         {
@@ -223,6 +225,7 @@ fun observeData(){
         { Log.i("MyAmplifyApp", "Observation began") },
         {
             val post = it
+            querys(b)
             Log.i("MyAmplifyApp", "Post: $post")
 
 

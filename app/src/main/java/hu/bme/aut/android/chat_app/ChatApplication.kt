@@ -22,6 +22,7 @@ import hu.bme.aut.android.chat_app.Model.Message
 import hu.bme.aut.android.chat_app.Model.User
 import hu.bme.aut.android.chat_app.Network.UpdateUser
 import hu.bme.aut.android.chat_app.Network.initializeUserData
+import hu.bme.aut.android.chat_app.Network.observeData
 import hu.bme.aut.android.chat_app.Network.querys
 import hu.bme.aut.android.chat_app.di.DaggerAppComponent
 import timber.log.Timber
@@ -146,7 +147,7 @@ class ChatApplication : RainbowCakeApplication() {
             { Log.i("MyAmplifyApp", "Created a new post successfully") },
             { Log.e("MyAmplifyApp", "Error creating post") }
         )*/
-        Thread.sleep(20_000)
+       /* Thread.sleep(20_000)
 
         Amplify.DataStore.query(com.amplifyframework.datastore.generated.model.User::class.java,
             { matches ->
@@ -216,7 +217,7 @@ class ChatApplication : RainbowCakeApplication() {
             },
             { Log.e("MyAmplifyApp", "Error retrieving posts", it) }
 
-        )
+        )*/
 
 
       /* Amplify.DataStore.query(com.amplifyframework.datastore.generated.model.User::class.java,
@@ -233,9 +234,9 @@ class ChatApplication : RainbowCakeApplication() {
         )*/
 
 
-        Thread.sleep(10_000)
-       // querys(b)
-
+        Thread.sleep(20_000)
+        querys(b)
+        observeData(b)
 
 
 
