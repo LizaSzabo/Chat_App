@@ -2,12 +2,15 @@ package hu.bme.aut.android.chat_app.Network
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.net.Uri
+import android.provider.MediaStore
 import android.util.Base64
 import android.util.Log
 import com.amplifyframework.core.Amplify
 import com.amplifyframework.core.model.query.Where
 import com.amplifyframework.datastore.DataStoreItemChange
 import hu.bme.aut.android.chat_app.ChatApplication
+import hu.bme.aut.android.chat_app.ChatApplication.Companion.allConversationList
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.allMessagesList
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentConversation
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentUser
@@ -228,6 +231,85 @@ fun observeData(){
         { Log.i("MyAmplifyApp", "Observation complete") }
     )
 }
+
+fun querys(b: Bitmap){
+
+    usersList.clear()
+    allMessagesList.clear()
+    allConversationList.clear()
+
+    Amplify.DataStore.query(com.amplifyframework.datastore.generated.model.User::class.java,
+        { matches ->
+            while (matches.hasNext()) {
+                val user = matches.next()
+                val decodedString: ByteArray = Base64.decode(user.profilePicture, Base64.DEFAULT)
+                val decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
+                var  conv2 : MutableList<Conversation> = mutableListOf()
+                if (user.conversations != null){
+                    conv2.add(Conversation("1", user.conversations[0].name, user.conversations[0].type, mutableListOf(
+                        Message(
+                            "User1",
+                            "second",
+                            "Hello",
+                            "2021.04.01 14:12"
+                        ), Message("User1", "second", "Szia", "2021.04.01 14:12"), Message(
+                            "User2",
+                            "first",
+                            "Hello",
+                            "2021.04.01 14:12"
+                        )
+                    ), b, user.conversations[0].favourite, "1234"
+                    ))}
+                /*for (con in user.conversations){
+                    conv2.add(Conversation(1, con.name, con.type, mutableListOf(
+                        Message(
+                            "User1",
+                            "second",
+                            "Hello",
+                            "2021.04.01 14:12"
+                        ), Message("User1", "second", "Szia", "2021.04.01 14:12"), Message(
+                            "User2",
+                            "first",
+                            "Hello",
+                            "2021.04.01 14:12"
+                        )
+                    ), uri, con.favourite
+                    ))
+                }*/
+                usersList.add(User(user.userName, user.password, decodedByte, conv2))
+                Log.i("MyAmplifyApp", "Title: ${user.userName}")
+            }
+            Amplify.DataStore.query(com.amplifyframework.datastore.generated.model.Conversation::class.java,
+                { matches ->
+                    while (matches.hasNext()) {
+                        val conversation = matches.next()
+                       // Log.i("MyAmplifyApp", "Conversation:${conversation.code} ${conversation.name} ${conversation.user.userName}")
+                        ChatApplication.allConversationList.add(conversation)
+                    }
+                    Amplify.DataStore.query(com.amplifyframework.datastore.generated.model.Message::class.java,
+                        { matches ->
+                            while (matches.hasNext()) {
+                                val message = matches.next()
+                                //   Log.i("MyAmplifyApp", "Message:${message.id} ${message.content} ${message.conversation.name}")
+                                allMessagesList.add(message)
+                            }
+                            initializeUserData(b)
+                        },
+                        { Log.e("MyAmplifyApp", "Query failed", it) }
+                    )
+                    //  initializeUserData(b)
+                },
+                { Log.e("MyAmplifyApp", "Query failed", it) }
+            )
+
+
+        },
+        { Log.e("MyAmplifyApp", "Error retrieving posts", it) }
+
+    )
+
+}
+
 
 fun bitMapToString(bitmap: Bitmap): String? {
     val baos = ByteArrayOutputStream()
