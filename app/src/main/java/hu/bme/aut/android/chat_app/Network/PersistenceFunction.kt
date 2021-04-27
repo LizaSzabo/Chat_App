@@ -9,6 +9,7 @@ import android.util.Log
 import com.amplifyframework.core.Amplify
 import com.amplifyframework.core.model.query.Where
 import com.amplifyframework.datastore.DataStoreItemChange
+import hu.bme.aut.android.chat_app.Adapter_Rv.ChatAdapter
 import hu.bme.aut.android.chat_app.ChatApplication
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.allConversationList
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.allMessagesList
@@ -205,6 +206,8 @@ fun initializeUserData(b: Bitmap){
 }
 
 fun observeData(b: Bitmap){
+
+
     Amplify.DataStore.observe(com.amplifyframework.datastore.generated.model.User::class.java,
         { Log.i("MyAmplifyApp", "Observation began") },
         {
@@ -225,6 +228,8 @@ fun observeData(b: Bitmap){
         { Log.i("MyAmplifyApp", "Observation began") },
         {
             val post = it
+
+
             querys(b)
             Log.i("MyAmplifyApp", "Post: $post")
 

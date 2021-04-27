@@ -25,6 +25,7 @@ import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentUser
 import hu.bme.aut.android.chat_app.ui.EditConversationDialog
 import hu.bme.aut.android.chat_app.Model.Conversation
 import hu.bme.aut.android.chat_app.Network.UpdateUser
+import hu.bme.aut.android.chat_app.Network.observeData
 import hu.bme.aut.android.chat_app.R
 import hu.bme.aut.android.chat_app.databinding.FragmentMessagesBinding
 
@@ -71,6 +72,7 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
         fragmentBinding.imageButtonProfile.setImageBitmap(resized)
 
         initRecyclerView()
+
     }
 
         private fun Bitmap.resizeByHeight(height:Int):Bitmap{

@@ -1,25 +1,38 @@
 package hu.bme.aut.android.chat_app.ui.Chat
 
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Context.NOTIFICATION_SERVICE
+import android.content.Intent
 import android.graphics.Bitmap
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.*
-import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import co.zsmb.rainbowcake.base.RainbowCakeFragment
 import co.zsmb.rainbowcake.dagger.getViewModelFromFactory
 import co.zsmb.rainbowcake.extensions.exhaustive
+import hu.bme.aut.android.chat_app.*
 import hu.bme.aut.android.chat_app.Adapter_Rv.ChatAdapter
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentConversation
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentUser
-import hu.bme.aut.android.chat_app.R
+import hu.bme.aut.android.chat_app.Network.observeData
 import hu.bme.aut.android.chat_app.databinding.FragmentChatBinding
-import hu.bme.aut.android.chat_app.ui.Login.LoginFragmentDirections
+import kotlinx.android.synthetic.main.fragment_chat.*
+import okhttp3.internal.notify
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
 
@@ -28,6 +41,10 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val intentChatWindowService = Intent(
+            activity, FloatingService::class.java
+        )
 
         val binding = FragmentChatBinding.bind(view)
         fragmentBinding= binding
@@ -51,6 +68,10 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
                     chatAdapter.addMessage(message)
                 }
                 fragmentBinding.text.setText("")
+
+                (activity as AppCompatActivity).startService(intentChatWindowService
+
+                )
             }
         }
 
@@ -68,25 +89,34 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
         val resized: Bitmap?
         val picture =  currentConversation?.picture
         resized = if( picture!!.height > picture.width){
-            picture.resizeByWidth( fragmentBinding.iwConversationPicture.layoutParams.width)
+            picture.resizeByWidth(fragmentBinding.iwConversationPicture.layoutParams.width)
         } else {
-            picture.resizeByHeight( fragmentBinding.iwConversationPicture.layoutParams.height)
+            picture.resizeByHeight(fragmentBinding.iwConversationPicture.layoutParams.height)
 
         }
         fragmentBinding.iwConversationPicture.setImageBitmap(resized)
         initRecyclerView()
+
+     /*   val uri: Uri = Uri.parse("android.resource://hu.bme.aut.android.chat_app/drawable/addprofile")
+        val b: Bitmap = MediaStore.Images.Media.getBitmap(
+            (activity as AppCompatActivity).contentResolver,
+            uri
+        )*/
+
+        //startNotification()
+
     }
 
     private fun initRecyclerView(){
         chatAdapter = ChatAdapter()
-        fragmentBinding.rvChat.layoutManager = LinearLayoutManager( context)
+        fragmentBinding.rvChat.layoutManager = LinearLayoutManager(context)
         fragmentBinding.rvChat.adapter =  chatAdapter
        // chatAdapter.itemClickListener = this
         chatAdapter.addAll()
     }
 
 
-    private fun Bitmap.resizeByHeight(height:Int):Bitmap{
+    private fun Bitmap.resizeByHeight(height: Int):Bitmap{
         val ratio:Float = this.height.toFloat() / this.width.toFloat()
         val width:Int = Math.round(height / ratio)
 
@@ -98,7 +128,7 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
         )
     }
 
-    private fun Bitmap.resizeByWidth(width:Int):Bitmap{
+    private fun Bitmap.resizeByWidth(width: Int):Bitmap{
         val ratio:Float = this.width.toFloat() / this.height.toFloat()
         val height:Int = Math.round(width / ratio)
 
@@ -122,13 +152,26 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
 
     override fun render(viewState: ChatViewState) {
         when(viewState){
-         Initial -> {
+            Initial -> {
 
-         }
+            }
             else ->{
 
             }
         }.exhaustive
     }
+
+    private fun startNotification(){
+        var builder = NotificationCompat.Builder(activity as AppCompatActivity, CHANNEL_ID)
+            .setSmallIcon(R.drawable.spinner_item)
+            .setContentTitle("New Message")
+            .setContentText(fragmentBinding.text.text.toString())
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+
+        with(NotificationManagerCompat.from(activity as AppCompatActivity)) {
+            notify(101, builder.build())
+        }
+    }
+
 
 }
