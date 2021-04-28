@@ -3,6 +3,9 @@
     package="hu.bme.aut.android.chat_app">
 
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.INTERNAL_SYSTEM_WINDOW "/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/logo"

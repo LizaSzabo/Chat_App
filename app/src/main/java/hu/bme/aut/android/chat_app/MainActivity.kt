@@ -2,6 +2,7 @@ package hu.bme.aut.android.chat_app
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -29,6 +30,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
+        val intentChatWindowService = Intent(
+            this, FloatingService::class.java
+        )
+
+        startService(intentChatWindowService)
 
 }
 }

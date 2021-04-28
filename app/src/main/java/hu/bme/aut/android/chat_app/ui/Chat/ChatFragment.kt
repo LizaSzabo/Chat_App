@@ -42,9 +42,6 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val intentChatWindowService = Intent(
-            activity, FloatingService::class.java
-        )
 
         val binding = FragmentChatBinding.bind(view)
         fragmentBinding= binding
@@ -69,9 +66,8 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
                 }
                 fragmentBinding.text.setText("")
 
-                (activity as AppCompatActivity).startService(intentChatWindowService
 
-                )
+              //  FloatingService.notificationUpdate(fragmentBinding.text.text.toString())
             }
         }
 
@@ -97,13 +93,13 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
         fragmentBinding.iwConversationPicture.setImageBitmap(resized)
         initRecyclerView()
 
-     /*   val uri: Uri = Uri.parse("android.resource://hu.bme.aut.android.chat_app/drawable/addprofile")
+      val uri: Uri = Uri.parse("android.resource://hu.bme.aut.android.chat_app/drawable/addprofile")
         val b: Bitmap = MediaStore.Images.Media.getBitmap(
             (activity as AppCompatActivity).contentResolver,
             uri
-        )*/
+        )
 
-        //startNotification()
+
 
     }
 

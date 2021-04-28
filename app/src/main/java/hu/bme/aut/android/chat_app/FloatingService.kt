@@ -1,14 +1,18 @@
 package hu.bme.aut.android.chat_app
 
-import android.app.Service
+import android.app.*
+import android.content.Context
 import android.content.Intent
 import android.graphics.PixelFormat
 import android.os.Build
+import android.os.Build.VERSION_CODES
 import android.os.Handler
 import android.os.IBinder
+import android.util.Log
 import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.app.NotificationCompat
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentConversation
 import java.util.*
 
@@ -20,14 +24,26 @@ class FloatingService : Service() {
     private var tvMessage: TextView? = null
     private var ivConversation: ImageView? = null
 
-    private inner class MyTimeShower : Thread() {
+    companion object{
+        private const val NOTIFICATION_ID = 101
+        const val CHANNEL_ID = "ForegroundServiceChannel"
+
+        fun notificationUpdate(text: String){
+            notificationUpdate(text)
+        }
+    }
+
+    private inner class MyMessageShower : Thread() {
         override fun run() {
             val h = Handler(this@FloatingService.getMainLooper())
             while (enabled) {
-                h.post { tvMessage?.text = currentConversation?.messages?.lastIndex?.let {
-                    currentConversation?.messages?.elementAt(
-                        it
-                    )?.content.toString()
+                h.post {
+                    if(!currentConversation?.messages.isNullOrEmpty()){
+                        tvMessage?.text = currentConversation?.messages?.lastIndex?.let {
+                        currentConversation?.messages?.elementAt(
+                            it
+                        )?.content.toString()
+                    }
                 }
                     ivConversation?.setImageBitmap(currentConversation?.picture)
                 }
@@ -57,18 +73,19 @@ class FloatingService : Service() {
             R.layout.float_layout, null)
 
         tvMessage = floatingView?.findViewById<TextView>(R.id.tvTime)
-        tvMessage?.setText( currentConversation?.messages?.lastIndex.toString())
+      //  tvMessage?.setText( currentConversation?.messages?.lastIndex.toString())
 
         ivConversation = floatingView?.findViewById(R.id.ivConversationImage)
         ivConversation?.setImageBitmap(currentConversation?.picture)
 
         val LAYOUT_FLAG: Int
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
+        if (Build.VERSION.SDK_INT >= VERSION_CODES.O) {
+            LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
         } else {
-            LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_PHONE
+            LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_PHONE;
         }
 
+        Log.i("flag", LAYOUT_FLAG.toString())
         val params = WindowManager.LayoutParams(
             WindowManager.LayoutParams.WRAP_CONTENT,
             WindowManager.LayoutParams.WRAP_CONTENT,
@@ -118,7 +135,57 @@ class FloatingService : Service() {
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         enabled = true
-        MyTimeShower().start()
+        startForeground(NOTIFICATION_ID, createNotification("Starting location service..."))
+        MyMessageShower().start()
+        if(!currentConversation?.messages.isNullOrEmpty()) {
+            updateNotification(currentConversation?.messages?.lastIndex?.let {
+                currentConversation?.messages?.elementAt(
+                    it
+                )
+            }?.content.toString())
+
+        }
+
         return super.onStartCommand(intent, flags, startId)
+    }
+
+    private fun createNotification(text: String): Notification {
+        val notificationIntent = Intent(this, MainActivity::class.java)
+        notificationIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
+
+        createNotificationChannel()
+
+        val contentIntent = PendingIntent.getActivity(this,
+            NOTIFICATION_ID,
+            notificationIntent,
+            PendingIntent.FLAG_CANCEL_CURRENT)
+
+        return NotificationCompat.Builder(this, CHANNEL_ID)
+            .setContentTitle("Chat App")
+            .setContentText(text)
+            .setSmallIcon(R.drawable.logo)
+            .setVibrate(longArrayOf(1000, 2000, 1000))
+            .setContentIntent(contentIntent)
+            .build()
+    }
+
+    private fun updateNotification(text: String) {
+        val notification = createNotification(text)
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.notify(NOTIFICATION_ID, notification)
+    }
+
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= VERSION_CODES.O) {
+            val serviceChannel = NotificationChannel(
+                CHANNEL_ID,
+                "Foreground Service Channel",
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
+            val manager = getSystemService(
+                NotificationManager::class.java
+            )
+            manager.createNotificationChannel(serviceChannel)
+        }
     }
 }
