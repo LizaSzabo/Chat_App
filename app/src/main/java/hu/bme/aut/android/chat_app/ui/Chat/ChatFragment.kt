@@ -157,17 +157,6 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
         }.exhaustive
     }
 
-    private fun startNotification(){
-        var builder = NotificationCompat.Builder(activity as AppCompatActivity, CHANNEL_ID)
-            .setSmallIcon(R.drawable.spinner_item)
-            .setContentTitle("New Message")
-            .setContentText(fragmentBinding.text.text.toString())
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-
-        with(NotificationManagerCompat.from(activity as AppCompatActivity)) {
-            notify(101, builder.build())
-        }
-    }
 
 
 }

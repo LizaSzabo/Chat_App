@@ -63,11 +63,11 @@ class AddConversationDialog: DialogFragment(), AdapterView.OnItemSelectedListene
 
 
     private fun validateNewConversation(): Boolean{
-        if (binding.editTextConversationTitle.text.toString().isEmpty()) {
+        if (validateInputText(binding.editTextConversationTitle.text.toString())) {
             binding.editTextConversationTitle.error = getString(R.string.title_not_empty)
             return false
         }
-        if( binding.editTextTypeTitle.text.toString().isEmpty()){
+        if(validateInputText( binding.editTextTypeTitle.text.toString())){
             binding.editTextTypeTitle.error = "conversation type cannot be empty"
             return false
         }
@@ -80,6 +80,11 @@ class AddConversationDialog: DialogFragment(), AdapterView.OnItemSelectedListene
         }
 
         return true
+    }
+
+    fun validateInputText(input: String): Boolean{
+        if(input.isEmpty()) return false
+         return true
     }
 
     interface AddConversationListener{

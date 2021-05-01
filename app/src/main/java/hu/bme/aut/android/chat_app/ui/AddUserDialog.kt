@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import androidx.fragment.app.DialogFragment
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentConversation
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.usersList
@@ -22,7 +23,7 @@ class AddUserDialog: DialogFragment() {
         binding.btnSave.setOnClickListener {
          //   val uri: Uri = Uri.parse("android.resource://hu.bme.aut.android.chat_app/drawable/default_profilepic")
 
-            if (validateNewUser()) {
+            if (validateNewUser(binding.editTextUserName.text.toString(), binding.editTextUserName)) {
                     listener.onAddUser(binding.editTextUserName.text.toString())
 
 
@@ -39,25 +40,24 @@ class AddUserDialog: DialogFragment() {
         return binding.root
     }
 
-    private fun validateNewUser(): Boolean {
-        if (binding.editTextUserName.text.toString().isEmpty()) {
-            binding.editTextUserName.error = "User Name cannot be empty"
+     fun validateNewUser(userName: String, editText: EditText?): Boolean {
+        if (userName.isEmpty()) {
+            editText?.error = "User Name cannot be empty"
             return false
         }
 
         for(user in usersList){
-            Log.i("users", user.userName)
-            if(user.userName == binding.editTextUserName.text.toString() ) {
+            if(user.userName == userName ) {
                 for(conversation in user.conversations!!) {
                     if (conversation.code == currentConversation?.code) {
-                        binding.editTextUserName.error = "User already added"
+                        editText?.error = "User already added"
                         return false
                     }
                 }
                 return true
             }
         }
-        binding.editTextUserName.error = "User doesn't exist"
+         editText?.error = "User doesn't exist"
         return false
     }
 

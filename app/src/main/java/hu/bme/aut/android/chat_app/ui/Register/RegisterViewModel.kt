@@ -1,14 +1,12 @@
 package hu.bme.aut.android.chat_app.ui.Register
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
 import android.provider.MediaStore
-import android.util.Base64
-import android.util.Log
 import androidx.navigation.NavController
 import co.zsmb.rainbowcake.base.RainbowCakeViewModel
-import com.amplifyframework.core.Amplify
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.userid
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.usersList
 import hu.bme.aut.android.chat_app.Model.Conversation
@@ -16,18 +14,18 @@ import hu.bme.aut.android.chat_app.Model.User
 import hu.bme.aut.android.chat_app.Network.addNewRegisteredUser
 import hu.bme.aut.android.chat_app.R
 import hu.bme.aut.android.chat_app.databinding.FragmentRegisterBinding
-import java.io.ByteArrayOutputStream
 import javax.inject.Inject
 
+@SuppressLint("StaticFieldLeak")
 class RegisterViewModel @Inject constructor(
     private val registerPresenter: RegisterPresenter
 ) : RainbowCakeViewModel<RegisterViewState>(Initial){
 
-    lateinit var fragmentBinding: FragmentRegisterBinding
+    private lateinit var fragmentBinding: FragmentRegisterBinding
     lateinit var context : Context
-    lateinit var pictureUri : Uri
+    private lateinit var pictureUri : Uri
 
-   fun Registration(
+   fun registration(
        navController: NavController,
        binding: FragmentRegisterBinding,
        cxt: Context?,
@@ -65,16 +63,15 @@ class RegisterViewModel @Inject constructor(
             return false
         }
 
-        val uri: Uri = Uri.parse("android.resource://hu.bme.aut.android.chat_app/drawable/addprofile")
-        var convers =  mutableListOf<Conversation>()
+        val convers =  mutableListOf<Conversation>()
 
 
-        var yourBitmap: Bitmap = MediaStore.Images.Media.getBitmap(
-            context?.contentResolver,
+        val yourBitmap: Bitmap = MediaStore.Images.Media.getBitmap(
+            context.contentResolver,
             pictureUri
         )
         userid++
-        val user: User = User(
+        val user = User(
             fragmentBinding.tvTextUserName.text.toString(),
             fragmentBinding.tvTextPassword.text.toString(),
             yourBitmap,
@@ -87,10 +84,4 @@ class RegisterViewModel @Inject constructor(
         return true
     }
 
-    fun BitMapToString(bitmap: Bitmap): String? {
-        val baos = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
-        val b: ByteArray = baos.toByteArray()
-        return Base64.encodeToString(b, Base64.DEFAULT)
-    }
 }

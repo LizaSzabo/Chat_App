@@ -24,7 +24,7 @@ class RegisterFragment :  RainbowCakeFragment<RegisterViewState, RegisterViewMod
         val binding = FragmentRegisterBinding.bind(view)
         fragmentBinding= binding
 
-        fragmentBinding.buttonRegisterOk.setOnClickListener(View.OnClickListener { viewModel.Registration(findNavController(), fragmentBinding, context, uri) })
+        fragmentBinding.buttonRegisterOk.setOnClickListener(View.OnClickListener { viewModel.registration(findNavController(), fragmentBinding, context, uri) })
         fragmentBinding.ivAddPicture.setOnClickListener {
             val intent = Intent()
             intent.type = "image/*"

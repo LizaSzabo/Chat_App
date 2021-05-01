@@ -1,4 +1,6 @@
-package hu.bme.aut.android.chat_app
+import hu.bme.aut.android.chat_app.ui.Login.LoginViewModel
+
+
 
 import org.junit.Test
 
@@ -12,6 +14,7 @@ import org.junit.Assert.*
 class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
+
         assertEquals(4, 2 + 2)
     }
 }

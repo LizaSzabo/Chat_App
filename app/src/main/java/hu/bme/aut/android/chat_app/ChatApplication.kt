@@ -234,9 +234,9 @@ class ChatApplication : RainbowCakeApplication() {
         )*/
 
 
-        Thread.sleep(20_000)
+       Thread.sleep(20_000)
         querys(b)
-       // observeData(b)
+        observeData(b)
 
 
 

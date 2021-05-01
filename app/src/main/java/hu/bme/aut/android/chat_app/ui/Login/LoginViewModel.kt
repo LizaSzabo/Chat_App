@@ -58,7 +58,7 @@ class LoginViewModel @Inject constructor(
             fragmentBinding.editTextLoginPassword.error = context.getString(R.string.pass_required)
             return false
         }
-        if(!validUserAndPass()){
+        if(!validUserAndPass(fragmentBinding.editTextLoginName.text.toString(), fragmentBinding.editTextLoginPassword.text.toString() )){
             Snackbar.make(
                 fragmentBinding.root, context.getString(R.string.wrong_input),
                 Snackbar.LENGTH_LONG
@@ -70,16 +70,20 @@ class LoginViewModel @Inject constructor(
         return true
     }
 
-    private fun validUserAndPass():Boolean{
-        for(user in ChatApplication.usersList){
-            if(user.userName == (fragmentBinding.editTextLoginName.text.toString())){
-                if(user.password == (fragmentBinding.editTextLoginPassword.text.toString())) {
+   private fun validUserAndPass(userNameText: String, passwordText: String): Boolean {
+        for (user in ChatApplication.usersList) {
+            if( validUser(userNameText, passwordText, user.userName, user.password)) {
                     ChatApplication.currentUser = user
                     return true
                 }
                 return false
             }
-        }
+        return false
+    }
+
+
+    fun validUser(userNameText: String, passwordText: String, currentUserName: String, currentPassword: String): Boolean{
+        if((userNameText == currentUserName) && (passwordText == currentPassword)) return true
         return false
     }
 
@@ -111,3 +115,4 @@ class LoginViewModel @Inject constructor(
         resources.updateConfiguration(config, dm)
     }
 }
+

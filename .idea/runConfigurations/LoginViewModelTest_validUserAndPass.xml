@@ -1,0 +1,22 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="LoginViewModelTest.validUserAndPass" type="AndroidJUnit" factoryName="Android JUnit" nameIsGenerated="true">
+    <module name="Chat_App.app" />
+    <shortenClasspath name="MANIFEST" />
+    <useClassPathOnly />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="hu.bme.aut.android.chat_app.ui.Login.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <option name="PACKAGE_NAME" value="hu.bme.aut.android.chat_app.ui.Login" />
+    <option name="MAIN_CLASS_NAME" value="hu.bme.aut.android.chat_app.ui.Login.LoginViewModelTest" />
+    <option name="METHOD_NAME" value="validUserAndPass" />
+    <option name="TEST_OBJECT" value="method" />
+    <option name="PARAMETERS" value="" />
+    <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+    <method v="2">
+      <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+    </method>
+  </configuration>
+</component>
