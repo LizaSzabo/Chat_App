@@ -3,7 +3,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/default_float_window">
+    android:background="@drawable/default_float_window"
+    android:id="@+id/floatingLayout">
 
     <ImageView
         android:id="@+id/ivConversationImage"
@@ -17,7 +18,7 @@
         android:id="@+id/tvTime"
         android:layout_width="150dp"
         android:layout_height="50dp"
-        android:text="messageeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+        android:text=""
         android:textColor="@color/colorPrimary"
         android:textSize="20sp"
         android:layout_marginStart="10dp"

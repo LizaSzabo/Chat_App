@@ -44,7 +44,10 @@ class FloatingService : Service() {
                             it
                         )?.content.toString()
                     }
+                        floatingView?.visibility = View.VISIBLE
+                        updateNotification( tvMessage?.text.toString())
                 }
+                    else floatingView?.visibility = View.INVISIBLE
                     ivConversation?.setImageBitmap(currentConversation?.picture)
                 }
 
@@ -77,6 +80,8 @@ class FloatingService : Service() {
 
         ivConversation = floatingView?.findViewById(R.id.ivConversationImage)
         ivConversation?.setImageBitmap(currentConversation?.picture)
+
+        floatingView?.visibility = View.INVISIBLE
 
         val LAYOUT_FLAG: Int
         if (Build.VERSION.SDK_INT >= VERSION_CODES.O) {
