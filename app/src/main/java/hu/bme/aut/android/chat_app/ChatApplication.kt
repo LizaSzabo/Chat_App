@@ -1,10 +1,8 @@
 package hu.bme.aut.android.chat_app
 
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.provider.MediaStore
-import android.util.Base64
 import android.util.Log
 import co.zsmb.rainbowcake.config.Loggers
 import co.zsmb.rainbowcake.config.rainbowCake
@@ -14,15 +12,17 @@ import co.zsmb.rainbowcake.timber.TIMBER
 import com.amplifyframework.AmplifyException
 import com.amplifyframework.api.aws.AWSApiPlugin
 import com.amplifyframework.core.Amplify
+import com.amplifyframework.core.Consumer
 import com.amplifyframework.core.model.query.predicate.QueryPredicates
 import com.amplifyframework.datastore.AWSDataStorePlugin
+import com.amplifyframework.datastore.DataStoreChannelEventName
 import com.amplifyframework.datastore.DataStoreConfiguration
+import com.amplifyframework.datastore.DataStoreException
+import com.amplifyframework.hub.HubChannel
+import com.amplifyframework.hub.HubEvent
 import hu.bme.aut.android.chat_app.Model.Conversation
 import hu.bme.aut.android.chat_app.Model.Message
 import hu.bme.aut.android.chat_app.Model.User
-import hu.bme.aut.android.chat_app.Network.UpdateUser
-import hu.bme.aut.android.chat_app.Network.initializeUserData
-import hu.bme.aut.android.chat_app.Network.observeData
 import hu.bme.aut.android.chat_app.Network.querys
 import hu.bme.aut.android.chat_app.di.DaggerAppComponent
 import timber.log.Timber
@@ -116,8 +116,6 @@ class ChatApplication : RainbowCakeApplication() {
         try {
             Amplify.addPlugin(AWSDataStorePlugin())
             Amplify.addPlugin(AWSApiPlugin())
-            Amplify.addPlugin(AWSDataStorePlugin(DataStoreConfiguration.builder().
-            syncExpression(com.amplifyframework.datastore.generated.model.Message::class.java){ QueryPredicates.all()}.build()))
             Amplify.configure(applicationContext)
 
 
@@ -127,21 +125,36 @@ class ChatApplication : RainbowCakeApplication() {
             Log.e("MyAmplifyApp", "Could not initialize Amplify", error)
         }
 
-       Amplify.DataStore.clear(
-            {
-               Amplify.DataStore.start(
-                    { Log.i("MyAmplifyApp", "DataStore started")
-                        },
-                    { Log.e("MyAmplifyApp", "Error starting DataStore", it) }
-                )
 
-            },
-            { Log.e("MyAmplifyApp", "Error clearing DataStore", it) }
-        )
-      /*  val user = builder()
-            .userName("User1")
-            .password("pass")
-            .build()*/
+       Amplify.DataStore.clear(
+           {
+               Amplify.DataStore.start(
+                   {
+                       Log.i("MyAmplifyApp", "DataStore started")
+                   },
+                   { Log.e("MyAmplifyApp", "Error starting DataStore", it) }
+               )
+
+           },
+           { Log.e("MyAmplifyApp", "Error clearing DataStore", it) }
+       )
+
+        Thread.sleep(10000)
+        querys(b)
+        Amplify.Hub.subscribe(HubChannel.DATASTORE,
+            { hubEvent: HubEvent<*> -> DataStoreChannelEventName.READY.equals(hubEvent.name) }
+        ) { hubEvent: HubEvent<*>? ->
+            Log.i("MyAmplifyApp", "AAAAAAAAAAAAAAAAAAAAAAAd")
+
+        }
+
+        //Thread.sleep(10000)
+       // querys(b)
+
+        /*  val user = builder()
+              .userName("User1")
+              .password("pass")
+              .build()*/
 
    /*    Amplify.DataStore.save(user,
             { Log.i("MyAmplifyApp", "Created a new post successfully") },
@@ -234,9 +247,9 @@ class ChatApplication : RainbowCakeApplication() {
         )*/
 
 
-       Thread.sleep(20_000)
-        querys(b)
-        observeData(b)
+
+
+     //   observeData(b)
 
 
 

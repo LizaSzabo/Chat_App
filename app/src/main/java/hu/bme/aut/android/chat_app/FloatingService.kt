@@ -140,7 +140,7 @@ class FloatingService : Service() {
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         enabled = true
-        startForeground(NOTIFICATION_ID, createNotification("Starting location service..."))
+        startForeground(NOTIFICATION_ID, createNotification("Waiting for messages..."))
         MyMessageShower().start()
         if(!currentConversation?.messages.isNullOrEmpty()) {
             updateNotification(currentConversation?.messages?.lastIndex?.let {

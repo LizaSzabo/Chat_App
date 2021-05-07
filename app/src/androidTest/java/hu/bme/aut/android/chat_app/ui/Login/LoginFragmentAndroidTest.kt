@@ -3,8 +3,7 @@ package hu.bme.aut.android.chat_app.ui.Login
 import androidx.fragment.app.testing.launchFragment
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.action.ViewActions.typeText
+import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.activityScenarioRule
@@ -31,13 +30,15 @@ class LoginFragmentAndroidTest{
     @Test
     fun notValidLoginInput() {
         val user = "user"
-        val password = ""
+        val password = "aaa"
 
         onView(withId(R.id.editTextLoginName)).perform(typeText(user))
+        onView(withId(R.id.editTextLoginName)).perform(closeSoftKeyboard())
         onView(withId(R.id.editTextLoginPassword)).perform(typeText(password))
+        onView(withId(R.id.editTextLoginPassword)).perform(closeSoftKeyboard())
 
         onView(withId(R.id.button_ok)).perform(click())
 
-        onView(withText("@strings/pass_required")).check(matches(isDisplayed()))
+        onView(withText("Wrong User Name or Password")).check(matches(isDisplayed()))
     }
 }

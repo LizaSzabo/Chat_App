@@ -11,5 +11,18 @@
       "StackId": "arn:aws:cloudformation:eu-central-1:364716381566:stack/amplify-chatapp-dev-180641/13403d20-a517-11eb-8662-06fcfa67fa6e",
       "AmplifyAppId": "da254kxhtlkmt"
     }
+  },
+  "chatapp": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-chatapp-chatapp-230456-authRole",
+      "UnauthRoleArn": "arn:aws:iam::364716381566:role/amplify-chatapp-chatapp-230456-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::364716381566:role/amplify-chatapp-chatapp-230456-authRole",
+      "Region": "eu-central-1",
+      "DeploymentBucketName": "amplify-chatapp-chatapp-230456-deployment",
+      "UnauthRoleName": "amplify-chatapp-chatapp-230456-unauthRole",
+      "StackName": "amplify-chatapp-chatapp-230456",
+      "StackId": "arn:aws:cloudformation:eu-central-1:364716381566:stack/amplify-chatapp-chatapp-230456/e0960830-af77-11eb-8a16-027add371d40",
+      "AmplifyAppId": "da254kxhtlkmt"
+    }
   }
 }
