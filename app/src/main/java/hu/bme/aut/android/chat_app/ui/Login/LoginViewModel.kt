@@ -76,7 +76,7 @@ class LoginViewModel @Inject constructor(
                     ChatApplication.currentUser = user
                     return true
                 }
-                
+
             }
         return false
     }

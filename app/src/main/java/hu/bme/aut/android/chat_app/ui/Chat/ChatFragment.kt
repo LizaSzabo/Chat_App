@@ -27,6 +27,7 @@ import hu.bme.aut.android.chat_app.Adapter_Rv.ChatAdapter
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentConversation
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentUser
 import hu.bme.aut.android.chat_app.Network.observeData
+import hu.bme.aut.android.chat_app.Network.querys
 import hu.bme.aut.android.chat_app.databinding.FragmentChatBinding
 import kotlinx.android.synthetic.main.fragment_chat.*
 import okhttp3.internal.notify
@@ -63,6 +64,7 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
                 }
                 if (message != null) {
                     chatAdapter.addMessage(message)
+                    currentConversation?.let { it1 -> querys(it1?.picture) }
                 }
                 fragmentBinding.text.setText("")
 

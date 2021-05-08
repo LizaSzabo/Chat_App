@@ -23,6 +23,7 @@ import com.amplifyframework.hub.HubEvent
 import hu.bme.aut.android.chat_app.Model.Conversation
 import hu.bme.aut.android.chat_app.Model.Message
 import hu.bme.aut.android.chat_app.Model.User
+import hu.bme.aut.android.chat_app.Network.observeData
 import hu.bme.aut.android.chat_app.Network.querys
 import hu.bme.aut.android.chat_app.di.DaggerAppComponent
 import timber.log.Timber
@@ -116,6 +117,8 @@ class ChatApplication : RainbowCakeApplication() {
         try {
             Amplify.addPlugin(AWSDataStorePlugin())
             Amplify.addPlugin(AWSApiPlugin())
+            Amplify.addPlugin(AWSDataStorePlugin(DataStoreConfiguration.builder().
+            syncExpression(com.amplifyframework.datastore.generated.model.Message::class.java){ QueryPredicates.all()}.build()))
             Amplify.configure(applicationContext)
 
 
@@ -249,7 +252,7 @@ class ChatApplication : RainbowCakeApplication() {
 
 
 
-     //   observeData(b)
+       // observeData(b)
 
 
 
