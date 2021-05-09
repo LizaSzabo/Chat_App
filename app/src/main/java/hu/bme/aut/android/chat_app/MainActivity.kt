@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        Amplify.DataStore.clear(
+      /*  Amplify.DataStore.clear(
             {
                 Amplify.DataStore.start(
                     {
@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
             { Log.e("MyAmplifyApp", "Error clearing DataStore", it) }
         )
 
-        Thread.sleep(10000)
+        Thread.sleep(10000)*/
 
         val uri: Uri = Uri.parse("android.resource://hu.bme.aut.android.chat_app/drawable/addprofile")
         val b: Bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
@@ -57,4 +57,20 @@ class MainActivity : AppCompatActivity() {
         startService(intentChatWindowService)
 
 }
+
+    override fun onStop() {
+        Amplify.DataStore.clear(
+            {
+                Amplify.DataStore.start(
+                    {
+                        Log.i("MyAmplifyApp", "DataStore started")
+                    },
+                    { Log.e("MyAmplifyApp", "Error starting DataStore", it) }
+                )
+
+            },
+            { Log.e("MyAmplifyApp", "Error clearing DataStore", it) }
+        )
+        super.onStop()
+    }
 }
