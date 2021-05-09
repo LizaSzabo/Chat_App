@@ -67,7 +67,6 @@ import java.io.ByteArrayOutputStream
                     .favourite(conversation.favourite)
                     .code(conversation.code)
                     .user(u)
-                  //  .id(conversation.id)
                     .build()
                 Amplify.DataStore.save(c,
                     { Log.i("MyAmplifyApp", "Conversation saved")
@@ -264,7 +263,7 @@ fun querys(b: Bitmap){
                 val user = matches.next()
                 val decodedString: ByteArray = Base64.decode(user.profilePicture, Base64.DEFAULT)
                 val decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
-                var  conv2 : MutableList<Conversation> = mutableListOf()
+                val  conv2 : MutableList<Conversation> = mutableListOf()
                 if (user.conversations != null){
                     conv2.add(Conversation("1", user.conversations[0].name, user.conversations[0].type, mutableListOf(
                         Message(

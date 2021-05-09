@@ -39,13 +39,8 @@ class FloatingService : Service() {
             while (enabled) {
                 h.post {
                     if(!currentConversation?.messages.isNullOrEmpty()){
-                        tvMessage?.text = currentConversation?.messages?.lastIndex?.let {
-                        currentConversation?.messages?.elementAt(
-                            it
-                        )?.content.toString()
-                    }
+                        tvMessage?.text = messageText
                         floatingView?.visibility = View.VISIBLE
-                      //  updateNotification( tvMessage?.text.toString())
                 }
                     else floatingView?.visibility = View.INVISIBLE
                     ivConversation?.setImageBitmap(currentConversation?.picture)
@@ -80,8 +75,8 @@ class FloatingService : Service() {
             LAYOUT_INFLATER_SERVICE) as LayoutInflater).inflate(
             R.layout.float_layout, null)
 
-        tvMessage = floatingView?.findViewById<TextView>(R.id.tvTime)
-      //  tvMessage?.setText( currentConversation?.messages?.lastIndex.toString())
+        tvMessage = floatingView?.findViewById<TextView>(R.id.tvMessage)
+
 
         ivConversation = floatingView?.findViewById(R.id.ivConversationImage)
         ivConversation?.setImageBitmap(currentConversation?.picture)
@@ -148,12 +143,7 @@ class FloatingService : Service() {
         startForeground(NOTIFICATION_ID, createNotification("Waiting for messages..."))
         MyMessageShower().start()
         if(!currentConversation?.messages.isNullOrEmpty()) {
-            updateNotification(currentConversation?.messages?.lastIndex?.let {
-                currentConversation?.messages?.elementAt(
-                    it
-                )
-            }?.content.toString())
-
+            updateNotification(messageText)
         }
 
         return super.onStartCommand(intent, flags, startId)
@@ -180,6 +170,7 @@ class FloatingService : Service() {
     }
 
     fun updateNotification(text: String) {
+        tvMessage?.text = messageText
         val notification = createNotification(text)
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.notify(NOTIFICATION_ID, notification)
