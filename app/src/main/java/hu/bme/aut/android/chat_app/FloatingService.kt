@@ -13,7 +13,10 @@ import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentConversation
+import hu.bme.aut.android.chat_app.ChatApplication.Companion.messageText
+import hu.bme.aut.android.chat_app.ChatApplication.Companion.update
 import java.util.*
 
 class FloatingService : Service() {
@@ -28,9 +31,6 @@ class FloatingService : Service() {
         private const val NOTIFICATION_ID = 101
         const val CHANNEL_ID = "ForegroundServiceChannel"
 
-        fun notificationUpdate(text: String){
-            notificationUpdate(text)
-        }
     }
 
     private inner class MyMessageShower : Thread() {
@@ -45,10 +45,16 @@ class FloatingService : Service() {
                         )?.content.toString()
                     }
                         floatingView?.visibility = View.VISIBLE
-                        updateNotification( tvMessage?.text.toString())
+                      //  updateNotification( tvMessage?.text.toString())
                 }
                     else floatingView?.visibility = View.INVISIBLE
                     ivConversation?.setImageBitmap(currentConversation?.picture)
+
+                    if(update){
+                       updateNotification(messageText)
+                        update = false
+                    }
+
                 }
 
 
@@ -57,7 +63,6 @@ class FloatingService : Service() {
                 } catch (e: InterruptedException) {
                     e.printStackTrace()
                 }
-
             }
         }
     }
@@ -174,7 +179,7 @@ class FloatingService : Service() {
             .build()
     }
 
-    private fun updateNotification(text: String) {
+    fun updateNotification(text: String) {
         val notification = createNotification(text)
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.notify(NOTIFICATION_ID, notification)
@@ -193,4 +198,5 @@ class FloatingService : Service() {
             manager.createNotificationChannel(serviceChannel)
         }
     }
+
 }

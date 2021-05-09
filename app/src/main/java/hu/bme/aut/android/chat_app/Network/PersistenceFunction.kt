@@ -1,5 +1,6 @@
 package hu.bme.aut.android.chat_app.Network
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -15,7 +16,11 @@ import hu.bme.aut.android.chat_app.ChatApplication.Companion.allConversationList
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.allMessagesList
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentConversation
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentUser
+import hu.bme.aut.android.chat_app.ChatApplication.Companion.lastDate
+import hu.bme.aut.android.chat_app.ChatApplication.Companion.messageText
+import hu.bme.aut.android.chat_app.ChatApplication.Companion.update
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.usersList
+import hu.bme.aut.android.chat_app.FloatingService
 import hu.bme.aut.android.chat_app.Model.Conversation
 import hu.bme.aut.android.chat_app.Model.Message
 import hu.bme.aut.android.chat_app.Model.User
@@ -206,7 +211,7 @@ fun initializeUserData(b: Bitmap){
     }
 }
 
-fun observeData(b: Bitmap){
+fun observeData(b: Bitmap, context: Context){
 
 
     Amplify.DataStore.observe(com.amplifyframework.datastore.generated.model.User::class.java,
@@ -228,11 +233,17 @@ fun observeData(b: Bitmap){
     Amplify.DataStore.observe(com.amplifyframework.datastore.generated.model.Message::class.java,
         { Log.i("MyAmplifyApp", "Observation began") },
         {
-            val post = it
+
+            update = true
+            if(it.item().date != null)
+                if(it.item().date > lastDate) {
+                    lastDate = it.item().date
+                    if(it.item().content != null)
+                        messageText = it.item().content
+                }
 
 
-            querys(b)
-            Log.i("MyAmplifyApp", "Post: $post")
+            Log.i("MyAmplifyApp", "Post: $it")
 
 
         },

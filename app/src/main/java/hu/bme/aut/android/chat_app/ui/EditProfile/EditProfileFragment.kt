@@ -50,7 +50,7 @@ class EditProfileFragment : RainbowCakeFragment<EditProfileViewState, EditProfil
                 val resized = yourBitmap.resizeByHeight( fragmentBinding.imageButtonEditProfile.layoutParams.height)
                 currentUser?.profilePicture = resized
 
-                updateUserPicture(resized)
+                viewModel.updateUser(resized)
 
                 fragmentBinding.imageButtonEditProfile.setImageBitmap(resized)
             }

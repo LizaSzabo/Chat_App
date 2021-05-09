@@ -176,11 +176,10 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
             if (null != selectedImageUri) {
                 val yourBitmap: Bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, selectedImageUri)
                 currentConversation?.picture = yourBitmap
-              //  currentUser?.let { UpdateUser(it) }
                 for(user in ChatApplication.usersList){
                     for(conversation in user.conversations!!){
                         if(conversation.code == currentConversation?.code){
-                             UpdateUser(user)
+                             viewModel.updateUser(user)
                         }
                     }
                 }

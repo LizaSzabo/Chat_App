@@ -6,6 +6,8 @@ import co.zsmb.rainbowcake.base.RainbowCakeViewModel
 import hu.bme.aut.android.chat_app.Adapter_Rv.ConversationsAdapter
 import hu.bme.aut.android.chat_app.ui.AddConversationDialog
 import hu.bme.aut.android.chat_app.Model.Conversation
+import hu.bme.aut.android.chat_app.Model.User
+import hu.bme.aut.android.chat_app.Network.UpdateUser
 import javax.inject.Inject
 
 class MessagesViewModel@Inject constructor(
@@ -28,5 +30,9 @@ class MessagesViewModel@Inject constructor(
 
     override fun onAddConversation(conversation: Conversation) {
         conversationsAdapter.addConversation(conversation)
+    }
+
+    fun updateUser(user: User){
+       messagesPresenter.updateUser(user)
     }
 }

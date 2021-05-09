@@ -38,7 +38,6 @@ class RegisterFragment :  RainbowCakeFragment<RegisterViewState, RegisterViewMod
         if (requestCode == PICK_IMAGE) {
             val selectedImageUri: Uri? = data?.data
             if (null != selectedImageUri) {
-                // update the preview image in the layout
                 fragmentBinding.ivAddPicture.setImageURI(selectedImageUri)
                 uri = selectedImageUri
             }

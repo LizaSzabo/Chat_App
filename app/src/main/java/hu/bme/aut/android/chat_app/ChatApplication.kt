@@ -27,6 +27,7 @@ import hu.bme.aut.android.chat_app.Network.observeData
 import hu.bme.aut.android.chat_app.Network.querys
 import hu.bme.aut.android.chat_app.di.DaggerAppComponent
 import timber.log.Timber
+import java.util.*
 
 
 class ChatApplication : RainbowCakeApplication() {
@@ -42,6 +43,9 @@ class ChatApplication : RainbowCakeApplication() {
             private set
         var convid = 2
         var userid = 2
+        var update = false
+        var messageText = ""
+        var lastDate : String = ""
     }
 
     override lateinit var injector: RainbowCakeComponent
@@ -188,7 +192,7 @@ class ChatApplication : RainbowCakeApplication() {
 
 
 
-       // observeData(b)
+        observeData(b, this)
 
 
 

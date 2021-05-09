@@ -1,22 +1,9 @@
 package hu.bme.aut.android.chat_app.ui.Chat
 
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
-import android.content.Context
-import android.content.Context.NOTIFICATION_SERVICE
-import android.content.Intent
 import android.graphics.Bitmap
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import co.zsmb.rainbowcake.base.RainbowCakeFragment
@@ -26,11 +13,9 @@ import hu.bme.aut.android.chat_app.*
 import hu.bme.aut.android.chat_app.Adapter_Rv.ChatAdapter
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentConversation
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.currentUser
+import hu.bme.aut.android.chat_app.ChatApplication.Companion.messageText
 import hu.bme.aut.android.chat_app.Network.observeData
-import hu.bme.aut.android.chat_app.Network.querys
 import hu.bme.aut.android.chat_app.databinding.FragmentChatBinding
-import kotlinx.android.synthetic.main.fragment_chat.*
-import okhttp3.internal.notify
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -64,13 +49,9 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
                 }
                 if (message != null) {
                     chatAdapter.addMessage(message)
-                 //   currentConversation?.let { it1 -> querys(it1?.picture) }
-                   // Thread.sleep(3000)
+                    messageText = "Waiting for messages..."
                 }
                 fragmentBinding.text.setText("")
-
-
-              //  FloatingService.notificationUpdate(fragmentBinding.text.text.toString())
             }
         }
 
@@ -80,7 +61,6 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
             findNavController().navigate(action)
         }
 
-       // fragmentBinding.profilepicture.setImageURI(currentConversation?.picture)
 
         fragmentBinding.conversationTitle.text = currentConversation?.name
 
@@ -95,22 +75,12 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
         }
         fragmentBinding.iwConversationPicture.setImageBitmap(resized)
         initRecyclerView()
-
-      val uri: Uri = Uri.parse("android.resource://hu.bme.aut.android.chat_app/drawable/addprofile")
-        val b: Bitmap = MediaStore.Images.Media.getBitmap(
-            (activity as AppCompatActivity).contentResolver,
-            uri
-        )
-
-
-
     }
 
     private fun initRecyclerView(){
         chatAdapter = ChatAdapter()
         fragmentBinding.rvChat.layoutManager = LinearLayoutManager(context)
         fragmentBinding.rvChat.adapter =  chatAdapter
-       // chatAdapter.itemClickListener = this
         chatAdapter.addAll()
     }
 
@@ -159,7 +129,4 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
             }
         }.exhaustive
     }
-
-
-
 }
