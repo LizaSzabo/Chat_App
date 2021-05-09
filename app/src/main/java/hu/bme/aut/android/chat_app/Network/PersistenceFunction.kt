@@ -185,20 +185,21 @@ fun initializeUserData(b: Bitmap){
 
     for(conv in ChatApplication.allConversationList){
         for(user in ChatApplication.usersList){
-            if(conv.user.userName == user.userName){
+            if(conv.user.userName == user.userName && user.conversations?.contains(conv) == false){
                 val decodedString: ByteArray = Base64.decode(conv.picture, Base64.DEFAULT)
                 var decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
                 if(decodedByte == null) decodedByte = b
 
 
-                val messageList: MutableList<Message> = mutableListOf()
+                var messageList: MutableList<Message> = mutableListOf()
 
                 for(message in allMessagesList){
                     val mess = Message(message.sender, message.receivers, message.content, message.date)
                     if((message.conversation.code == conv.code) && (!messageList.contains(mess)))
                         messageList.add(mess)
                 }
-                
+
+                messageList = messageList.sortedWith(compareBy { it.date }).toMutableList()
                 user.conversations?.add(Conversation(conv.id, conv.name, conv.type, messageList, decodedByte, conv.favourite, conv.code))
             }
         }

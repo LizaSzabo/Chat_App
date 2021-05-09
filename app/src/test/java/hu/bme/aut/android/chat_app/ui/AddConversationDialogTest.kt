@@ -1,7 +1,5 @@
 package hu.bme.aut.android.chat_app.ui
 
-import hu.bme.aut.android.chat_app.ui.Login.LoginPresenter
-import hu.bme.aut.android.chat_app.ui.Login.LoginViewModel
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test

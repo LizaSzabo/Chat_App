@@ -64,7 +64,8 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
                 }
                 if (message != null) {
                     chatAdapter.addMessage(message)
-                    currentConversation?.let { it1 -> querys(it1?.picture) }
+                 //   currentConversation?.let { it1 -> querys(it1?.picture) }
+                   // Thread.sleep(3000)
                 }
                 fragmentBinding.text.setText("")
 

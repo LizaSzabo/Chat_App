@@ -62,58 +62,7 @@ class ChatApplication : RainbowCakeApplication() {
         Timber.plant(Timber.DebugTree())
         val uri: Uri = Uri.parse("android.resource://hu.bme.aut.android.chat_app/drawable/addprofile")
         val b: Bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
-        val convers =  mutableListOf(
-            Conversation(
-                "1",
-                "first", "private", mutableListOf(
-                    Message(
-                        "User1",
-                        "second",
-                        "Hello",
-                        "2021.04.01 14:12"
-                    ), Message("User1", "second", "Szia", "2021.04.01 14:12"), Message(
-                        "User2",
-                        "first",
-                        "Hello",
-                        "2021.04.01 14:12"
-                    )
-                ), b, false, "1234"
-            )
-        )
 
-       val convers2 =  mutableListOf(
-           Conversation(
-               "1", "first", "private", mutableListOf(
-                   Message(
-                       "User1",
-                       "second",
-                       "Hello",
-                       "2021.04.01 14:12"
-                   ), Message("User1", "second", "Szia", "2021.04.01 14:12"), Message(
-                       "User2",
-                       "first",
-                       "Hello",
-                       "2021.04.01 14:12"
-                   )
-               ), b, false, "1234"
-           ),
-           Conversation(
-               "2", "second", "private", mutableListOf(
-                   Message(
-                       "User1",
-                       "second",
-                       "Hello",
-                       "2021.04.01 14:12"
-                   ), Message("User1", "second", "Szia", "2021.04.01 14:12"), Message(
-                       "User2",
-                       "first",
-                       "Hello",
-                       "2021.04.01 14:12"
-                   )
-               ), b, false, "1234"
-           )
-       )
-        val yourBitmap: Bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
         try {
             Amplify.addPlugin(AWSDataStorePlugin())
             Amplify.addPlugin(AWSApiPlugin())
@@ -129,21 +78,8 @@ class ChatApplication : RainbowCakeApplication() {
         }
 
 
-       Amplify.DataStore.clear(
-           {
-               Amplify.DataStore.start(
-                   {
-                       Log.i("MyAmplifyApp", "DataStore started")
-                   },
-                   { Log.e("MyAmplifyApp", "Error starting DataStore", it) }
-               )
 
-           },
-           { Log.e("MyAmplifyApp", "Error clearing DataStore", it) }
-       )
-
-        Thread.sleep(10000)
-        querys(b)
+        //querys(b)
         Amplify.Hub.subscribe(HubChannel.DATASTORE,
             { hubEvent: HubEvent<*> -> DataStoreChannelEventName.READY.equals(hubEvent.name) }
         ) { hubEvent: HubEvent<*>? ->
