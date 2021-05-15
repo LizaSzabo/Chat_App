@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Chat_App</string>
+    <string name="app_name">ChatBox</string>
     <string name="login">LOGIN</string>
     <string name="login_name">LOGIN NAME:</string>
     <string name="password">PASSWORD:</string>
