@@ -78,7 +78,7 @@ class RegisterViewModel @Inject constructor(
         return true
     }
 
-    fun saveRegisteredUser(profilePicture : Bitmap,  userName : String, userPassword : String){
+    fun saveRegisteredUser(profilePicture : Bitmap,  userName : String, userPassword : String) = execute {
         userid++
         val user = User(userName, userPassword, profilePicture, conversations = mutableListOf())
         registerPresenter.saveRegisteredUser(user)
