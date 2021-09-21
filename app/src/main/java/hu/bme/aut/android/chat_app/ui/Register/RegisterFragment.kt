@@ -11,9 +11,6 @@ import co.zsmb.rainbowcake.base.RainbowCakeFragment
 import co.zsmb.rainbowcake.dagger.getViewModelFromFactory
 import co.zsmb.rainbowcake.extensions.exhaustive
 import hu.bme.aut.android.chat_app.ChatApplication
-import hu.bme.aut.android.chat_app.Model.Conversation
-import hu.bme.aut.android.chat_app.Model.User
-import hu.bme.aut.android.chat_app.Network.addNewRegisteredUser
 import hu.bme.aut.android.chat_app.R
 import hu.bme.aut.android.chat_app.databinding.FragmentRegisterBinding
 
@@ -39,10 +36,8 @@ class RegisterFragment : RainbowCakeFragment<RegisterViewState, RegisterViewMode
     private fun initListeners() {
         fragmentBinding.buttonRegisterOk.setOnClickListener {
             if (isRegistrationValid()) {
-                val yourBitmap: Bitmap = MediaStore.Images.Media.getBitmap(
-                    context?.contentResolver,
-                    uri
-                )
+
+                val yourBitmap: Bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, uri)
 
                 viewModel.saveRegisteredUser(yourBitmap, fragmentBinding.tvTextUserName.text.toString(), fragmentBinding.tvTextPassword.text.toString())
                 val action = RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
@@ -98,15 +93,6 @@ class RegisterFragment : RainbowCakeFragment<RegisterViewState, RegisterViewMode
     override fun render(viewState: RegisterViewState) {
         when (viewState) {
             Initial -> {
-
-            }
-            Loading -> {
-
-            }
-            DataReady -> {
-
-            }
-            NetworkError -> {
 
             }
         }.exhaustive
