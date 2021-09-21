@@ -1,10 +1,6 @@
 package hu.bme.aut.android.chat_app.ui.Login
 
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.net.Uri
-import android.provider.MediaStore
-import android.widget.EditText
 import androidx.test.espresso.Espresso.onData
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
@@ -16,14 +12,11 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ActivityTestRule
 import hu.bme.aut.android.chat_app.ChatApplication.Companion.usersList
 import hu.bme.aut.android.chat_app.MainActivity
-import hu.bme.aut.android.chat_app.Model.Conversation
 import hu.bme.aut.android.chat_app.Model.User
 import hu.bme.aut.android.chat_app.R
 import hu.bme.aut.android.chat_app.ui.AddConversationDialog
-import hu.bme.aut.android.chat_app.ui.AddUserDialog
 import hu.bme.aut.android.chat_app.ui.Messages.MessagesFragment
 import org.hamcrest.CoreMatchers.`is`
-import org.hamcrest.CoreMatchers.containsString
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -89,7 +82,7 @@ class LoginFragmentAndroidTest{
         val myArray: Array<String> = mActivityRule.activity.resources
             .getStringArray(R.array.types)
 
-        val b = BitmapFactory.decodeResource(mActivityRule.activity.resources, R.drawable.addprofile)
+        val b = BitmapFactory.decodeResource(mActivityRule.activity.resources, R.drawable.addProfile)
         usersList.add(User("User1", "pass", b, null))
         onView(withId(R.id.editTextLoginName)).perform(typeText("User1"))
         onView(withId(R.id.editTextLoginName)).perform(closeSoftKeyboard())

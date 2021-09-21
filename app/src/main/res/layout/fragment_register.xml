@@ -185,7 +185,7 @@
         android:layout_marginTop="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextPassword2"
-        app:srcCompat="@drawable/addprofile" />
+        app:srcCompat="@drawable/default_profile_picture" />
 
     <ImageView
         android:id="@+id/imageView4"

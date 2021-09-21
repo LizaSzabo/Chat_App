@@ -64,7 +64,7 @@ class ChatApplication : RainbowCakeApplication() {
 
 
         Timber.plant(Timber.DebugTree())
-        val uri: Uri = Uri.parse("android.resource://hu.bme.aut.android.chat_app/drawable/addprofile")
+        val uri: Uri = Uri.parse("android.resource://hu.bme.aut.android.chat_app/drawable/default_profile_picture")
         val b: Bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
 
         try {

@@ -42,7 +42,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editProfileToolbar"
-        app:srcCompat="@drawable/addprofile" />
+        app:srcCompat="@drawable/default_profile_picture" />
 
     <TextView
         android:id="@+id/tvUserName"

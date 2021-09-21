@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
 
         messageText = "Waiting for new messages..."
 
-        val uri: Uri = Uri.parse("android.resource://hu.bme.aut.android.chat_app/drawable/addprofile")
+        val uri: Uri = Uri.parse("android.resource://hu.bme.aut.android.chat_app/drawable/default_profile_picture")
         val b: Bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
         querys(b)
         val intentChatWindowService = Intent(
