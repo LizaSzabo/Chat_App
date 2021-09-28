@@ -5,7 +5,7 @@
     <useClassPathOnly />
     <extension name="coverage">
       <pattern>
-        <option name="PATTERN" value="hu.bme.aut.android.chat_app.ui.Login.*" />
+        <option name="PATTERN" value="hu.bme.aut.android.chatApp.ui.login.*" />
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>

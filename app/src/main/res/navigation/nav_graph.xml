@@ -6,7 +6,7 @@
     app:startDestination="@id/loginFragment">
     <fragment
         android:id="@+id/loginFragment"
-        android:name="hu.bme.aut.android.chat_app.ui.Login.LoginFragment"
+        android:name="hu.bme.aut.android.chatApp.ui.login.LoginFragment"
         android:label="LoginFragment"
         tools:layout="@layout/fragment_login">
         <argument
@@ -30,7 +30,7 @@
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
-        android:name="hu.bme.aut.android.chat_app.ui.Register.RegisterFragment"
+        android:name="hu.bme.aut.android.chatApp.ui.Register.RegisterFragment"
         android:label="RegisterFragment"
         tools:layout="@layout/fragment_register">
         <action
@@ -39,7 +39,7 @@
     </fragment>
     <fragment
         android:id="@+id/messagesFragment"
-        android:name="hu.bme.aut.android.chat_app.ui.Messages.MessagesFragment"
+        android:name="hu.bme.aut.android.chatApp.ui.Messages.MessagesFragment"
         android:label="MessagesFragment"
         tools:layout="@layout/fragment_messages">
         <action
@@ -57,12 +57,12 @@
     </fragment>
     <fragment
         android:id="@+id/editProfileFragment"
-        android:name="hu.bme.aut.android.chat_app.ui.EditProfile.EditProfileFragment"
+        android:name="hu.bme.aut.android.chatApp.ui.EditProfile.EditProfileFragment"
         android:label="EditProfileFragment"
         tools:layout="@layout/fragment_edit_profile"/>
     <fragment
         android:id="@+id/chatFragment"
-        android:name="hu.bme.aut.android.chat_app.ui.Chat.ChatFragment"
+        android:name="hu.bme.aut.android.chatApp.ui.Chat.ChatFragment"
         android:label="ChatFragment"
         tools:layout="@layout/fragment_chat">
         <action
@@ -71,6 +71,6 @@
     </fragment>
     <fragment
         android:id="@+id/viewUsersInConversation"
-        android:name="hu.bme.aut.android.chat_app.ui.ViewUsers.ViewUsersInConversation"
+        android:name="hu.bme.aut.android.chatApp.ui.ViewUsers.ViewUsersInConversation"
         android:label="ViewUsersInConversation" />
 </navigation>
