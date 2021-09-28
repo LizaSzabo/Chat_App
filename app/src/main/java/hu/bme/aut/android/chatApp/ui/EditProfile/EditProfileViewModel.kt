@@ -23,7 +23,7 @@ class EditProfileViewModel @Inject constructor(
         createFragment.show(parentFragmentManager, "")
     }
 
-    fun updateUser(picture: Bitmap){
+    fun updateUser(picture: Bitmap) = execute {
         editProfilePresenter.updateUser(picture)
     }
 }
