@@ -59,6 +59,8 @@ class LoginFragment : RainbowCakeFragment<LoginViewState, LoginViewModel>(), Ada
         spinner.onItemSelectedListener = this
         spinner.setSelection(args.pos)
         spinner.dropDownHorizontalOffset = -20
+
+        viewModel.init()
     }
 
     private fun isLoginValid(): Boolean {
@@ -97,6 +99,8 @@ class LoginFragment : RainbowCakeFragment<LoginViewState, LoginViewModel>(), Ada
             Initial -> {
 
             }
+            UsersInitSuccess -> Unit
+            UsersInitError -> Unit
         }.exhaustive
     }
 }

@@ -8,6 +8,7 @@ import androidx.navigation.NavController
 import co.zsmb.rainbowcake.base.RainbowCakeViewModel
 import com.google.android.material.snackbar.Snackbar
 import hu.bme.aut.android.chat_app.ChatApplication
+import hu.bme.aut.android.chat_app.Model.User
 import hu.bme.aut.android.chat_app.R
 import hu.bme.aut.android.chat_app.databinding.FragmentLoginBinding
 import java.lang.Exception
@@ -20,13 +21,21 @@ class LoginViewModel @Inject constructor(
     private val loginPresenter: LoginPresenter
 ) : RainbowCakeViewModel<LoginViewState>(Initial) {
 
-    private lateinit var fragmentBinding: FragmentLoginBinding
     private lateinit var context: Context
     private var lastSelected by Delegates.notNull<Int>()
+    private var users : List<User> = mutableListOf()
 
+    fun getUsers() = execute{
+        users = loginPresenter.getUsers()
+    }
+
+    fun init() {
+        getUsers()
+        viewState = if (users.isNotEmpty()) UsersInitSuccess else UsersInitError
+    }
 
     fun validUserAndPass(userNameText: String, passwordText: String): Boolean {
-        for (user in ChatApplication.usersList) {
+        for (user in users) {
             if (validUser(userNameText, passwordText, user.userName, user.password)) {
                 ChatApplication.currentUser = user
                 return true
