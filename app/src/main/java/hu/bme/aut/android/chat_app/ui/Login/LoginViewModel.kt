@@ -18,72 +18,26 @@ import kotlin.properties.Delegates
 @SuppressLint("StaticFieldLeak")
 class LoginViewModel @Inject constructor(
     private val loginPresenter: LoginPresenter
-) : RainbowCakeViewModel<LoginViewState>(Initial){
+) : RainbowCakeViewModel<LoginViewState>(Initial) {
 
     private lateinit var fragmentBinding: FragmentLoginBinding
     private lateinit var context: Context
     private var lastSelected by Delegates.notNull<Int>()
 
-    fun loadRates() = execute{
-       // viewState = Loading
-        viewState = try{
-            DataReady
-        }catch (e: Exception){
-            NetworkError
-        }
-    }
 
-     fun openRegisterActivity(navController: NavController){
-        val action = LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
-        navController.navigate(action)
-    }
-
-    fun openMessagesActivity(navController: NavController, binding: FragmentLoginBinding, cxt: Context?){
-        fragmentBinding = binding
-        if (cxt != null) {
-            context = cxt
-        }
-        if(validateLogin()){
-            val action = LoginFragmentDirections.actionLoginFragmentToMessagesFragment()
-            navController.navigate(action)
-        }
-    }
-
-    private fun validateLogin(): Boolean{
-        if(fragmentBinding.editTextLoginName.text.toString().isEmpty()){
-            fragmentBinding.editTextLoginName.error = context.getString(R.string.user_name_required)
-            return false
-        }
-        if( fragmentBinding.editTextLoginPassword.text.toString().isEmpty()){
-            fragmentBinding.editTextLoginPassword.error = context.getString(R.string.pass_required)
-            return false
-        }
-        if(!validUserAndPass(fragmentBinding.editTextLoginName.text.toString(), fragmentBinding.editTextLoginPassword.text.toString() )){
-            Snackbar.make(
-                fragmentBinding.root, context.getString(R.string.wrong_input),
-                Snackbar.LENGTH_LONG
-            )
-                .setBackgroundTint(Color.RED)
-                .show()
-            return false
-        }
-        return true
-    }
-
-   private fun validUserAndPass(userNameText: String, passwordText: String): Boolean {
+    fun validUserAndPass(userNameText: String, passwordText: String): Boolean {
         for (user in ChatApplication.usersList) {
-            if( validUser(userNameText, passwordText, user.userName, user.password)) {
-                    ChatApplication.currentUser = user
-                    return true
-                }
-
+            if (validUser(userNameText, passwordText, user.userName, user.password)) {
+                ChatApplication.currentUser = user
+                return true
             }
+        }
         return false
     }
 
 
-    fun validUser(userNameText: String, passwordText: String, currentUserName: String, currentPassword: String): Boolean{
-        if((userNameText == currentUserName) && (passwordText == currentPassword)) return true
+    private fun validUser(userNameText: String, passwordText: String, currentUserName: String, currentPassword: String): Boolean {
+        if ((userNameText == currentUserName) && (passwordText == currentPassword)) return true
         return false
     }
 
@@ -91,12 +45,12 @@ class LoginViewModel @Inject constructor(
         if (cxt != null) {
             context = cxt
         }
-        when(position){
+        when (position) {
             0 -> setApplicationLocale("en")
             1 -> setApplicationLocale("hu")
             else -> setApplicationLocale("en")
         }
-        if(last_selected != position){
+        if (last_selected != position) {
             lastSelected = position
             val action = LoginFragmentDirections.actionLoginFragmentSelf(position)
             navController.navigate(action)
@@ -107,11 +61,7 @@ class LoginViewModel @Inject constructor(
         val resources = context.resources
         val dm = resources.displayMetrics
         val config = resources.configuration
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            config.setLocale(Locale(locale.toLowerCase()))
-        } else {
-            config.locale = Locale(locale.toLowerCase())
-        }
+        config.setLocale(Locale(locale.toLowerCase(Locale.ROOT)))
         resources.updateConfiguration(config, dm)
     }
 }
