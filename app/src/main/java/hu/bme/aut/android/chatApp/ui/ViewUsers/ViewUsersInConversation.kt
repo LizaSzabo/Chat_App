@@ -11,12 +11,15 @@ import hu.bme.aut.android.chatApp.R
 import hu.bme.aut.android.chatApp.databinding.FragmentViewUsersBinding
 
 
-class ViewUsersInConversation: RainbowCakeFragment<ViewUsersViewState, ViewUsersViewModel>() {
+class ViewUsersInConversation : RainbowCakeFragment<ViewUsersViewState, ViewUsersViewModel>() {
+
+    override fun getViewResource(): Int = R.layout.fragment_view_users
+    override fun provideViewModel(): ViewUsersViewModel = getViewModelFromFactory()
 
     private lateinit var fragmentBinding: FragmentViewUsersBinding
     private lateinit var usersAdapter: UsersAdapter
 
-    override fun onViewCreated(view: View,  savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentViewUsersBinding.bind(view)
         fragmentBinding = binding
@@ -26,24 +29,21 @@ class ViewUsersInConversation: RainbowCakeFragment<ViewUsersViewState, ViewUsers
         initRecyclerView()
     }
 
-    private fun initRecyclerView(){
+    private fun initRecyclerView() {
         usersAdapter = UsersAdapter()
-        fragmentBinding.rvUsers.layoutManager = LinearLayoutManager( context)
+        fragmentBinding.rvUsers.layoutManager = LinearLayoutManager(context)
         fragmentBinding.rvUsers.adapter = usersAdapter
         usersAdapter.addAll()
     }
 
-    override fun getViewResource(): Int = R.layout.fragment_view_users
-
-    override fun provideViewModel(): ViewUsersViewModel =  getViewModelFromFactory()
-
 
     override fun render(viewState: ViewUsersViewState) {
-        when(viewState){
+        when (viewState) {
             Initial -> {
 
             }
-            else -> {}
+            else -> {
+            }
         }
     }
 }

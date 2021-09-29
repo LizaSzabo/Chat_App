@@ -25,8 +25,8 @@ import hu.bme.aut.android.chatApp.ChatApplication.Companion.currentUser
 import hu.bme.aut.android.chatApp.Model.Conversation
 import hu.bme.aut.android.chatApp.R
 import hu.bme.aut.android.chatApp.databinding.FragmentMessagesBinding
-import hu.bme.aut.android.chatApp.ui.AddUserDialog
-import hu.bme.aut.android.chatApp.ui.EditConversationDialog
+import hu.bme.aut.android.chatApp.ui.addUser.AddUserDialog
+import hu.bme.aut.android.chatApp.ui.editconversation.EditConversationDialog
 
 class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewModel>(), ConversationsAdapter.ConversationItemClickListener,
     EditConversationDialog.EditConversationListener, AddUserDialog.AddUserListener {

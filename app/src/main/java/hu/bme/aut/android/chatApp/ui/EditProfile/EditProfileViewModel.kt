@@ -3,9 +3,9 @@ package hu.bme.aut.android.chatApp.ui.EditProfile
 import android.graphics.Bitmap
 import androidx.fragment.app.FragmentManager
 import co.zsmb.rainbowcake.base.RainbowCakeViewModel
-import hu.bme.aut.android.chatApp.ui.EditUserNameDialog
+import hu.bme.aut.android.chatApp.ui.editusername.EditUserNameDialog
 import hu.bme.aut.android.chatApp.databinding.FragmentEditProfileBinding
-import hu.bme.aut.android.chatApp.ui.ChangePassDialog
+import hu.bme.aut.android.chatApp.ui.changepassword.ChangePassDialog
 
 import javax.inject.Inject
 

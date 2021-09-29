@@ -4,7 +4,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
 import co.zsmb.rainbowcake.base.RainbowCakeViewModel
 import hu.bme.aut.android.chatApp.Adapter_Rv.ConversationsAdapter
-import hu.bme.aut.android.chatApp.ui.AddConversationDialog
+import hu.bme.aut.android.chatApp.ui.addConversation.AddConversationDialog
 import hu.bme.aut.android.chatApp.Model.Conversation
 import hu.bme.aut.android.chatApp.Model.User
 import javax.inject.Inject

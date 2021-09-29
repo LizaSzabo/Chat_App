@@ -1,4 +1,4 @@
-package hu.bme.aut.android.chatApp.ui
+package hu.bme.aut.android.chatApp.ui.addConversation
 
 import android.graphics.Bitmap
 import android.net.Uri
@@ -10,7 +10,9 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
-import androidx.fragment.app.DialogFragment
+import co.zsmb.rainbowcake.base.RainbowCakeDialogFragment
+import co.zsmb.rainbowcake.dagger.getViewModelFromFactory
+import co.zsmb.rainbowcake.extensions.exhaustive
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.allConversationList
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.convid
 import hu.bme.aut.android.chatApp.Model.Conversation
@@ -19,7 +21,12 @@ import hu.bme.aut.android.chatApp.R
 import hu.bme.aut.android.chatApp.databinding.DialogAddconversationBinding
 import java.util.*
 
-class AddConversationDialog: DialogFragment(), AdapterView.OnItemSelectedListener  {
+class AddConversationDialog : RainbowCakeDialogFragment<AddConversationViewState, AddConversationViewModel>(),
+    AdapterView.OnItemSelectedListener {
+
+    override fun getViewResource() = R.layout.dialog_addconversation
+    override fun provideViewModel() = getViewModelFromFactory()
+
     private lateinit var binding: DialogAddconversationBinding
     lateinit var listener: AddConversationListener
 
@@ -30,17 +37,20 @@ class AddConversationDialog: DialogFragment(), AdapterView.OnItemSelectedListene
             val uri: Uri = Uri.parse("android.resource://hu.bme.aut.android.chat_app/drawable/default_profilepic")
             val b: Bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, uri)
             if (validateNewConversation()) {
-               val defaultMessages = mutableListOf<Message>()
+                val defaultMessages = mutableListOf<Message>()
                 convid++
-                    listener.onAddConversation(Conversation(
+                listener.onAddConversation(
+                    Conversation(
                         UUID.randomUUID().toString(), binding.editTextConversationTitle.text.toString(),
-                        binding.editTextTypeTitle.text.toString(), defaultMessages,  b, false, binding.editTextCode.text.toString()))
+                        binding.editTextTypeTitle.text.toString(), defaultMessages, b, false, binding.editTextCode.text.toString()
+                    )
+                )
 
                 dialog?.dismiss()
             }
         }
 
-        binding.btnCancel.setOnClickListener{
+        binding.btnCancel.setOnClickListener {
             dialog?.dismiss()
         }
 
@@ -62,18 +72,18 @@ class AddConversationDialog: DialogFragment(), AdapterView.OnItemSelectedListene
     }
 
 
-    private fun validateNewConversation(): Boolean{
+    private fun validateNewConversation(): Boolean {
         if (!validateInputText(binding.editTextConversationTitle.text.toString())) {
             binding.editTextConversationTitle.error = getString(R.string.title_not_empty)
             return false
         }
-        if(!validateInputText( binding.editTextTypeTitle.text.toString())){
+        if (!validateInputText(binding.editTextTypeTitle.text.toString())) {
             binding.editTextTypeTitle.error = "conversation type cannot be empty"
             return false
         }
 
-        for(conversation in allConversationList){
-            if(conversation.code == binding.editTextCode.text.toString()) {
+        for (conversation in allConversationList) {
+            if (conversation.code == binding.editTextCode.text.toString()) {
                 binding.editTextCode.error = "code already exists"
                 return false
             }
@@ -82,27 +92,35 @@ class AddConversationDialog: DialogFragment(), AdapterView.OnItemSelectedListene
         return true
     }
 
-    fun validateInputText(input: String): Boolean{
-        if(input.isEmpty()) return false
-         return true
+    fun validateInputText(input: String): Boolean {
+        if (input.isEmpty()) return false
+        return true
     }
 
-    interface AddConversationListener{
+    interface AddConversationListener {
         fun onAddConversation(conversation: Conversation)
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        when(position){
+        when (position) {
             0 -> setSelectedItem("Private")
             1 -> setSelectedItem("Group")
         }
 
     }
+
     override fun onNothingSelected(parent: AdapterView<*>?) {
         TODO("Not yet implemented")
     }
 
-    private fun  setSelectedItem(categorySelected: String){
+    private fun setSelectedItem(categorySelected: String) {
         binding.editTextTypeTitle.setText(categorySelected)
     }
+
+    override fun render(viewState: AddConversationViewState) {
+        when (viewState) {
+        Initial -> Unit
+        }.exhaustive
+    }
+
 }

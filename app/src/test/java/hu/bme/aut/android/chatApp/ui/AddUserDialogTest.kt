@@ -1,6 +1,7 @@
 package hu.bme.aut.android.chatApp.ui
 
 import android.widget.EditText
+import hu.bme.aut.android.chatApp.ui.addUser.AddUserDialog
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test

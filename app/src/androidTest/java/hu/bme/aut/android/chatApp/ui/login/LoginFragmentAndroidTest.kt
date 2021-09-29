@@ -14,7 +14,7 @@ import hu.bme.aut.android.chatApp.ChatApplication.Companion.usersList
 import hu.bme.aut.android.chatApp.MainActivity
 import hu.bme.aut.android.chatApp.Model.User
 import hu.bme.aut.android.chatApp.R
-import hu.bme.aut.android.chatApp.ui.AddConversationDialog
+import hu.bme.aut.android.chatApp.ui.addConversation.AddConversationDialog
 import hu.bme.aut.android.chatApp.ui.Messages.MessagesFragment
 import org.hamcrest.CoreMatchers.`is`
 import org.junit.Before
@@ -40,7 +40,7 @@ class LoginFragmentAndroidTest{
     @Before
     fun setUp() {
        fragment = MessagesFragment()
-        dialog =AddConversationDialog()
+        dialog = AddConversationDialog()
     }
 
     @Test
