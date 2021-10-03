@@ -2,6 +2,7 @@ package hu.bme.aut.android.chatApp.ui.login
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import androidx.navigation.NavController
 import co.zsmb.rainbowcake.base.RainbowCakeViewModel
 import hu.bme.aut.android.chatApp.ChatApplication

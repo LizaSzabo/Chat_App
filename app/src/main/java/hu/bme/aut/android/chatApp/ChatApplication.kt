@@ -41,7 +41,9 @@ class ChatApplication : RainbowCakeApplication() {
         var update = false
         var messageText = ""
         var lastDate : String = ""
-        var defaultProfile: Bitmap? = null
+
+
+        var Users = mutableListOf<User>()
     }
 
     override lateinit var injector: RainbowCakeComponent

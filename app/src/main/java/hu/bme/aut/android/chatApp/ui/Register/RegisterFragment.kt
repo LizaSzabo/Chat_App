@@ -11,7 +11,6 @@ import co.zsmb.rainbowcake.base.RainbowCakeFragment
 import co.zsmb.rainbowcake.dagger.getViewModelFromFactory
 import co.zsmb.rainbowcake.extensions.exhaustive
 import hu.bme.aut.android.chatApp.ChatApplication
-import hu.bme.aut.android.chatApp.ChatApplication.Companion.defaultProfile
 import hu.bme.aut.android.chatApp.R
 import hu.bme.aut.android.chatApp.databinding.FragmentRegisterBinding
 
