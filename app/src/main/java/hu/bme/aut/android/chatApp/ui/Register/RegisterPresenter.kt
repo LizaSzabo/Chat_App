@@ -3,13 +3,14 @@ package hu.bme.aut.android.chatApp.ui.Register
 import co.zsmb.rainbowcake.withIOContext
 import hu.bme.aut.android.chatApp.Model.User
 import hu.bme.aut.android.chatApp.domain.RegisterInteractor
+import hu.bme.aut.android.chatApp.domain.UserInteractor
 import javax.inject.Inject
 
 class RegisterPresenter @Inject constructor(
-    private val registerInteractor: RegisterInteractor,
+    private val userInteractor: UserInteractor,
 ){
 
     suspend fun saveRegisteredUser(user: User) = withIOContext {
-        registerInteractor.saveRegisteredUser(user)
+        userInteractor.saveRegisteredUser(user)
     }
 }
