@@ -149,6 +149,12 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
         }
     }
 
+    fun addAllConversations(conversations: List<Conversation>)
+    {
+        conversationList += conversations
+        submitList(conversationList)
+    }
+
     fun updateConversation(conv: Conversation, pos: Int){
         conversationList = conversationList.filterIndexed { index, _ -> index != pos}
         conversationList += conv

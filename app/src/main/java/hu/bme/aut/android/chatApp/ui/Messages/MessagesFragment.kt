@@ -70,7 +70,7 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
         fragmentBinding.imageButtonProfile.setImageBitmap(resized)
 
         initRecyclerView()
-
+        viewModel.init(fragmentBinding.editTextSearch.text.toString(), conversationsAdapter)
     }
 
     private fun Bitmap.resizeByHeight(height: Int): Bitmap {
@@ -102,7 +102,7 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
         fragmentBinding.rvConversations.layoutManager = LinearLayoutManager(context)
         fragmentBinding.rvConversations.adapter = conversationsAdapter
         conversationsAdapter.itemClickListener = this
-        conversationsAdapter.addAll(fragmentBinding.editTextSearch.text.toString())
+       // conversationsAdapter.addAll(fragmentBinding.editTextSearch.text.toString())
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -194,6 +194,8 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
             Initial -> {
 
             }
+            ConversationLoadSuccess -> {}
+            ConversationLoadError -> {}
         }.exhaustive
     }
 

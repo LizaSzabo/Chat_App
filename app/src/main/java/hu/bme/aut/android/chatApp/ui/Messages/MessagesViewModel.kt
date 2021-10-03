@@ -1,5 +1,6 @@
 package hu.bme.aut.android.chatApp.ui.Messages
 
+import android.util.Log
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
 import co.zsmb.rainbowcake.base.RainbowCakeViewModel
@@ -13,6 +14,13 @@ class MessagesViewModel@Inject constructor(
     private val messagesPresenter: MessagesPresenter): RainbowCakeViewModel<MessagesViewState>(Initial), AddConversationDialog.AddConversationListener{
 
     private lateinit var conversationsAdapter: ConversationsAdapter
+    private var conversations : List<Conversation> = mutableListOf()
+
+    fun init(searchText: String, adapter: ConversationsAdapter) = execute{
+        conversations = messagesPresenter.getConversations()
+        conversationsAdapter = adapter
+        conversationsAdapter.addAllConversations(conversations)
+    }
 
     fun openAddConversationDialog(fm: FragmentManager, ca: ConversationsAdapter) {
         conversationsAdapter = ca

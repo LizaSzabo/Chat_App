@@ -19,6 +19,7 @@ import com.amplifyframework.datastore.DataStoreConfiguration
 import com.amplifyframework.hub.HubChannel
 import com.amplifyframework.hub.HubEvent
 import hu.bme.aut.android.chatApp.Model.Conversation
+import hu.bme.aut.android.chatApp.Model.Message
 import hu.bme.aut.android.chatApp.Model.User
 import hu.bme.aut.android.chatApp.Network.observeData
 import hu.bme.aut.android.chatApp.di.DaggerAppComponent
@@ -44,6 +45,9 @@ class ChatApplication : RainbowCakeApplication() {
 
 
         var Users = mutableListOf<User>()
+        var Conversations = mutableListOf<Conversation>(
+            Conversation("id1", "conversation1", "private", mutableListOf(), null, true, "123456789")
+        )
     }
 
     override lateinit var injector: RainbowCakeComponent
