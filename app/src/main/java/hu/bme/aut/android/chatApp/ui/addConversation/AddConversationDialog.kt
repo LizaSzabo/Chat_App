@@ -10,16 +10,13 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import android.widget.Toast
 import co.zsmb.rainbowcake.base.RainbowCakeDialogFragment
 import co.zsmb.rainbowcake.dagger.getViewModelFromFactory
 import co.zsmb.rainbowcake.extensions.exhaustive
-import hu.bme.aut.android.chatApp.ChatApplication.Companion.allConversationList
-import hu.bme.aut.android.chatApp.ChatApplication.Companion.convid
 import hu.bme.aut.android.chatApp.Model.Conversation
-import hu.bme.aut.android.chatApp.Model.Message
 import hu.bme.aut.android.chatApp.R
 import hu.bme.aut.android.chatApp.databinding.DialogAddconversationBinding
-import java.util.*
 
 class AddConversationDialog : RainbowCakeDialogFragment<AddConversationViewState, AddConversationViewModel>(),
     AdapterView.OnItemSelectedListener {
@@ -37,15 +34,21 @@ class AddConversationDialog : RainbowCakeDialogFragment<AddConversationViewState
             val uri: Uri = Uri.parse("android.resource://hu.bme.aut.android.chat_app/drawable/default_profilepic")
             val b: Bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, uri)
             if (validateNewConversation()) {
-                val defaultMessages = mutableListOf<Message>()
-                convid++
-                listener.onAddConversation(
-                    Conversation(
-                        UUID.randomUUID().toString(), binding.editTextConversationTitle.text.toString(),
-                        binding.editTextTypeTitle.text.toString(), defaultMessages, b, false, binding.editTextCode.text.toString()
-                    )
+                viewModel.addConversation(
+                    binding.editTextConversationTitle.text.toString(),
+                    binding.editTextTypeTitle.text.toString(),
+                    b,
+                    binding.editTextCode.text.toString()
                 )
-
+                /* val defaultMessages = mutableListOf<Message>()
+               //  convid++
+                 listener.onAddConversation(
+                     Conversation(
+                         UUID.randomUUID().toString(), binding.editTextConversationTitle.text.toString(),
+                         binding.editTextTypeTitle.text.toString(), defaultMessages, b, false, binding.editTextCode.text.toString()
+                     )
+                 )
+                 */
                 dialog?.dismiss()
             }
         }
@@ -82,12 +85,7 @@ class AddConversationDialog : RainbowCakeDialogFragment<AddConversationViewState
             return false
         }
 
-        for (conversation in allConversationList) {
-            if (conversation.code == binding.editTextCode.text.toString()) {
-                binding.editTextCode.error = "code already exists"
-                return false
-            }
-        }
+        // viewModel.existsConversation(binding.editTextCode.text.toString())
 
         return true
     }
@@ -119,7 +117,16 @@ class AddConversationDialog : RainbowCakeDialogFragment<AddConversationViewState
 
     override fun render(viewState: AddConversationViewState) {
         when (viewState) {
-        Initial -> Unit
+            Initial -> Unit
+            ConversationAddCancel -> {
+                binding.editTextCode.error = "code already exists"
+            }
+            ConversationAddError -> {
+                Toast.makeText(context, "Conversation Add Failed", Toast.LENGTH_LONG).show()
+            }
+            ConversationAddSuccess -> {
+                Toast.makeText(context, "Conversation Add Succeeded", Toast.LENGTH_LONG).show()
+            }
         }.exhaustive
     }
 

@@ -13,6 +13,7 @@ import android.view.View
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -53,6 +54,7 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
         fragmentBinding.imageButtonWrite.setOnClickListener {
             viewModel.openAddConversationDialog(parentFragmentManager, conversationsAdapter)
         }
+        fragmentBinding.imageButtonWrite.isVisible = false
         fragmentBinding.imageButtonProfile.setOnClickListener { viewModel.openEditProfileActivity(findNavController()) }
         fragmentBinding.chatListToolbar.title = ""
         fragmentBinding.txtTitle.text = currentUser?.userName
@@ -197,13 +199,16 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
             }
             ConversationLoadSuccess -> {
                 Toast.makeText(context, "Conversation successfully loaded", Toast.LENGTH_LONG).show()
+                fragmentBinding.imageButtonWrite.isVisible = true
             }
             ConversationLoadError -> {}
             ConversationDeleteSuccess -> {
                 Toast.makeText(context, "Conversation successfully deleted", Toast.LENGTH_LONG).show()
+                fragmentBinding.imageButtonWrite.isVisible = true
             }
             ConversationDeleteError -> {
                 Toast.makeText(context, "Conversation delete failed", Toast.LENGTH_LONG).show()
+                fragmentBinding.imageButtonWrite.isVisible = false
             }
         }.exhaustive
     }

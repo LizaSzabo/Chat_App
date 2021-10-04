@@ -14,4 +14,9 @@ class ConversationInteractor @Inject constructor() {
        Conversations.remove(conversation)
        return true
    }
+
+    fun addConversation(conversation: Conversation) : Boolean {
+        Conversations.add(conversation)
+        return true
+    }
 }
