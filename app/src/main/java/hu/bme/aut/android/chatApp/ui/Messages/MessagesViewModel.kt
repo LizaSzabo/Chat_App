@@ -7,6 +7,7 @@ import hu.bme.aut.android.chatApp.Adapter_Rv.ConversationsAdapter
 import hu.bme.aut.android.chatApp.Model.Conversation
 import hu.bme.aut.android.chatApp.Model.User
 import hu.bme.aut.android.chatApp.ui.addConversation.AddConversationDialog
+import hu.bme.aut.android.chatApp.ui.addConversation.AddConversationViewModel
 import javax.inject.Inject
 
 class MessagesViewModel @Inject constructor(

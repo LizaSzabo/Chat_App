@@ -10,7 +10,7 @@ class AddConversationPresenter @Inject constructor(
 ) {
 
     suspend fun existsConversation(conversationCode: String) : Boolean = withIOContext {
-        true
+        conversationInteractor.existsConversation(conversationCode)
     }
 
     suspend fun addConversation(conversation: Conversation) : Boolean = withIOContext {
