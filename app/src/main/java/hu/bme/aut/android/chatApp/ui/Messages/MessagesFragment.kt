@@ -11,6 +11,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
 import androidx.navigation.fragment.findNavController
@@ -138,7 +139,7 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
         }
         popup.setOnMenuItemClickListener { item ->
             when (item.itemId) {
-                R.id.delete -> conversationsAdapter.deleteConversation(position)
+                R.id.delete -> viewModel.deleteConversation(position, conversation)//conversationsAdapter.deleteConversation(position)
                 R.id.edit -> {
                     val conversationDialog = EditConversationDialog(position)
                     conversationDialog.listener = this
@@ -194,8 +195,16 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
             Initial -> {
 
             }
-            ConversationLoadSuccess -> {}
+            ConversationLoadSuccess -> {
+                Toast.makeText(context, "Conversation successfully loaded", Toast.LENGTH_LONG).show()
+            }
             ConversationLoadError -> {}
+            ConversationDeleteSuccess -> {
+                Toast.makeText(context, "Conversation successfully deleted", Toast.LENGTH_LONG).show()
+            }
+            ConversationDeleteError -> {
+                Toast.makeText(context, "Conversation delete failed", Toast.LENGTH_LONG).show()
+            }
         }.exhaustive
     }
 

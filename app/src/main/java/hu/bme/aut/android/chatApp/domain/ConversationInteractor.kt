@@ -8,5 +8,10 @@ class ConversationInteractor @Inject constructor() {
 
    fun getConversations() : List<Conversation>{
         return Conversations
-    }
+   }
+
+   fun deleteConversation(conversation : Conversation) : Boolean{
+       Conversations.remove(conversation)
+       return true
+   }
 }

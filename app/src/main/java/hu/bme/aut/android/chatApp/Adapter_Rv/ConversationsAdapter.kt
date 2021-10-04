@@ -113,7 +113,7 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
         return conversationList.size
     }
 
-    fun deleteConversation(position: Int) {
+   /* fun deleteConversation(position: Int) {
         conversationList = conversationList.filterIndexed { index, _ -> index != position }
         currentUser?.conversations?.remove(currentConversation)
         submitList(conversationList)
@@ -125,6 +125,11 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
             }
         }
 
+    }*/
+
+    fun deleteConversation(position: Int){
+        conversationList = conversationList.filterIndexed { index, _ -> index != position }
+        submitList(conversationList)
     }
 
     fun addAll(conversation: String){

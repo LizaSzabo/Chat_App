@@ -18,4 +18,8 @@ class MessagesPresenter @Inject constructor(
     suspend fun getConversations(): List<Conversation> = withIOContext {
         conversationInterector.getConversations()
     }
+
+    suspend fun deleteConversation(conversation : Conversation) : Boolean = withIOContext {
+        conversationInterector.deleteConversation(conversation)
+    }
 }

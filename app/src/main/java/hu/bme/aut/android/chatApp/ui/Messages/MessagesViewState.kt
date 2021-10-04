@@ -8,3 +8,7 @@ object ConversationLoadSuccess : MessagesViewState()
 
 object ConversationLoadError : MessagesViewState()
 
+object ConversationDeleteSuccess : MessagesViewState()
+
+object ConversationDeleteError : MessagesViewState()
+
