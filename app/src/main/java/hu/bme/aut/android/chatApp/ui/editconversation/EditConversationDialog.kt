@@ -4,15 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
+import co.zsmb.rainbowcake.base.OneShotEvent
 import co.zsmb.rainbowcake.base.RainbowCakeDialogFragment
 import co.zsmb.rainbowcake.dagger.getViewModelFromFactory
 import co.zsmb.rainbowcake.extensions.exhaustive
-import hu.bme.aut.android.chatApp.ChatApplication.Companion.currentConversation
 import hu.bme.aut.android.chatApp.Model.Conversation
 import hu.bme.aut.android.chatApp.R
 import hu.bme.aut.android.chatApp.databinding.DialogEditConversationBinding
 
-class EditConversationDialog(private var pos: Int) : RainbowCakeDialogFragment<EditConversationViewState, EditConversationViewModel>() {
+class EditConversationDialog(private var pos: Int, private val conversation: Conversation) :
+    RainbowCakeDialogFragment<EditConversationViewState, EditConversationViewModel>() {
 
     override fun getViewResource() = R.layout.dialog_edit_conversation
     override fun provideViewModel() = getViewModelFromFactory()
@@ -27,7 +29,8 @@ class EditConversationDialog(private var pos: Int) : RainbowCakeDialogFragment<E
             if (binding.editTextConversationTitle.text.toString().isEmpty()) {
                 binding.editTextConversationTitle.error = getString(R.string.title_not_empty)
             } else {
-                currentConversation?.let { it1 ->
+                viewModel.updateConversationName(conversation, binding.editTextConversationTitle.text.toString())
+                /*currentConversation?.let { it1 ->
                     currentConversation?.picture?.let { it2 ->
                         currentConversation?.favourite?.let { it3 ->
                             currentConversation?.id?.let { it4 ->
@@ -45,10 +48,7 @@ class EditConversationDialog(private var pos: Int) : RainbowCakeDialogFragment<E
                         it2, pos
                     )
                 }
-
-
-
-                dialog?.dismiss()
+                */
             }
         }
 
@@ -58,13 +58,41 @@ class EditConversationDialog(private var pos: Int) : RainbowCakeDialogFragment<E
         return binding.root
     }
 
+    override fun onEvent(event: OneShotEvent) {
+        when (event) {
+            is EditConversationViewModel.ConversationUpdated -> {
+                listener.onConversationTitleChange(
+                    Conversation(
+                        conversation.id,
+                        binding.editTextConversationTitle.text.toString(),
+                        conversation.type,
+                        conversation.messages,
+                        conversation.picture,
+                        conversation.favourite,
+                        conversation.code
+                    ), pos
+                )
+
+                /*val action = MessagesFragmentDirections.actionMessagesFragmentSelf()
+                findNavController().navigate(action)*/
+                dialog?.dismiss()
+            }
+        }
+    }
+
     interface EditConversationListener {
         fun onConversationTitleChange(conversation: Conversation, pos: Int)
     }
 
     override fun render(viewState: EditConversationViewState) {
         when (viewState) {
-            Initial -> Unit
+            Initial -> {
+                binding.errorText.isVisible = false
+            }
+            UpdateError -> {
+                binding.errorText.isVisible = true
+            }
+            UpdateSucceeded -> binding.errorText.isVisible = false
         }.exhaustive
     }
 }

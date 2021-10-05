@@ -35,6 +35,7 @@
     <string name="title_not_empty">The Conversation Title cannot be empty</string>
     <string name="change_conversation_picture">CHANGE CONVERSATION PICTURE</string>
     <string name="add_user">ADD USER</string>
+    <string name="update_error">Update Error!</string>
 
     <string-array name="languages">
         <item>EN</item>

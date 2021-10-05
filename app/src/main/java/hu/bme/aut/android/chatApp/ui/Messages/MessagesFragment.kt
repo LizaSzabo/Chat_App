@@ -41,7 +41,6 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
     private val pickImage = 1
     var uri: Uri = Uri.parse("android.resource://hu.bme.aut.android.chat_app/drawable/default_profilepic")
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -143,7 +142,7 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
             when (item.itemId) {
                 R.id.delete -> viewModel.deleteConversation(position, conversation)//conversationsAdapter.deleteConversation(position)
                 R.id.edit -> {
-                    val conversationDialog = EditConversationDialog(position)
+                    val conversationDialog = EditConversationDialog(position, conversation)
                     conversationDialog.listener = this
                     conversationDialog.show(parentFragmentManager, "")
                 }

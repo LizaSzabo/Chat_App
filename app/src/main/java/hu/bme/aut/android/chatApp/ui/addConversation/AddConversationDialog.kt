@@ -29,13 +29,11 @@ class AddConversationDialog : RainbowCakeDialogFragment<AddConversationViewState
 
     private lateinit var binding: DialogAddconversationBinding
     lateinit var listener: AddConversationListener
-    private var conversationExists = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DialogAddconversationBinding.inflate(inflater, container, false)
 
         binding.btnSave.setOnClickListener {
-
             val uri: Uri = Uri.parse("android.resource://hu.bme.aut.android.chat_app/drawable/default_profilepic")
             val b: Bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, uri)
             if (validateNewConversation()) {
@@ -45,7 +43,6 @@ class AddConversationDialog : RainbowCakeDialogFragment<AddConversationViewState
                     b,
                     binding.editTextCode.text.toString()
                 )
-
             }
         }
 

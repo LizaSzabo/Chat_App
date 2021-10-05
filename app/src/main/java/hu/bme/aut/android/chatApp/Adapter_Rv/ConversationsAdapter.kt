@@ -160,7 +160,7 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
         submitList(conversationList)
     }
 
-    fun updateConversation(conv: Conversation, pos: Int){
+   /* fun updateConversation(conv: Conversation, pos: Int){
         conversationList = conversationList.filterIndexed { index, _ -> index != pos}
         conversationList += conv
 
@@ -176,6 +176,11 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
             }
         }
 
+        submitList(conversationList)
+    }*/
+
+    fun updateConversation(conversation : Conversation, pos : Int){
+        conversationList += conversation
         submitList(conversationList)
     }
 

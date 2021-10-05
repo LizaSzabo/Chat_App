@@ -30,4 +30,13 @@ class ConversationInteractor @Inject constructor() {
         Log.i("exists", "false")
         return false
     }
+
+    fun updateConversationName(conversation: Conversation, conversationNewName : String) : Boolean{
+        for(c in Conversations)
+            if(c.code == conversation.code){
+                c.name = conversationNewName
+                return true
+            }
+        return false
+    }
 }
