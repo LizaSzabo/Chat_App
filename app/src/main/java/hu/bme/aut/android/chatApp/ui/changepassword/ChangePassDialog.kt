@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import androidx.core.view.isVisible
 import co.zsmb.rainbowcake.base.RainbowCakeDialogFragment
 import co.zsmb.rainbowcake.dagger.getViewModelFromFactory
 import co.zsmb.rainbowcake.extensions.exhaustive
@@ -35,7 +36,8 @@ class ChangePassDialog : RainbowCakeDialogFragment<ChangePasswordViewState, Chan
                     binding.editConfirmPass.text.toString()
                 )
             ) {
-                val user = currentUser
+                viewModel.changeUserPassword(binding.editNewPass.text.toString())
+                /*val user = currentUser
                 currentUser = currentUser?.let { it1 ->
                     currentUser?.profilePicture?.let { it2 ->
                         currentUser?.userName?.let { it3 ->
@@ -48,9 +50,9 @@ class ChangePassDialog : RainbowCakeDialogFragment<ChangePasswordViewState, Chan
                 }
                 usersList.find { it == user }?.password = currentUser?.password.toString()
 
-                updateUserPassword(currentUser?.password.toString())
+                updateUserPassword(currentUser?.password.toString())*/
 
-                dialog?.dismiss()
+
             }
         }
 
@@ -69,27 +71,40 @@ class ChangePassDialog : RainbowCakeDialogFragment<ChangePasswordViewState, Chan
         editPassText: String,
         confirmedPassText: String
     ): Boolean {
-        if (actualPassText.isEmpty()) {
-            actualPass?.error = getString(R.string.wrong_pass)
-            // binding.editActualPass.backgroundTintList = (ColorStateList.valueOf(Color.parseColor("#ff0000")))
-            return false
-        } else if (editPassText.isEmpty()) {
-            newPass?.error = getString(R.string.pass_required)
-            return false
-        } else if (confirmedPassText.isEmpty()) {
-            confirmedPass?.error = getString(R.string.pass_confirmation_failed)
-            return false
-        } else if (confirmedPassText != editPassText) {
-            confirmedPass?.error = getString(R.string.pass_confirmation_failed)
-            return false
+        when {
+            actualPassText.isEmpty() -> {
+                actualPass?.error = getString(R.string.wrong_pass)
+                // binding.editActualPass.backgroundTintList = (ColorStateList.valueOf(Color.parseColor("#ff0000")))
+                return false
+            }
+            editPassText.isEmpty() -> {
+                newPass?.error = getString(R.string.pass_required)
+                return false
+            }
+            confirmedPassText.isEmpty() -> {
+                confirmedPass?.error = getString(R.string.pass_confirmation_failed)
+                return false
+            }
+            confirmedPassText != editPassText -> {
+                confirmedPass?.error = getString(R.string.pass_confirmation_failed)
+                return false
+            }
+            else -> return true
         }
-        return true
     }
 
 
     override fun render(viewState: ChangePasswordViewState) {
         when (viewState) {
-            Initial -> Unit
+            Initial -> {
+                binding.errorText.isVisible = false
+            }
+            ChangeError -> {
+                binding.errorText.isVisible = true
+            }
+            ChangeSuccess -> {
+                dialog?.dismiss()
+            }
         }.exhaustive
     }
 }

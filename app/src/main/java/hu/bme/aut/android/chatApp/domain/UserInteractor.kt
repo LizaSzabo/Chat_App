@@ -8,6 +8,7 @@ import android.util.Log
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
 import hu.bme.aut.android.chatApp.ChatApplication
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.Users
+import hu.bme.aut.android.chatApp.ChatApplication.Companion.currentUser
 import hu.bme.aut.android.chatApp.Model.User
 import hu.bme.aut.android.chatApp.Network.addNewRegisteredUser
 import hu.bme.aut.android.chatApp.ui.Register.RegisterFragment
@@ -32,5 +33,16 @@ class UserInteractor @Inject constructor() {
     private fun logUsers(){
         for(user in Users)
             Log.i("user: ", user.toString())
+    }
+
+    fun changeUserPassword(newPassword : String): Boolean{
+        for(user in Users) {
+            if (user.userName == currentUser?.userName) {
+                user.password = newPassword
+                currentUser?.password = newPassword
+                return true
+            }
+        }
+        return false
     }
 }

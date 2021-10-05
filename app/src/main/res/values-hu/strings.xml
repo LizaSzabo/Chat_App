@@ -34,6 +34,8 @@
     <string name="title_not_empty">A Beszélgetés Címe nem lehet üres</string>
     <string name="change_conversation_picture">BESZÉLGETÉS KÉP HOZZÁADÁSA</string>
     <string name="add_user">HOZZÁADÁS</string>
+    <string name="update_error">Sikertelen frissítés!</string>
+    <string name="password_change_error">Sikertelen jelszó változtatás!</string>
 
     <string-array name="languages">
         <item>EN</item>
