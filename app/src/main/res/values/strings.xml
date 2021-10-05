@@ -37,6 +37,8 @@
     <string name="add_user">ADD USER</string>
     <string name="update_error">Update failed!</string>
     <string name="password_change_error">Password change failed!</string>
+    <string name="user_name_change_failed">User Name change failed!</string>
+    <string name="your_name">You didn t changed your name!</string>
 
     <string-array name="languages">
         <item>EN</item>

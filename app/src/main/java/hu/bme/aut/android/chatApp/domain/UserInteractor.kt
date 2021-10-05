@@ -1,17 +1,9 @@
 package hu.bme.aut.android.chatApp.domain
 
-import android.content.Context
-import android.graphics.Bitmap
-import android.net.Uri
-import android.provider.MediaStore
 import android.util.Log
-import androidx.test.core.app.ApplicationProvider.getApplicationContext
-import hu.bme.aut.android.chatApp.ChatApplication
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.Users
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.currentUser
 import hu.bme.aut.android.chatApp.Model.User
-import hu.bme.aut.android.chatApp.Network.addNewRegisteredUser
-import hu.bme.aut.android.chatApp.ui.Register.RegisterFragment
 import javax.inject.Inject
 
 class UserInteractor @Inject constructor() {
@@ -40,6 +32,24 @@ class UserInteractor @Inject constructor() {
             if (user.userName == currentUser?.userName) {
                 user.password = newPassword
                 currentUser?.password = newPassword
+                return true
+            }
+        }
+        return false
+    }
+
+    fun existsUserName(newUserName : String) : Boolean {
+        for(user in Users)
+            if (user.userName == newUserName)
+                return true
+        return false
+    }
+
+    fun updateUserName(newUserName : String): Boolean{
+        for(user in Users) {
+            if (user.userName == currentUser?.userName) {
+                user.userName = newUserName
+                currentUser?.userName = newUserName
                 return true
             }
         }

@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
+import co.zsmb.rainbowcake.base.OneShotEvent
 import co.zsmb.rainbowcake.base.RainbowCakeDialogFragment
 import co.zsmb.rainbowcake.dagger.getViewModelFromFactory
 import co.zsmb.rainbowcake.extensions.exhaustive
@@ -28,7 +30,7 @@ class EditUserNameDialog(private var editbinding: FragmentEditProfileBinding) :
 
 
         binding.btnSave.setOnClickListener {
-            var ok = true
+            /*var ok = true
             for (user in usersList) {
                 if (user.userName == binding.editTextLoginName.text.toString()) {
                     binding.editTextLoginName.error = "User Name already exists"
@@ -40,6 +42,7 @@ class EditUserNameDialog(private var editbinding: FragmentEditProfileBinding) :
                 ok = false
             }
             if (ok) {
+
                 val user = currentUser
                 val name = user?.userName
                 currentUser?.userName = binding.editTextLoginName.text.toString()
@@ -55,9 +58,13 @@ class EditUserNameDialog(private var editbinding: FragmentEditProfileBinding) :
                 }
                 editbinding.tvUserName.text = currentUser?.userName
 
-                updateUserName(binding.editTextLoginName.text.toString(), name)
+                updateUserName(binding.editTextLoginName.text.toString(), name)*/
 
-                dialog?.dismiss()
+               // dialog?.dismiss()
+            //}
+
+            if(inputIsValid()){
+                viewModel.updateUserName(binding.editTextLoginName.text.toString())
             }
         }
 
@@ -67,9 +74,39 @@ class EditUserNameDialog(private var editbinding: FragmentEditProfileBinding) :
         return binding.root
     }
 
+    private fun inputIsValid() : Boolean{
+        if (binding.editTextLoginName.text.toString() == currentUser?.userName) {
+            binding.editTextLoginName.error = getString(R.string.your_name)
+            return false
+        }
+        if (binding.editTextLoginName.text.toString().isEmpty()) {
+            binding.editTextLoginName.error = getString(R.string.user_not_empty)
+           return false
+        }
+        return true
+    }
+
+    override fun onEvent(event: OneShotEvent) {
+        when(event){
+            is EditUserViewModel.EditCancelled -> binding.editTextLoginName.error = "User Name already exists"
+        }
+    }
+
     override fun render(viewState: EditUserNameViewState) {
         when (viewState) {
-            Initial -> Unit
+            Initial -> {
+                binding.errorText.isVisible = false
+            }
+            EditUserNameError -> {
+                binding.errorText.isVisible = true
+            }
+            EditUserNameSuccess -> {
+                editbinding.tvUserName.text = binding.editTextLoginName.text.toString()
+                dismiss()
+            }
+            UpdateCancelled -> {
+                binding.errorText.isVisible = false
+            }
         }.exhaustive
     }
 }

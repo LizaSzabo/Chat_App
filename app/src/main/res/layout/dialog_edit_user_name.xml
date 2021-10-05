@@ -46,6 +46,17 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <TextView
+        android:id="@+id/errorText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#93131E"
+        android:textSize="16sp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="30dp"
+        android:text="@string/user_name_change_failed" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
