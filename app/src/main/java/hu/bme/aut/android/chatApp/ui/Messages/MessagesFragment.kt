@@ -72,7 +72,7 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
         fragmentBinding.imageButtonProfile.setImageBitmap(resized)
 
         initRecyclerView()
-        viewModel.init(fragmentBinding.editTextSearch.text.toString(), conversationsAdapter)
+       // viewModel.init(fragmentBinding.editTextSearch.text.toString(), conversationsAdapter)
     }
 
     private fun Bitmap.resizeByHeight(height: Int): Bitmap {

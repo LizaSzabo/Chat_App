@@ -59,7 +59,11 @@
         android:id="@+id/editProfileFragment"
         android:name="hu.bme.aut.android.chatApp.ui.EditProfile.EditProfileFragment"
         android:label="EditProfileFragment"
-        tools:layout="@layout/fragment_edit_profile"/>
+        tools:layout="@layout/fragment_edit_profile">
+        <action
+            android:id="@+id/action_editProfileFragment_to_messagesFragment"
+            app:destination="@id/messagesFragment" />
+    </fragment>
     <fragment
         android:id="@+id/chatFragment"
         android:name="hu.bme.aut.android.chatApp.ui.Chat.ChatFragment"

@@ -38,6 +38,8 @@
     <string name="password_change_error">Password change failed!</string>
     <string name="user_name_change_failed">User Name change failed!</string>
     <string name="your_name">You didn t changed your name!</string>
+    <string name="registration_failed">Registration Failed!</string>
+
     <string-array name="languages">
         <item>EN</item>
         <item>HU</item>

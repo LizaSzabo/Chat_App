@@ -8,12 +8,13 @@ import javax.inject.Inject
 
 class UserInteractor @Inject constructor() {
 
-    fun saveRegisteredUser(user : User) {
+    fun saveRegisteredUser(user : User) : Boolean {
        /* addNewRegisteredUser(user.userName, user.password, user.profilePicture)
         ChatApplication.userid++
         ChatApplication.usersList.add(user)*/
         Users.add(user)
         logUsers()
+        return true
     }
 
     fun getUsers() : List<User>{

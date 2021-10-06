@@ -9,7 +9,11 @@ class RegisterPresenter @Inject constructor(
     private val userInteractor: UserInteractor,
 ){
 
-    suspend fun saveRegisteredUser(user: User) = withIOContext {
+    suspend fun saveRegisteredUser(user: User) : Boolean = withIOContext {
         userInteractor.saveRegisteredUser(user)
+    }
+
+    suspend fun existsUser(userName: String) : Boolean = withIOContext {
+        userInteractor.existsUserName(userName)
     }
 }

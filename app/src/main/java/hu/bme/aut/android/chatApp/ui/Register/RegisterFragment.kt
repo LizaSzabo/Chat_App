@@ -1,12 +1,16 @@
 package hu.bme.aut.android.chatApp.ui.Register
 
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
+import co.zsmb.rainbowcake.base.OneShotEvent
 import co.zsmb.rainbowcake.base.RainbowCakeFragment
 import co.zsmb.rainbowcake.dagger.getViewModelFromFactory
 import co.zsmb.rainbowcake.extensions.exhaustive
@@ -39,23 +43,35 @@ class RegisterFragment : RainbowCakeFragment<RegisterViewState, RegisterViewMode
                 val yourBitmap: Bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, uri)
 
                 viewModel.saveRegisteredUser(yourBitmap, fragmentBinding.tvTextUserName.text.toString(), fragmentBinding.tvTextPassword.text.toString())
-                val action = RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
-                findNavController().navigate(action)
+
             }
         }
 
         fragmentBinding.ivAddPicture.setOnClickListener {
-            val intent = Intent()
-            intent.type = "image/*"
-            intent.action = Intent.ACTION_GET_CONTENT
-            startActivityForResult(Intent.createChooser(intent, "Select Picture"), pickImage)
+           // val intent = Intent()
+            //intent.type = "image/*"
+            //intent.action = Intent.ACTION_GET_CONTENT
+            //startActivityForResult(Intent.createChooser(intent, "Select Picture"), pickImage)
+            openSomeActivityForResult()
         }
 
         fragmentBinding.ivAddPicture.setImageURI(uri)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    /*override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == pickImage) {
+            val selectedImageUri: Uri? = data?.data
+            if (null != selectedImageUri) {
+                fragmentBinding.ivAddPicture.setImageURI(selectedImageUri)
+                uri = selectedImageUri
+            }
+        }
+    }*/
+
+    private var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            // There are no request codes
+            val data: Intent? = result.data
             val selectedImageUri: Uri? = data?.data
             if (null != selectedImageUri) {
                 fragmentBinding.ivAddPicture.setImageURI(selectedImageUri)
@@ -64,17 +80,18 @@ class RegisterFragment : RainbowCakeFragment<RegisterViewState, RegisterViewMode
         }
     }
 
+    private fun openSomeActivityForResult() {
+        val intent = Intent()
+        intent.type = "image/*"
+        intent.action = Intent.ACTION_GET_CONTENT
+        resultLauncher.launch(intent)
+    }
+
     private fun isRegistrationValid(): Boolean {
 
         if (fragmentBinding.tvTextUserName.text.toString().isEmpty()) {
             fragmentBinding.tvTextUserName.error = context?.getString(R.string.user_name_required) ?:
             return false
-        }
-        for (user in ChatApplication.usersList) {
-            if (user.userName == fragmentBinding.tvTextUserName.text.toString()) {
-                fragmentBinding.tvTextUserName.error = "User Name already exists"
-                return false
-            }
         }
         if (fragmentBinding.tvTextPassword.text.toString().isEmpty()) {
             fragmentBinding.tvTextPassword.error = context?.getString(R.string.pass_required)
@@ -88,12 +105,31 @@ class RegisterFragment : RainbowCakeFragment<RegisterViewState, RegisterViewMode
         return true
     }
 
+    override fun onEvent(event: OneShotEvent) {
+        when(event){
+            is RegisterViewModel.UserAlreadyExists -> {
+                fragmentBinding.tvTextUserName.error = "User Name already exists"
+            }
+            is RegisterViewModel.RegistrationSucceeded -> {
+                val action = RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
+                findNavController().navigate(action)
+            }
+        }
+    }
+
 
     override fun render(viewState: RegisterViewState) {
         when (viewState) {
             Initial -> {
-
+                fragmentBinding.errorText.isVisible = false
             }
+            RegistrationCancelled -> {
+                fragmentBinding.errorText.isVisible = false
+            }
+            RegistrationError -> {
+                fragmentBinding.errorText.isVisible = true
+            }
+            RegistrationSuccess -> {}
         }.exhaustive
     }
 

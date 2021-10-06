@@ -215,5 +215,17 @@
         app:layout_constraintStart_toStartOf="@+id/ivAddPicture"
         app:layout_constraintTop_toBottomOf="@+id/ivAddPicture" />
 
+    <TextView
+        android:id="@+id/errorText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/registration_failed"
+        app:layout_constraintEnd_toEndOf="@+id/editTextPassword2"
+        app:layout_constraintStart_toEndOf="@+id/ivAddPicture"
+        app:layout_constraintTop_toBottomOf="@+id/editTextPassword2"
+        android:layout_margin="16dp"
+        android:textSize="16sp"
+        android:textColor="#93131E"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
