@@ -1,6 +1,7 @@
 package hu.bme.aut.android.chatApp.ui.Messages
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
@@ -12,6 +13,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.PopupMenu
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
@@ -72,7 +74,7 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
         fragmentBinding.imageButtonProfile.setImageBitmap(resized)
 
         initRecyclerView()
-       // viewModel.init(fragmentBinding.editTextSearch.text.toString(), conversationsAdapter)
+        viewModel.init(fragmentBinding.editTextSearch.text.toString(), conversationsAdapter)
     }
 
     private fun Bitmap.resizeByHeight(height: Int): Bitmap {
@@ -147,10 +149,12 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
                     conversationDialog.show(parentFragmentManager, "")
                 }
                 R.id.editPicture -> {
-                    val intent = Intent()
-                    intent.type = "image/*"
-                    intent.action = Intent.ACTION_GET_CONTENT
-                    startActivityForResult(Intent.createChooser(intent, "Select Picture"), pickImage)
+                //    val intent = Intent()
+                  //  intent.type = "image/*"
+                   // intent.action = Intent.ACTION_GET_CONTENT
+                   // startActivityForResult(Intent.createChooser(intent, "Select Picture"), pickImage)
+
+                    openSomeActivityForResult()
                     conversationsAdapter.updateConversationPicture(conversation, position)
 
                 }
@@ -189,6 +193,26 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
             val action = MessagesFragmentDirections.actionMessagesFragmentSelf()
             findNavController().navigate(action)
         }
+    }
+
+    private var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val data: Intent? = result.data
+            val selectedImageUri: Uri? = data?.data
+            if (null != selectedImageUri) {
+                //fragmentBinding.ivAddPicture.setImageURI(selectedImageUri)
+                val conversationPicture: Bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, selectedImageUri)
+                viewModel.updateConversationImage(currentConversation!!, conversationPicture)
+                uri = selectedImageUri
+            }
+        }
+    }
+
+    private fun openSomeActivityForResult() {
+        val intent = Intent()
+        intent.type = "image/*"
+        intent.action = Intent.ACTION_GET_CONTENT
+        resultLauncher.launch(intent)
     }
 
     override fun render(viewState: MessagesViewState) {

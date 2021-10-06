@@ -1,7 +1,9 @@
 package hu.bme.aut.android.chatApp.domain
 
+import android.graphics.Bitmap
 import android.util.Log
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.Conversations
+import hu.bme.aut.android.chatApp.ChatApplication.Companion.currentConversation
 import hu.bme.aut.android.chatApp.Model.Conversation
 import javax.inject.Inject
 
@@ -35,6 +37,16 @@ class ConversationInteractor @Inject constructor() {
         for(c in Conversations)
             if(c.code == conversation.code){
                 c.name = conversationNewName
+                return true
+            }
+        return false
+    }
+
+    fun updateConversationImage(conversation : Conversation, conversationPicture : Bitmap) : Boolean{
+        for(c in Conversations)
+            if(c.code == conversation.code){
+                c.picture = conversationPicture
+                currentConversation?.picture = conversationPicture
                 return true
             }
         return false

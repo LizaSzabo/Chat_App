@@ -14,7 +14,6 @@ import co.zsmb.rainbowcake.base.OneShotEvent
 import co.zsmb.rainbowcake.base.RainbowCakeFragment
 import co.zsmb.rainbowcake.dagger.getViewModelFromFactory
 import co.zsmb.rainbowcake.extensions.exhaustive
-import hu.bme.aut.android.chatApp.ChatApplication
 import hu.bme.aut.android.chatApp.R
 import hu.bme.aut.android.chatApp.databinding.FragmentRegisterBinding
 
@@ -25,7 +24,6 @@ class RegisterFragment : RainbowCakeFragment<RegisterViewState, RegisterViewMode
     override fun provideViewModel() = getViewModelFromFactory()
 
     private lateinit var fragmentBinding: FragmentRegisterBinding
-    private val pickImage = 1
     var uri: Uri = Uri.parse("android.resource://hu.bme.aut.android.chat_app/drawable/default_profile_picture")
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -42,13 +40,17 @@ class RegisterFragment : RainbowCakeFragment<RegisterViewState, RegisterViewMode
 
                 val yourBitmap: Bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, uri)
 
-                viewModel.saveRegisteredUser(yourBitmap, fragmentBinding.tvTextUserName.text.toString(), fragmentBinding.tvTextPassword.text.toString())
+                viewModel.saveRegisteredUser(
+                    yourBitmap,
+                    fragmentBinding.tvTextUserName.text.toString(),
+                    fragmentBinding.tvTextPassword.text.toString()
+                )
 
             }
         }
 
         fragmentBinding.ivAddPicture.setOnClickListener {
-           // val intent = Intent()
+            // val intent = Intent()
             //intent.type = "image/*"
             //intent.action = Intent.ACTION_GET_CONTENT
             //startActivityForResult(Intent.createChooser(intent, "Select Picture"), pickImage)
@@ -70,7 +72,6 @@ class RegisterFragment : RainbowCakeFragment<RegisterViewState, RegisterViewMode
 
     private var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
-            // There are no request codes
             val data: Intent? = result.data
             val selectedImageUri: Uri? = data?.data
             if (null != selectedImageUri) {
@@ -90,8 +91,7 @@ class RegisterFragment : RainbowCakeFragment<RegisterViewState, RegisterViewMode
     private fun isRegistrationValid(): Boolean {
 
         if (fragmentBinding.tvTextUserName.text.toString().isEmpty()) {
-            fragmentBinding.tvTextUserName.error = context?.getString(R.string.user_name_required) ?:
-            return false
+            fragmentBinding.tvTextUserName.error = context?.getString(R.string.user_name_required) ?: return false
         }
         if (fragmentBinding.tvTextPassword.text.toString().isEmpty()) {
             fragmentBinding.tvTextPassword.error = context?.getString(R.string.pass_required)
@@ -106,7 +106,7 @@ class RegisterFragment : RainbowCakeFragment<RegisterViewState, RegisterViewMode
     }
 
     override fun onEvent(event: OneShotEvent) {
-        when(event){
+        when (event) {
             is RegisterViewModel.UserAlreadyExists -> {
                 fragmentBinding.tvTextUserName.error = "User Name already exists"
             }
@@ -129,7 +129,8 @@ class RegisterFragment : RainbowCakeFragment<RegisterViewState, RegisterViewMode
             RegistrationError -> {
                 fragmentBinding.errorText.isVisible = true
             }
-            RegistrationSuccess -> {}
+            RegistrationSuccess -> {
+            }
         }.exhaustive
     }
 

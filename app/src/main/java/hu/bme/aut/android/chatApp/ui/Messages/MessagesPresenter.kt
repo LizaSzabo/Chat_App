@@ -1,5 +1,6 @@
 package hu.bme.aut.android.chatApp.ui.Messages
 
+import android.graphics.Bitmap
 import co.zsmb.rainbowcake.withIOContext
 import hu.bme.aut.android.chatApp.Model.Conversation
 import hu.bme.aut.android.chatApp.Model.User
@@ -21,5 +22,9 @@ class MessagesPresenter @Inject constructor(
 
     suspend fun deleteConversation(conversation : Conversation) : Boolean = withIOContext {
         conversationInterector.deleteConversation(conversation)
+    }
+
+    suspend fun updateConversationImage(conversation: Conversation, conversationPicture : Bitmap) : Boolean = withIOContext {
+        conversationInterector.updateConversationImage(conversation, conversationPicture)
     }
 }

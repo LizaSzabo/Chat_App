@@ -1,5 +1,6 @@
 package hu.bme.aut.android.chatApp.ui.Messages
 
+import android.graphics.Bitmap
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
 import co.zsmb.rainbowcake.base.RainbowCakeViewModel
@@ -49,5 +50,10 @@ class MessagesViewModel @Inject constructor(
 
     fun updateUser(user: User) {
         messagesPresenter.updateUser(user)
+    }
+
+    fun updateConversationImage(conversation: Conversation, conversationPicture: Bitmap) = execute {
+        val updated = messagesPresenter.updateConversationImage(conversation, conversationPicture)
+       // conversationsAdapter.updateConversationPicture(conversation)
     }
 }
