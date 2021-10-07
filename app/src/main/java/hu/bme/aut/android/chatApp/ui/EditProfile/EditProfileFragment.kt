@@ -1,12 +1,14 @@
 package hu.bme.aut.android.chatApp.ui.EditProfile
 
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
-import androidx.navigation.fragment.findNavController
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import co.zsmb.rainbowcake.base.RainbowCakeFragment
 import co.zsmb.rainbowcake.dagger.getViewModelFromFactory
 import co.zsmb.rainbowcake.extensions.exhaustive
@@ -21,7 +23,6 @@ class EditProfileFragment : RainbowCakeFragment<EditProfileViewState, EditProfil
     override fun provideViewModel() = getViewModelFromFactory()
 
     private lateinit var fragmentBinding: FragmentEditProfileBinding
-    private val pickImage = 101
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -33,29 +34,34 @@ class EditProfileFragment : RainbowCakeFragment<EditProfileViewState, EditProfil
         fragmentBinding.btnChanePass.setOnClickListener { viewModel.openChangePassDialog(parentFragmentManager) }
 
         fragmentBinding.imageButtonEditProfile.setOnClickListener {
-            val intent = Intent()
-            intent.type = "image/*"
-            intent.action = Intent.ACTION_GET_CONTENT
-            startActivityForResult(Intent.createChooser(intent, "Select Picture"), this.pickImage)
+            openSomeActivityForResult()
         }
         fragmentBinding.tvUserName.text = currentUser?.userName
         fragmentBinding.imageButtonEditProfile.setImageBitmap(currentUser?.profilePicture)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == pickImage) {
+
+    private var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val data: Intent? = result.data
             val selectedImageUri: Uri? = data?.data
             if (null != selectedImageUri) {
-                var yourBitmap: Bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, selectedImageUri)
+                val yourBitmap: Bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, selectedImageUri)
                 val resized = yourBitmap.resizeByHeight(fragmentBinding.imageButtonEditProfile.layoutParams.height)
-                currentUser?.profilePicture = resized
+                //currentUser?.profilePicture = resized
 
-                viewModel.updateUser(resized)
+                viewModel.updateUserProfileImage(resized)
 
                 fragmentBinding.imageButtonEditProfile.setImageBitmap(resized)
             }
         }
+    }
+
+    private fun openSomeActivityForResult() {
+        val intent = Intent()
+        intent.type = "image/*"
+        intent.action = Intent.ACTION_GET_CONTENT
+        resultLauncher.launch(intent)
     }
 
 
@@ -76,8 +82,11 @@ class EditProfileFragment : RainbowCakeFragment<EditProfileViewState, EditProfil
             Initial -> {
 
             }
-            else -> {
-
+            UserProfileUpdateError -> {
+                Toast.makeText(context, "Profile picture update failed!", Toast.LENGTH_LONG).show()
+            }
+            UserProfileUpdateSuccess -> {
+                Toast.makeText(context, "Profile picture successfully updated!", Toast.LENGTH_LONG).show()
             }
         }.exhaustive
     }

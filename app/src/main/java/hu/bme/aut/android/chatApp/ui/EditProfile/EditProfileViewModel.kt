@@ -23,7 +23,8 @@ class EditProfileViewModel @Inject constructor(
         createFragment.show(parentFragmentManager, "")
     }
 
-    fun updateUser(picture: Bitmap) = execute {
-        editProfilePresenter.updateUser(picture)
+    fun updateUserProfileImage(picture: Bitmap) = execute {
+        val updated = editProfilePresenter.updateUserProfilePicture(picture)
+        viewState = if(updated) UserProfileUpdateSuccess else UserProfileUpdateError
     }
 }
