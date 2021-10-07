@@ -255,8 +255,8 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
                 Toast.makeText(context, "Can't save new conversation picture", Toast.LENGTH_LONG).show()
             }
             is MessagesViewModel.UpdateConversationImageSuccess ->{
-               val action = MessagesFragmentDirections.actionMessagesFragmentSelf()
-                findNavController().navigate(action)
+              /* val action = MessagesFragmentDirections.actionMessagesFragmentSelf()
+                findNavController().navigate(action)*/
             }
         }
     }

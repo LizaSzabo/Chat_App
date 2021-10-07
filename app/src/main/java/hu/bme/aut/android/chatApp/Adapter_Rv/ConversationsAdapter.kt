@@ -206,7 +206,9 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
     }*/
 
     fun updateConversationPicture(conversation: Conversation, pos : Int){
-        conversationList += conversation
+        val modifiedConversationList = conversationList.toMutableList()
+        modifiedConversationList[pos] = conversation
+        conversationList = modifiedConversationList.toList()
         submitList(conversationList)
     }
 
