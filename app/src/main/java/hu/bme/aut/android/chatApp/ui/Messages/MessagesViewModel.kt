@@ -3,12 +3,12 @@ package hu.bme.aut.android.chatApp.ui.Messages
 import android.graphics.Bitmap
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
+import co.zsmb.rainbowcake.base.OneShotEvent
 import co.zsmb.rainbowcake.base.RainbowCakeViewModel
 import hu.bme.aut.android.chatApp.Adapter_Rv.ConversationsAdapter
 import hu.bme.aut.android.chatApp.Model.Conversation
 import hu.bme.aut.android.chatApp.Model.User
 import hu.bme.aut.android.chatApp.ui.addConversation.AddConversationDialog
-import hu.bme.aut.android.chatApp.ui.addConversation.AddConversationViewModel
 import javax.inject.Inject
 
 class MessagesViewModel @Inject constructor(
@@ -52,8 +52,17 @@ class MessagesViewModel @Inject constructor(
         messagesPresenter.updateUser(user)
     }
 
-    fun updateConversationImage(conversation: Conversation, conversationPicture: Bitmap) = execute {
+    fun updateConversationImage(conversation: Conversation, conversationPicture: Bitmap, pos : Int) = execute {
         val updated = messagesPresenter.updateConversationImage(conversation, conversationPicture)
-       // conversationsAdapter.updateConversationPicture(conversation)
+        if (updated) {
+            val updatedConversation = conversation.copy(picture = conversationPicture)
+            conversationsAdapter.updateConversationPicture(updatedConversation, pos)
+            postEvent(UpdateConversationImageSuccess)
+        } else {
+            postEvent(UpdateConversationImageError)
+        }
     }
+
+    object UpdateConversationImageError : OneShotEvent
+    object UpdateConversationImageSuccess : OneShotEvent
 }

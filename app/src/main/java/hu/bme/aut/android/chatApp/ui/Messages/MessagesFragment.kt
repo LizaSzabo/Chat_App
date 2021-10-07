@@ -19,6 +19,7 @@ import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import co.zsmb.rainbowcake.base.OneShotEvent
 import co.zsmb.rainbowcake.base.RainbowCakeFragment
 import co.zsmb.rainbowcake.dagger.getViewModelFromFactory
 import co.zsmb.rainbowcake.extensions.exhaustive
@@ -41,6 +42,8 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
     private lateinit var fragmentBinding: FragmentMessagesBinding
     private lateinit var conversationsAdapter: ConversationsAdapter
     private val pickImage = 1
+    private var positionOfSelectedImage: Int = -1
+
     var uri: Uri = Uri.parse("android.resource://hu.bme.aut.android.chat_app/drawable/default_profilepic")
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -135,6 +138,8 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
     @SuppressLint("ResourceAsColor")
     override fun onItemLongClick(position: Int, view: View, conversation: Conversation): Boolean {
         currentConversation = conversation
+        positionOfSelectedImage = position
+
         val popup = PopupMenu(context, view)
         popup.inflate(R.menu.menu_conversation)
         popup.setOnDismissListener() {
@@ -155,7 +160,7 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
                    // startActivityForResult(Intent.createChooser(intent, "Select Picture"), pickImage)
 
                     openSomeActivityForResult()
-                    conversationsAdapter.updateConversationPicture(conversation, position)
+                   // conversationsAdapter.updateConversationPicture(conversation, position)
 
                 }
                 R.id.addUser -> {
@@ -202,7 +207,7 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
             if (null != selectedImageUri) {
                 //fragmentBinding.ivAddPicture.setImageURI(selectedImageUri)
                 val conversationPicture: Bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, selectedImageUri)
-                viewModel.updateConversationImage(currentConversation!!, conversationPicture)
+                viewModel.updateConversationImage(currentConversation!!, conversationPicture, positionOfSelectedImage)
                 uri = selectedImageUri
             }
         }
@@ -242,5 +247,17 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
 
     override fun onAddUser(userName: String) {
         conversationsAdapter.addConversationToUser(userName)
+    }
+
+    override fun onEvent(event: OneShotEvent) {
+        when(event){
+            is MessagesViewModel.UpdateConversationImageError ->{
+                Toast.makeText(context, "Can't save new conversation picture", Toast.LENGTH_LONG).show()
+            }
+            is MessagesViewModel.UpdateConversationImageSuccess ->{
+               val action = MessagesFragmentDirections.actionMessagesFragmentSelf()
+                findNavController().navigate(action)
+            }
+        }
     }
 }

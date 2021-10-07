@@ -1,5 +1,6 @@
 package hu.bme.aut.android.chatApp.ui.editconversation
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -61,16 +62,9 @@ class EditConversationDialog(private var pos: Int, private val conversation: Con
     override fun onEvent(event: OneShotEvent) {
         when (event) {
             is EditConversationViewModel.ConversationUpdated -> {
+                val updatedConversation = conversation.copy(name = binding.editTextConversationTitle.text.toString())
                 listener.onConversationTitleChange(
-                    Conversation(
-                        conversation.id,
-                        binding.editTextConversationTitle.text.toString(),
-                        conversation.type,
-                        conversation.messages,
-                        conversation.picture,
-                        conversation.favourite,
-                        conversation.code
-                    ), pos
+                    updatedConversation, pos
                 )
 
                 /*val action = MessagesFragmentDirections.actionMessagesFragmentSelf()

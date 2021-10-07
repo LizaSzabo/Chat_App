@@ -17,6 +17,7 @@ import hu.bme.aut.android.chatApp.Model.Conversation
 import hu.bme.aut.android.chatApp.Network.UpdateUser
 import hu.bme.aut.android.chatApp.R
 import hu.bme.aut.android.chatApp.databinding.ItemConversationBinding
+import java.util.ArrayList
 
 class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.ConversationViewHolder>(ItemCallback)  {
 
@@ -99,10 +100,9 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
     companion object {
         object ItemCallback : DiffUtil.ItemCallback<Conversation>() {
             override fun areItemsTheSame(oldItem: Conversation, newItem: Conversation): Boolean {
-                return oldItem == newItem
+                return oldItem.code == newItem.code
             }
 
-            @SuppressLint("DiffUtilEquals")
             override fun areContentsTheSame(oldItem: Conversation, newItem: Conversation): Boolean {
                 return oldItem == newItem
             }
@@ -180,11 +180,14 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
     }*/
 
     fun updateConversation(conversation : Conversation, pos : Int){
-        conversationList += conversation
-        submitList(conversationList)
+        //val c = conversationList.elementAt(pos).copy(name = "ss")
+        val newList = ArrayList(conversationList)
+        newList[pos] = conversation
+        submitList(newList)
+        conversationList = newList
     }
 
-    fun updateConversationPicture(conv: Conversation, pos: Int){
+    /*fun updateConversationPicture(conv: Conversation, pos: Int){
 
         for(user in usersList){
             for(conversation in user.conversations!!){
@@ -197,6 +200,11 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
             }
         }
 
+        submitList(conversationList)
+    }*/
+
+    fun updateConversationPicture(conversation: Conversation, pos : Int){
+        conversationList += conversation
         submitList(conversationList)
     }
 
