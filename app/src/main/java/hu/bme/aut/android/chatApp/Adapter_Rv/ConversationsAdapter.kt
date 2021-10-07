@@ -1,6 +1,7 @@
 package hu.bme.aut.android.chatApp.Adapter_Rv
 
 import android.annotation.SuppressLint
+import android.media.browse.MediaBrowser
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -100,11 +101,11 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
     companion object {
         object ItemCallback : DiffUtil.ItemCallback<Conversation>() {
             override fun areItemsTheSame(oldItem: Conversation, newItem: Conversation): Boolean {
-                return oldItem.code == newItem.code
+                return false
             }
 
             override fun areContentsTheSame(oldItem: Conversation, newItem: Conversation): Boolean {
-                return oldItem == newItem
+                return false
             }
         }
     }
@@ -181,10 +182,11 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
 
     fun updateConversation(conversation : Conversation, pos : Int){
         //val c = conversationList.elementAt(pos).copy(name = "ss")
-        val newList = ArrayList(conversationList)
-        newList[pos] = conversation
-        submitList(newList)
-        conversationList = newList
+        val modifiedConversationList = conversationList.toMutableList()
+        modifiedConversationList[pos] = conversation
+       // submitList(modifiedConversationList)
+        conversationList = modifiedConversationList.toList()
+        submitList(conversationList)
     }
 
     /*fun updateConversationPicture(conv: Conversation, pos: Int){
