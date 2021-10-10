@@ -4,8 +4,10 @@ sealed class ChatViewState
 
 object Initial: ChatViewState()
 
-object Loading: ChatViewState()
+object MessageLoadSuccess: ChatViewState()
 
-object DataReady: ChatViewState()
+object MessageLoadError: ChatViewState()
 
-object NetworkError: ChatViewState()
+object MessageAddSuccess: ChatViewState()
+
+object MessageAddError: ChatViewState()

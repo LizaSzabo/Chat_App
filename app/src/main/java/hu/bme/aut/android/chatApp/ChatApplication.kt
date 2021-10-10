@@ -45,8 +45,9 @@ class ChatApplication : RainbowCakeApplication() {
 
 
         var Users = mutableListOf<User>()
-        var Conversations = mutableListOf<Conversation>(
-            Conversation("id1", "conversation1", "private", mutableListOf(), null, true, "123456789")
+        var Conversations = mutableListOf<Conversation>()
+        var Messages = mutableListOf(
+            Message("user1", "user2", "Hello!", "2021-10-10")
         )
     }
 

@@ -1,13 +1,20 @@
 package hu.bme.aut.android.chatApp.ui.Chat
 
+import android.annotation.SuppressLint
 import android.graphics.Bitmap
+import android.graphics.Color.red
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.ui.graphics.Color
+import androidx.core.content.ContextCompat
+import androidx.core.widget.doOnTextChanged
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import co.zsmb.rainbowcake.base.OneShotEvent
 import co.zsmb.rainbowcake.base.RainbowCakeFragment
 import co.zsmb.rainbowcake.dagger.getViewModelFromFactory
 import co.zsmb.rainbowcake.extensions.exhaustive
@@ -20,6 +27,7 @@ import hu.bme.aut.android.chatApp.R
 import hu.bme.aut.android.chatApp.databinding.FragmentChatBinding
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.coroutines.coroutineContext
 
 
 class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
@@ -47,11 +55,13 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
                 val message = currentUser?.userName?.let { it1 ->
                     Message(it1, "second", fragmentBinding.text.text.toString(), time)
                 }
-                if (message != null) {
+
+                viewModel.addMessage(currentUser!!.userName, "receiver", fragmentBinding.text.text.toString(), time)
+                /*if (message != null) {
                     chatAdapter.addMessage(message)
                     messageText = "Waiting for messages..."
-                }
-                fragmentBinding.text.setText("")
+                }*/
+
             }
         }
 
@@ -70,6 +80,9 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
 
         }
         fragmentBinding.iwConversationPicture.setImageBitmap(resized)
+        fragmentBinding.text.doOnTextChanged{ _, _, _, _ ->
+            fragmentBinding.text.setTextColor(ContextCompat.getColor(requireContext(),R.color.textColor ))
+        }
         
         initRecyclerView()
     }
@@ -78,7 +91,8 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
         chatAdapter = ChatAdapter()
         fragmentBinding.rvChat.layoutManager = LinearLayoutManager(context)
         fragmentBinding.rvChat.adapter = chatAdapter
-        chatAdapter.addAll()
+        //chatAdapter.addAll()
+        viewModel.loadAllMessages(chatAdapter)
     }
 
 
@@ -111,14 +125,30 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
+    override fun onEvent(event: OneShotEvent) {
+        when(event){
+            ChatViewModel.AddError ->  fragmentBinding.text.setTextColor(ContextCompat.getColor(requireContext(),R.color.red ))
+        }
+    }
+
+    @SuppressLint("ResourceAsColor")
     override fun render(viewState: ChatViewState) {
         when (viewState) {
             Initial -> {
+                fragmentBinding.text.setText("")
+                fragmentBinding.text.setTextColor(ContextCompat.getColor(requireContext(),R.color.textColor ))
+            }
+            MessageLoadSuccess -> {
+                Toast.makeText(context, "Load Succeeded", Toast.LENGTH_LONG).show()
+            }
+            MessageAddError ->{
 
             }
-            else -> {
-
+            MessageAddSuccess -> {
+                fragmentBinding.text.setText("")
+                fragmentBinding.text.setTextColor(ContextCompat.getColor(requireContext(),R.color.textColor ))
             }
+            MessageLoadError -> {}
         }.exhaustive
     }
 }

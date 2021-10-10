@@ -128,4 +128,15 @@ class ChatAdapter : ListAdapter<Message, ChatAdapter.ChatViewHolder>(itemCallbac
         }
         submitList(messageList)
     }
+
+    fun addAllMessages(messages : List<Message>){
+        messageList += messages
+        submitList(messageList)
+    }
+
+    fun add(message : Message){
+        messageList += message
+        submitList(messageList)
+    }
+
 }

@@ -6,4 +6,5 @@
     <color name="textColor">#491053</color>
     <color name="lightTextColor">#F5E4F8</color>
     <color name="background">#EFB1E9</color>
+    <color name="red">#BC1326</color>
 </resources>
