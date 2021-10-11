@@ -52,7 +52,7 @@ class MessagesViewModel @Inject constructor(
         messagesPresenter.updateUser(user)
     }
 
-    fun updateConversationImage(conversation: Conversation, conversationPicture: Bitmap, pos : Int) = execute {
+    fun updateConversationImage(conversation: Conversation, conversationPicture: Bitmap, pos: Int) = execute {
         val updated = messagesPresenter.updateConversationImage(conversation, conversationPicture)
         if (updated) {
             val updatedConversation = conversation.copy(picture = conversationPicture)
@@ -61,6 +61,12 @@ class MessagesViewModel @Inject constructor(
         } else {
             postEvent(UpdateConversationImageError)
         }
+    }
+
+    fun updateConversationFavourite(conversation: Conversation, favourite: Boolean) = execute {
+        val updatedConversation = conversation.copy(favourite = favourite)
+        val updated = messagesPresenter.updateConversationFavourite(updatedConversation)
+        viewState = if (updated) ConversationFavouriteUpdateSuccess else ConversationFavouriteUpdateError
     }
 
     object UpdateConversationImageError : OneShotEvent

@@ -46,30 +46,36 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
 
             ibStar.tag = R.drawable.star_icon
             ibStar.setOnClickListener{
-                var index = 0
+               /* var index = 0
                 var u: hu.bme.aut.android.chatApp.Model.User? = null
                 for(user in usersList){
                     if(user.userName == currentUser?.userName){
                         index = user.conversations!!.indexOf(conversation)
                         u = user
                     }
-                }
+                }*/
                 when(conversation?.favourite){
                     false-> {
-                        ibStar.tag = R.drawable.ic_baseline_star_24
-                        ibStar.setImageResource(R.drawable.ic_baseline_star_24)
-                        conversation?.favourite = true
+                        if(conversation != null) {
+                            ibStar.tag = R.drawable.ic_baseline_star_24
+                            ibStar.setImageResource(R.drawable.ic_baseline_star_24)
+                            conversation?.favourite = true
+                            itemClickListener?.onItemStartClick(conversation!!, true)
+                        }
                     }
                    true ->{
-                        ibStar.tag = R.drawable.star_icon
-                        ibStar.setImageResource(R.drawable.star_icon)
-                        conversation?.favourite = false
+                       if(conversation != null) {
+                           ibStar.tag = R.drawable.star_icon
+                           ibStar.setImageResource(R.drawable.star_icon)
+                           conversation?.favourite = false
+                           itemClickListener?.onItemStartClick(conversation!!, false)
+                       }
                     }
 
                 }
 
-                u?.conversations!![index] = conversation!!
-                UpdateUser(u)
+                /*u?.conversations!![index] = conversation!!
+                UpdateUser(u)*/
 
             }
         }
@@ -96,6 +102,7 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
     interface ConversationItemClickListener {
         fun onItemClick(conversation: Conversation)
         fun onItemLongClick(position: Int, view: View, conversation: Conversation): Boolean
+        fun onItemStartClick(conversation : Conversation, favourite : Boolean)
     }
 
     companion object {

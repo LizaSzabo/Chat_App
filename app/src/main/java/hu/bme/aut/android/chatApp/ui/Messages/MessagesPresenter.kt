@@ -27,4 +27,8 @@ class MessagesPresenter @Inject constructor(
     suspend fun updateConversationImage(conversation: Conversation, conversationPicture : Bitmap) : Boolean = withIOContext {
         conversationInterector.updateConversationImage(conversation, conversationPicture)
     }
+
+    suspend fun updateConversationFavourite(conversation : Conversation) : Boolean = withIOContext{
+        conversationInterector.updateConversationFavourite(conversation)
+    }
 }

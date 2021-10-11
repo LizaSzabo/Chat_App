@@ -176,6 +176,10 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
         return false
     }
 
+    override fun onItemStartClick(conversation: Conversation, favourite: Boolean) {
+        viewModel.updateConversationFavourite(conversation, favourite)
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -238,6 +242,10 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
                 Toast.makeText(context, "Conversation delete failed", Toast.LENGTH_LONG).show()
                 fragmentBinding.imageButtonWrite.isVisible = false
             }
+            ConversationFavouriteUpdateError -> {
+                Toast.makeText(context, "Conversation favourite failed", Toast.LENGTH_LONG).show()
+            }
+            ConversationFavouriteUpdateSuccess -> {}
         }.exhaustive
     }
 

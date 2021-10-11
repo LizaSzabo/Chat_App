@@ -12,3 +12,6 @@ object ConversationDeleteSuccess : MessagesViewState()
 
 object ConversationDeleteError : MessagesViewState()
 
+object ConversationFavouriteUpdateError: MessagesViewState()
+
+object ConversationFavouriteUpdateSuccess : MessagesViewState()

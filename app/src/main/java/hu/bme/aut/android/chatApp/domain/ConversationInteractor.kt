@@ -51,4 +51,14 @@ class ConversationInteractor @Inject constructor() {
             }
         return false
     }
+
+    fun updateConversationFavourite(conversation : Conversation) : Boolean {
+        for(c in Conversations)
+            if(c.code == conversation.code){
+                c.favourite = conversation.favourite
+                currentConversation?.favourite = conversation.favourite
+                return true
+            }
+        return false
+    }
 }
