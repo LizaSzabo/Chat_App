@@ -7,6 +7,7 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -16,7 +17,6 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.core.widget.doOnTextChanged
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import co.zsmb.rainbowcake.base.OneShotEvent
@@ -24,7 +24,6 @@ import co.zsmb.rainbowcake.base.RainbowCakeFragment
 import co.zsmb.rainbowcake.dagger.getViewModelFromFactory
 import co.zsmb.rainbowcake.extensions.exhaustive
 import hu.bme.aut.android.chatApp.Adapter_Rv.ConversationsAdapter
-import hu.bme.aut.android.chatApp.ChatApplication
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.currentConversation
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.currentUser
 import hu.bme.aut.android.chatApp.Model.Conversation
@@ -63,9 +62,9 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
         fragmentBinding.chatListToolbar.title = ""
         fragmentBinding.txtTitle.text = currentUser?.userName
         fragmentBinding.ibSearch.setOnClickListener {
-            conversationsAdapter.addAll(fragmentBinding.editTextSearch.text.toString())
+            // conversationsAdapter.addAll(fragmentBinding.editTextSearch.text.toString())
         }
-        fragmentBinding.editTextSearch.doOnTextChanged { _, _, _, _ -> conversationsAdapter.addAll(fragmentBinding.editTextSearch.text.toString()) }
+        //   fragmentBinding.editTextSearch.doOnTextChanged { _, _, _, _ -> conversationsAdapter.addAll(fragmentBinding.editTextSearch.text.toString()) }
 
         var resized: Bitmap? = null
         resized = if (currentUser?.profilePicture?.height!! > currentUser?.profilePicture?.width!!) {
@@ -109,7 +108,7 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
         fragmentBinding.rvConversations.layoutManager = LinearLayoutManager(context)
         fragmentBinding.rvConversations.adapter = conversationsAdapter
         conversationsAdapter.itemClickListener = this
-       // conversationsAdapter.addAll(fragmentBinding.editTextSearch.text.toString())
+        // conversationsAdapter.addAll(fragmentBinding.editTextSearch.text.toString())
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -131,7 +130,8 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
 
     override fun onItemClick(conversation: Conversation) {
         currentConversation = conversation
-        val action = MessagesFragmentDirections.actionMessagesFragmentToChatFragment()
+        Log.i("navigation", conversation.id)
+        val action = MessagesFragmentDirections.actionMessagesFragmentToChatFragment(conversation.id)
         findNavController().navigate(action)
     }
 
@@ -154,13 +154,13 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
                     conversationDialog.show(parentFragmentManager, "")
                 }
                 R.id.editPicture -> {
-                //    val intent = Intent()
-                  //  intent.type = "image/*"
-                   // intent.action = Intent.ACTION_GET_CONTENT
-                   // startActivityForResult(Intent.createChooser(intent, "Select Picture"), pickImage)
+                    //    val intent = Intent()
+                    //  intent.type = "image/*"
+                    // intent.action = Intent.ACTION_GET_CONTENT
+                    // startActivityForResult(Intent.createChooser(intent, "Select Picture"), pickImage)
 
                     openSomeActivityForResult()
-                   // conversationsAdapter.updateConversationPicture(conversation, position)
+                    // conversationsAdapter.updateConversationPicture(conversation, position)
 
                 }
                 R.id.addUser -> {
@@ -180,29 +180,6 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
         viewModel.updateConversationFavourite(conversation, favourite)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == pickImage) {
-            val selectedImageUri: Uri? = data?.data
-            if (null != selectedImageUri) {
-                val yourBitmap: Bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, selectedImageUri)
-                currentConversation?.picture = yourBitmap
-                for (user in ChatApplication.usersList) {
-                    for (conversation in user.conversations!!) {
-                        if (conversation.code == currentConversation?.code) {
-                            viewModel.updateUser(user)
-                        }
-                    }
-                }
-
-
-                uri = selectedImageUri
-            }
-            val action = MessagesFragmentDirections.actionMessagesFragmentSelf()
-            findNavController().navigate(action)
-        }
-    }
 
     private var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
@@ -233,7 +210,8 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
                 Toast.makeText(context, "Conversation successfully loaded", Toast.LENGTH_LONG).show()
                 fragmentBinding.imageButtonWrite.isVisible = true
             }
-            ConversationLoadError -> {}
+            ConversationLoadError -> {
+            }
             ConversationDeleteSuccess -> {
                 Toast.makeText(context, "Conversation successfully deleted", Toast.LENGTH_LONG).show()
                 fragmentBinding.imageButtonWrite.isVisible = true
@@ -245,7 +223,8 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
             ConversationFavouriteUpdateError -> {
                 Toast.makeText(context, "Conversation favourite failed", Toast.LENGTH_LONG).show()
             }
-            ConversationFavouriteUpdateSuccess -> {}
+            ConversationFavouriteUpdateSuccess -> {
+            }
         }.exhaustive
     }
 
@@ -254,17 +233,15 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
     }
 
     override fun onAddUser(userName: String) {
-        conversationsAdapter.addConversationToUser(userName)
+        // conversationsAdapter.addConversationToUser(userName)
     }
 
     override fun onEvent(event: OneShotEvent) {
-        when(event){
-            is MessagesViewModel.UpdateConversationImageError ->{
+        when (event) {
+            is MessagesViewModel.UpdateConversationImageError -> {
                 Toast.makeText(context, "Can't save new conversation picture", Toast.LENGTH_LONG).show()
             }
-            is MessagesViewModel.UpdateConversationImageSuccess ->{
-              /* val action = MessagesFragmentDirections.actionMessagesFragmentSelf()
-                findNavController().navigate(action)*/
+            is MessagesViewModel.UpdateConversationImageSuccess -> {
             }
         }
     }

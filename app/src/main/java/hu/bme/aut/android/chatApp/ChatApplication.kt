@@ -21,7 +21,6 @@ import com.amplifyframework.hub.HubEvent
 import hu.bme.aut.android.chatApp.Model.Conversation
 import hu.bme.aut.android.chatApp.Model.Message
 import hu.bme.aut.android.chatApp.Model.User
-import hu.bme.aut.android.chatApp.Network.observeData
 import hu.bme.aut.android.chatApp.di.DaggerAppComponent
 import timber.log.Timber
 
@@ -47,7 +46,7 @@ class ChatApplication : RainbowCakeApplication() {
         var Users = mutableListOf<User>()
         var Conversations = mutableListOf<Conversation>()
         var Messages = mutableListOf(
-            Message("user1", "user2", "Hello!", "2021-10-10")
+            Message("1","user1", "user2", "Hello!", "2021-10-10")
         )
     }
 
@@ -94,7 +93,7 @@ class ChatApplication : RainbowCakeApplication() {
 
         }
 
-        observeData(b, this)
+       // observeData(b, this)
     }
 
     override fun setupInjector() {

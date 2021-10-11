@@ -4,6 +4,7 @@ import co.zsmb.rainbowcake.base.OneShotEvent
 import co.zsmb.rainbowcake.base.RainbowCakeViewModel
 import hu.bme.aut.android.chatApp.Adapter_Rv.ChatAdapter
 import hu.bme.aut.android.chatApp.Model.Message
+import java.util.*
 import javax.inject.Inject
 
 class ChatViewModel @Inject constructor(
@@ -13,23 +14,22 @@ class ChatViewModel @Inject constructor(
     private var added = false
     private lateinit var adapter: ChatAdapter
 
-    fun loadAllMessages(chatAdapter: ChatAdapter) = execute {
+    fun loadAllMessages(chatAdapter: ChatAdapter, currentConversationId: String) = execute {
         adapter = chatAdapter
-        messages = chatPresenter.loadAllMessages()
-        if(messages.isNotEmpty()) {
+        messages = chatPresenter.loadAllMessages(currentConversationId)
+        if (messages.isNotEmpty()) {
             viewState = MessageLoadSuccess
             adapter.addAllMessages(messages)
         }
     }
 
-    fun addMessage(senderUserName : String, receiver : String, content : String, time : String) = execute{
-        val message = Message(senderUserName, receiver, content, time)
-        added = chatPresenter.addMessage(message)
-        if(added){
+    fun addMessage(senderUserName: String, receiver: String, content: String, time: String, currentConversationId : String) = execute {
+        val message = Message(UUID.randomUUID().toString(), senderUserName, receiver, content, time)
+        added = chatPresenter.addMessage(message, currentConversationId)
+        if (added) {
             viewState = MessageAddSuccess
             adapter.add(message)
-        }
-        else{
+        } else {
             viewState = MessageAddError
             postEvent(AddError)
         }

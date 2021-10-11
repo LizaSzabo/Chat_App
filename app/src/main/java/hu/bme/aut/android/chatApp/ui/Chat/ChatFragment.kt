@@ -2,17 +2,16 @@ package hu.bme.aut.android.chatApp.ui.Chat
 
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
-import android.graphics.Color.red
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.ui.graphics.Color
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import co.zsmb.rainbowcake.base.OneShotEvent
 import co.zsmb.rainbowcake.base.RainbowCakeFragment
@@ -21,13 +20,12 @@ import co.zsmb.rainbowcake.extensions.exhaustive
 import hu.bme.aut.android.chatApp.Adapter_Rv.ChatAdapter
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.currentConversation
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.currentUser
-import hu.bme.aut.android.chatApp.ChatApplication.Companion.messageText
-import hu.bme.aut.android.chatApp.Model.Message
+import hu.bme.aut.android.chatApp.Model.Conversation
 import hu.bme.aut.android.chatApp.R
 import hu.bme.aut.android.chatApp.databinding.FragmentChatBinding
+import hu.bme.aut.android.chatApp.ui.login.LoginFragmentArgs
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.coroutines.coroutineContext
 
 
 class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
@@ -37,6 +35,9 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
 
     private lateinit var fragmentBinding: FragmentChatBinding
     private lateinit var chatAdapter: ChatAdapter
+    private val args: ChatFragmentArgs by navArgs()
+    private  lateinit var currentConversationId : String
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -47,16 +48,17 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
         (activity as AppCompatActivity).setSupportActionBar(fragmentBinding.chatButtomToolbar)
         setHasOptionsMenu(true)
 
+         currentConversationId = args.currentConversationId
+
+
         fragmentBinding.chatButtomToolbar.title = ""
         fragmentBinding.ibSend.setOnClickListener {
             if (fragmentBinding.text.text.toString().isNotEmpty()) {
                 val dateFormat = SimpleDateFormat("yyyy.MM.dd HH:mm")
                 val time = dateFormat.format(Calendar.getInstance().time)
-                val message = currentUser?.userName?.let { it1 ->
-                    Message(it1, "second", fragmentBinding.text.text.toString(), time)
-                }
 
-                viewModel.addMessage(currentUser!!.userName, "receiver", fragmentBinding.text.text.toString(), time)
+
+                viewModel.addMessage(currentUser!!.userName, "receiver", fragmentBinding.text.text.toString(), time, currentConversationId)
                 /*if (message != null) {
                     chatAdapter.addMessage(message)
                     messageText = "Waiting for messages..."
@@ -92,7 +94,7 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
         fragmentBinding.rvChat.layoutManager = LinearLayoutManager(context)
         fragmentBinding.rvChat.adapter = chatAdapter
         //chatAdapter.addAll()
-        viewModel.loadAllMessages(chatAdapter)
+        viewModel.loadAllMessages(chatAdapter, currentConversationId)
     }
 
 

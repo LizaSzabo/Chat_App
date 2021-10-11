@@ -19,7 +19,7 @@ class RegisterViewModel @Inject constructor(
             postEvent(UserAlreadyExists)
         }
         else{
-            val user = User(userName, userPassword, profilePicture, conversations = mutableListOf())
+            val user = User(userName, userPassword, profilePicture, conversationsId = mutableListOf())
             registered = registerPresenter.saveRegisteredUser(user)
             if(registered) {
                 viewState = RegistrationSuccess

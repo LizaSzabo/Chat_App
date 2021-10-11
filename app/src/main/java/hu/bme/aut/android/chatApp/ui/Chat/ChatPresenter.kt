@@ -8,11 +8,11 @@ import javax.inject.Inject
 class ChatPresenter @Inject constructor(
     private val messageInteractor : MessageInteractor
 ){
-    suspend fun loadAllMessages() : List<Message> = withIOContext {
-        messageInteractor.loadAllMessages()
+    suspend fun loadAllMessages(currentConversationId: String) : List<Message> = withIOContext {
+        messageInteractor.loadAllMessages(currentConversationId)
     }
 
-    suspend fun addMessage(message : Message) : Boolean = withIOContext {
-        messageInteractor.addMessage(message)
+    suspend fun addMessage(message : Message, currentConversationId: String) : Boolean = withIOContext {
+        messageInteractor.addMessage(message, currentConversationId)
     }
 }

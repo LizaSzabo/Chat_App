@@ -54,7 +54,7 @@ class AddUserDialog : RainbowCakeDialogFragment<AddUserViewState, AddUserViewMod
             return false
         }
 
-        for (user in usersList) {
+       /* for (user in usersList) {
             if (user.userName == userName) {
                 for (conversation in user.conversations!!) {
                     if (conversation.code == code) {
@@ -64,7 +64,7 @@ class AddUserDialog : RainbowCakeDialogFragment<AddUserViewState, AddUserViewMod
                 }
                 return true
             }
-        }
+        }*/
         editText?.error = "User doesn't exist"
         return false
     }

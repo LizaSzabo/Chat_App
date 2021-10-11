@@ -8,11 +8,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import hu.bme.aut.android.chatApp.ChatApplication.Companion.currentConversation
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.currentUser
-import hu.bme.aut.android.chatApp.ChatApplication.Companion.usersList
 import hu.bme.aut.android.chatApp.Model.Message
-import hu.bme.aut.android.chatApp.Network.UpdateUser
 import hu.bme.aut.android.chatApp.databinding.ItemMessageReceivedBinding
 import hu.bme.aut.android.chatApp.databinding.ItemSentMessageBinding
 
@@ -98,12 +95,12 @@ class ChatAdapter : ListAdapter<Message, ChatAdapter.ChatViewHolder>(itemCallbac
         return messageList.size
     }
 
-    fun addAll(){
+   /* fun addAll(){
         if(currentConversation?.messages != null){
         val messages: MutableList<Message> = currentConversation?.messages!!
         messageList += messages
         submitList(messages)}
-    }
+    }*/
 
     override fun getItemViewType(position: Int): Int {
         return when (messageList[position].sender) {
@@ -112,7 +109,7 @@ class ChatAdapter : ListAdapter<Message, ChatAdapter.ChatViewHolder>(itemCallbac
         }
     }
 
-    fun addMessage(message: Message){
+    /*fun addMessage(message: Message){
         messageList += message
         currentConversation?.messages?.add(message)
 
@@ -127,9 +124,10 @@ class ChatAdapter : ListAdapter<Message, ChatAdapter.ChatViewHolder>(itemCallbac
             }
         }
         submitList(messageList)
-    }
+    }*/
 
     fun addAllMessages(messages : List<Message>){
+        messageList -= messageList
         messageList += messages
         submitList(messageList)
     }

@@ -6,5 +6,5 @@ data class User(
     var userName: String,
     var password: String,
     var profilePicture: Bitmap,
-    var conversations: MutableList<Conversation>?
+    var conversationsId: MutableList<String>
         )

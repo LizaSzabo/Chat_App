@@ -15,6 +15,7 @@ import co.zsmb.rainbowcake.base.OneShotEvent
 import co.zsmb.rainbowcake.base.RainbowCakeDialogFragment
 import co.zsmb.rainbowcake.dagger.getViewModelFromFactory
 import co.zsmb.rainbowcake.extensions.exhaustive
+import hu.bme.aut.android.chatApp.ChatApplication.Companion.currentUser
 import hu.bme.aut.android.chatApp.Model.Conversation
 import hu.bme.aut.android.chatApp.Model.Message
 import hu.bme.aut.android.chatApp.R
@@ -29,6 +30,7 @@ class AddConversationDialog : RainbowCakeDialogFragment<AddConversationViewState
 
     private lateinit var binding: DialogAddconversationBinding
     lateinit var listener: AddConversationListener
+    val generatedId = UUID.randomUUID().toString()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DialogAddconversationBinding.inflate(inflater, container, false)
@@ -36,8 +38,10 @@ class AddConversationDialog : RainbowCakeDialogFragment<AddConversationViewState
         binding.btnSave.setOnClickListener {
             val uri: Uri = Uri.parse("android.resource://hu.bme.aut.android.chat_app/drawable/default_profilepic")
             val b: Bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, uri)
+
             if (validateNewConversation()) {
                 viewModel.addConversation(
+                    generatedId,
                     binding.editTextConversationTitle.text.toString(),
                     binding.editTextTypeTitle.text.toString(),
                     b,
@@ -70,13 +74,14 @@ class AddConversationDialog : RainbowCakeDialogFragment<AddConversationViewState
     override fun onEvent(event: OneShotEvent) {
         when (event) {
             is AddConversationViewModel.ConversationAdded -> {
-                val defaultMessages = mutableListOf<Message>()
+                val defaultMessages = mutableListOf<String>()
+                val defaultUsers = mutableListOf<String>() //need to add current user
                 val uri: Uri = Uri.parse("android.resource://hu.bme.aut.android.chat_app/drawable/default_profilepic")
                 val b: Bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, uri)
                 listener.onAddConversation(
                     Conversation(
-                        UUID.randomUUID().toString(), binding.editTextConversationTitle.text.toString(),
-                        binding.editTextTypeTitle.text.toString(), defaultMessages, b, false, binding.editTextCode.text.toString()
+                        generatedId, binding.editTextConversationTitle.text.toString(),
+                        binding.editTextTypeTitle.text.toString(),  defaultUsers, defaultMessages,b, false, binding.editTextCode.text.toString()
                     )
                 )
                 dismiss()

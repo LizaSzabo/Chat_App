@@ -33,7 +33,7 @@ class ViewUsersInConversation : RainbowCakeFragment<ViewUsersViewState, ViewUser
         usersAdapter = UsersAdapter()
         fragmentBinding.rvUsers.layoutManager = LinearLayoutManager(context)
         fragmentBinding.rvUsers.adapter = usersAdapter
-        usersAdapter.addAll()
+       // usersAdapter.addAll()
     }
 
 

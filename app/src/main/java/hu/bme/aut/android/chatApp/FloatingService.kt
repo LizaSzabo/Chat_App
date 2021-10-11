@@ -37,7 +37,7 @@ class FloatingService : Service() {
             val h = Handler(this@FloatingService.getMainLooper())
             while (enabled) {
                 h.post {
-                    if(!currentConversation?.messages.isNullOrEmpty()){
+                  /* if(!currentConversation?.messages.isNullOrEmpty()){
                         tvMessage?.text = messageText
                         floatingView?.visibility = View.VISIBLE
                 }
@@ -47,7 +47,7 @@ class FloatingService : Service() {
                     if(update){
                        updateNotification(messageText)
                         update = false
-                    }
+                    }*/
 
                 }
 
@@ -141,9 +141,9 @@ class FloatingService : Service() {
         enabled = true
         startForeground(NOTIFICATION_ID, createNotification("Waiting for messages..."))
         MyMessageShower().start()
-        if(!currentConversation?.messages.isNullOrEmpty()) {
+       /* if(!currentConversation?.messages.isNullOrEmpty()) {
             updateNotification(messageText)
-        }
+        }*/
 
         return super.onStartCommand(intent, flags, startId)
     }

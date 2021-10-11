@@ -19,7 +19,7 @@ import hu.bme.aut.android.chatApp.Model.Conversation
 import hu.bme.aut.android.chatApp.Model.Message
 import hu.bme.aut.android.chatApp.Model.User
 import java.io.ByteArrayOutputStream
-
+/*
  fun UpdateUser(user: User) {
 
     /*Make persistent user from app user*/
@@ -328,4 +328,4 @@ fun bitMapToString(bitmap: Bitmap): String? {
     bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
     val b: ByteArray = baos.toByteArray()
     return Base64.encodeToString(b, Base64.DEFAULT)
-}
+}*/

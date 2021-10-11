@@ -10,7 +10,7 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.amplifyframework.core.Amplify
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.messageText
-import hu.bme.aut.android.chatApp.Network.querys
+
 import hu.bme.aut.android.chatApp.databinding.ActivityMainBinding
 
 
@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
 
         val uri: Uri = Uri.parse("android.resource://hu.bme.aut.android.chat_app/drawable/default_profile_picture")
         val b: Bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
-        querys(b)
+       // querys(b)
         val intentChatWindowService = Intent(
             this, FloatingService::class.java
         )

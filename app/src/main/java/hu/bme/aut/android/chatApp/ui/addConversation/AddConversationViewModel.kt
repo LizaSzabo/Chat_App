@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.util.Log
 import co.zsmb.rainbowcake.base.OneShotEvent
 import co.zsmb.rainbowcake.base.RainbowCakeViewModel
+import hu.bme.aut.android.chatApp.ChatApplication.Companion.currentUser
 import hu.bme.aut.android.chatApp.Model.Conversation
 import java.util.*
 import javax.inject.Inject
@@ -20,6 +21,7 @@ class AddConversationViewModel @Inject constructor(
     }
 
     fun addConversation(
+        conversationId: String,
         conversationName: String,
         conversationType: String,
         conversationImage: Bitmap,
@@ -33,10 +35,11 @@ class AddConversationViewModel @Inject constructor(
         }
         else {
             val conversation = Conversation(
-                UUID.randomUUID().toString(),
+                conversationId,
                 conversationName,
                 conversationType,
                 mutableListOf(),
+                mutableListOf(currentUser?.userName!!),
                 conversationImage,
                 false,
                 conversationCode

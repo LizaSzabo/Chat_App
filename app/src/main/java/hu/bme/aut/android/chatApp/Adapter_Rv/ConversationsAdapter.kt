@@ -1,7 +1,6 @@
 package hu.bme.aut.android.chatApp.Adapter_Rv
 
 import android.annotation.SuppressLint
-import android.media.browse.MediaBrowser
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,14 +10,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import hu.bme.aut.android.chatApp.ChatApplication.Companion.currentConversation
-import hu.bme.aut.android.chatApp.ChatApplication.Companion.currentUser
-import hu.bme.aut.android.chatApp.ChatApplication.Companion.usersList
 import hu.bme.aut.android.chatApp.Model.Conversation
-import hu.bme.aut.android.chatApp.Network.UpdateUser
 import hu.bme.aut.android.chatApp.R
 import hu.bme.aut.android.chatApp.databinding.ItemConversationBinding
-import java.util.ArrayList
 
 class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.ConversationViewHolder>(ItemCallback)  {
 
@@ -140,7 +134,12 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
         submitList(conversationList)
     }
 
-    fun addAll(conversation: String){
+    fun addConversation(conversation : Conversation){
+        conversationList += conversation
+        submitList(conversationList)
+    }
+
+   /* fun addAll(conversation: String){
         val convs: MutableList<Conversation>
 
 
@@ -160,10 +159,11 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
                     submitList(conversationList)
             }
         }
-    }
+    }*/
 
     fun addAllConversations(conversations: List<Conversation>)
     {
+        conversationList -= conversationList
         conversationList += conversations
         submitList(conversationList)
     }
@@ -219,20 +219,20 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
         submitList(conversationList)
     }
 
-    fun addConversation(conversation: Conversation){
+   /* fun addConversation(conversation: Conversation){
         conversationList += conversation
 
         for(user in usersList){
             if(user.userName ==  currentUser?.userName){
-                user.conversations?.add(conversation)
+              //  user.conversations?.add(conversation)
                 currentUser = user
                 UpdateUser(user)
             }
         }
         submitList(conversationList)
-    }
+    }*/
 
-    fun addConversationToUser(username : String){
+    /*fun addConversationToUser(username : String){
         for(user in usersList){
                 if(user.userName == username){
                     val conversation = currentConversation?.name?.let {
@@ -255,6 +255,6 @@ class ConversationsAdapter: ListAdapter<Conversation, ConversationsAdapter.Conve
 
                 }
         }
-    }
+    }*/
 
 }

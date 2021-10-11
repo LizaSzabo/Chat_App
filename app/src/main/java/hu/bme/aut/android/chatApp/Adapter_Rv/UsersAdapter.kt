@@ -28,7 +28,7 @@ class UsersAdapter: ListAdapter<User, UsersAdapter.UsersViewHolder>(ItemCallback
         }
     }
 
-    fun addAll(){
+    /*fun addAll(){
         if(currentConversation != null){
             val users : MutableList<User> = mutableListOf()
             for(user in usersList){
@@ -40,7 +40,7 @@ class UsersAdapter: ListAdapter<User, UsersAdapter.UsersViewHolder>(ItemCallback
             usersViewList += users
             submitList(usersViewList)
         }
-    }
+    }*/
 
 
     override fun getItemCount(): Int {

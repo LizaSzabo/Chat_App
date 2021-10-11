@@ -10,8 +10,6 @@ import co.zsmb.rainbowcake.base.RainbowCakeDialogFragment
 import co.zsmb.rainbowcake.dagger.getViewModelFromFactory
 import co.zsmb.rainbowcake.extensions.exhaustive
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.currentUser
-import hu.bme.aut.android.chatApp.ChatApplication.Companion.usersList
-import hu.bme.aut.android.chatApp.Network.updateUserName
 import hu.bme.aut.android.chatApp.R
 import hu.bme.aut.android.chatApp.databinding.DialogEditUserNameBinding
 import hu.bme.aut.android.chatApp.databinding.FragmentEditProfileBinding

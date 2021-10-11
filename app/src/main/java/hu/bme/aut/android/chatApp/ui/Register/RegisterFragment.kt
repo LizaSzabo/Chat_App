@@ -50,25 +50,11 @@ class RegisterFragment : RainbowCakeFragment<RegisterViewState, RegisterViewMode
         }
 
         fragmentBinding.ivAddPicture.setOnClickListener {
-            // val intent = Intent()
-            //intent.type = "image/*"
-            //intent.action = Intent.ACTION_GET_CONTENT
-            //startActivityForResult(Intent.createChooser(intent, "Select Picture"), pickImage)
             openSomeActivityForResult()
         }
 
         fragmentBinding.ivAddPicture.setImageURI(uri)
     }
-
-    /*override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == pickImage) {
-            val selectedImageUri: Uri? = data?.data
-            if (null != selectedImageUri) {
-                fragmentBinding.ivAddPicture.setImageURI(selectedImageUri)
-                uri = selectedImageUri
-            }
-        }
-    }*/
 
     private var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
