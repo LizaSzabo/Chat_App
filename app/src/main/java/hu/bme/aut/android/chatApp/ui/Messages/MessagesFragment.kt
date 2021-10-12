@@ -164,7 +164,7 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
 
                 }
                 R.id.addUser -> {
-                    val addUserDialog = AddUserDialog()
+                    val addUserDialog = AddUserDialog(conversation)
                     addUserDialog.listener = this
                     addUserDialog.show(parentFragmentManager, "")
                 }

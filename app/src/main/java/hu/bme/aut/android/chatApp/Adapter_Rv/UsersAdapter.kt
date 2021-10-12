@@ -42,6 +42,12 @@ class UsersAdapter: ListAdapter<User, UsersAdapter.UsersViewHolder>(ItemCallback
         }
     }*/
 
+    fun addAllUsers(users : List<User>){
+        usersViewList -=   usersViewList
+        usersViewList += users
+        submitList(usersViewList)
+    }
+
 
     override fun getItemCount(): Int {
         return usersViewList.size

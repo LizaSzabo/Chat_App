@@ -4,8 +4,6 @@ sealed class ViewUsersViewState
 
 object Initial: ViewUsersViewState()
 
-object Loading: ViewUsersViewState()
+object UsersLoadError : ViewUsersViewState()
 
-object DataReady:ViewUsersViewState()
-
-object NetworkError:ViewUsersViewState()
+object UsersLoadSuccess : ViewUsersViewState()

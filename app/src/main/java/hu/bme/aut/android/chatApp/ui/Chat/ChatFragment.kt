@@ -20,10 +20,8 @@ import co.zsmb.rainbowcake.extensions.exhaustive
 import hu.bme.aut.android.chatApp.Adapter_Rv.ChatAdapter
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.currentConversation
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.currentUser
-import hu.bme.aut.android.chatApp.Model.Conversation
 import hu.bme.aut.android.chatApp.R
 import hu.bme.aut.android.chatApp.databinding.FragmentChatBinding
-import hu.bme.aut.android.chatApp.ui.login.LoginFragmentArgs
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -36,7 +34,7 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
     private lateinit var fragmentBinding: FragmentChatBinding
     private lateinit var chatAdapter: ChatAdapter
     private val args: ChatFragmentArgs by navArgs()
-    private  lateinit var currentConversationId : String
+    private lateinit var currentConversationId: String
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -48,7 +46,7 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
         (activity as AppCompatActivity).setSupportActionBar(fragmentBinding.chatButtomToolbar)
         setHasOptionsMenu(true)
 
-         currentConversationId = args.currentConversationId
+        currentConversationId = args.currentConversationId
 
 
         fragmentBinding.chatButtomToolbar.title = ""
@@ -68,7 +66,7 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
         }
 
         fragmentBinding.iwConversationPicture.setOnClickListener {
-            val action = ChatFragmentDirections.actionChatFragmentToViewUsersInConversation()
+            val action = ChatFragmentDirections.actionChatFragmentToViewUsersInConversation(currentConversationId)
             findNavController().navigate(action)
         }
         fragmentBinding.conversationTitle.text = currentConversation?.name
@@ -82,10 +80,10 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
 
         }
         fragmentBinding.iwConversationPicture.setImageBitmap(resized)
-        fragmentBinding.text.doOnTextChanged{ _, _, _, _ ->
-            fragmentBinding.text.setTextColor(ContextCompat.getColor(requireContext(),R.color.textColor ))
+        fragmentBinding.text.doOnTextChanged { _, _, _, _ ->
+            fragmentBinding.text.setTextColor(ContextCompat.getColor(requireContext(), R.color.textColor))
         }
-        
+
         initRecyclerView()
     }
 
@@ -128,8 +126,8 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
     }
 
     override fun onEvent(event: OneShotEvent) {
-        when(event){
-            ChatViewModel.AddError ->  fragmentBinding.text.setTextColor(ContextCompat.getColor(requireContext(),R.color.red ))
+        when (event) {
+            ChatViewModel.AddError -> fragmentBinding.text.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
         }
     }
 
@@ -138,19 +136,20 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
         when (viewState) {
             Initial -> {
                 fragmentBinding.text.setText("")
-                fragmentBinding.text.setTextColor(ContextCompat.getColor(requireContext(),R.color.textColor ))
+                fragmentBinding.text.setTextColor(ContextCompat.getColor(requireContext(), R.color.textColor))
             }
             MessageLoadSuccess -> {
                 Toast.makeText(context, "Load Succeeded", Toast.LENGTH_LONG).show()
             }
-            MessageAddError ->{
+            MessageAddError -> {
 
             }
             MessageAddSuccess -> {
                 fragmentBinding.text.setText("")
-                fragmentBinding.text.setTextColor(ContextCompat.getColor(requireContext(),R.color.textColor ))
+                fragmentBinding.text.setTextColor(ContextCompat.getColor(requireContext(), R.color.textColor))
             }
-            MessageLoadError -> {}
+            MessageLoadError -> {
+            }
         }.exhaustive
     }
 }

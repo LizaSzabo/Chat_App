@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import co.zsmb.rainbowcake.base.OneShotEvent
 import co.zsmb.rainbowcake.base.RainbowCakeViewModel
 import hu.bme.aut.android.chatApp.Model.User
+import java.util.*
 import javax.inject.Inject
 
 class RegisterViewModel @Inject constructor(
@@ -19,7 +20,7 @@ class RegisterViewModel @Inject constructor(
             postEvent(UserAlreadyExists)
         }
         else{
-            val user = User(userName, userPassword, profilePicture, conversationsId = mutableListOf())
+            val user = User(UUID.randomUUID().toString(), userName, userPassword, profilePicture, conversationsId = mutableListOf())
             registered = registerPresenter.saveRegisteredUser(user)
             if(registered) {
                 viewState = RegistrationSuccess

@@ -2,8 +2,10 @@ package hu.bme.aut.android.chatApp.domain
 
 import android.graphics.Bitmap
 import android.util.Log
+import hu.bme.aut.android.chatApp.ChatApplication.Companion.Conversations
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.Users
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.currentUser
+import hu.bme.aut.android.chatApp.Model.Conversation
 import hu.bme.aut.android.chatApp.Model.User
 import javax.inject.Inject
 
@@ -46,6 +48,14 @@ class UserInteractor @Inject constructor() {
     fun updateUserName(newUserName: String): Boolean {
         for (user in Users) {
             if (user.userName == currentUser?.userName) {
+
+                for (conversation in Conversations)
+                    if (conversation.usersName.contains(user.userName)) {
+                        conversation.usersName.add( newUserName)
+                        conversation.usersName.remove(user.userName)
+                        Log.i("user", currentUser?.userName.toString())
+                    }
+
                 user.userName = newUserName
                 currentUser?.userName = newUserName
                 return true
@@ -54,7 +64,7 @@ class UserInteractor @Inject constructor() {
         return false
     }
 
-    fun updateUserProfilePicture(picture: Bitmap) : Boolean {
+    fun updateUserProfilePicture(picture: Bitmap): Boolean {
         //updateUserPicture(picture)
         for (user in Users) {
             if (user.userName == currentUser?.userName) {
@@ -64,5 +74,12 @@ class UserInteractor @Inject constructor() {
             }
         }
         return false
+    }
+
+    fun addConversationToUser(userName: String, conversation: Conversation): Boolean {
+        for (user in Users)
+            if (user.userName == userName)
+                user.conversationsId.add(conversation.id)
+        return true
     }
 }

@@ -80,10 +80,20 @@
             app:argType="string" />
         <action
             android:id="@+id/action_chatFragment_to_viewUsersInConversation"
-            app:destination="@id/viewUsersInConversation" />
+            app:destination="@id/viewUsersInConversation">
+            <argument
+                android:name="currentConversationId"
+                android:defaultValue="0"
+                app:argType="string" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/viewUsersInConversation"
         android:name="hu.bme.aut.android.chatApp.ui.ViewUsers.ViewUsersInConversation"
-        android:label="ViewUsersInConversation" />
+        android:label="ViewUsersInConversation">
+        <argument
+            android:name="currentConversationId"
+            android:defaultValue="0"
+            app:argType="string" />
+    </fragment>
 </navigation>

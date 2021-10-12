@@ -6,16 +6,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import co.zsmb.rainbowcake.base.OneShotEvent
 import co.zsmb.rainbowcake.base.RainbowCakeDialogFragment
 import co.zsmb.rainbowcake.dagger.getViewModelFromFactory
 import co.zsmb.rainbowcake.extensions.exhaustive
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.currentConversation
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.usersList
+import hu.bme.aut.android.chatApp.Model.Conversation
 import hu.bme.aut.android.chatApp.R
 import hu.bme.aut.android.chatApp.databinding.DialogAddUserToConversationBinding
 
 
-class AddUserDialog : RainbowCakeDialogFragment<AddUserViewState, AddUserViewModel>() {
+class AddUserDialog(private val conversation : Conversation) : RainbowCakeDialogFragment<AddUserViewState, AddUserViewModel>() {
 
     override fun getViewResource() = R.layout.dialog_add_user_to_conversation
     override fun provideViewModel() = getViewModelFromFactory()
@@ -25,19 +27,13 @@ class AddUserDialog : RainbowCakeDialogFragment<AddUserViewState, AddUserViewMod
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DialogAddUserToConversationBinding.inflate(inflater, container, false)
-        Log.i("users", "user.userName")
+
         binding.btnSave.setOnClickListener {
             //   val uri: Uri = Uri.parse("android.resource://hu.bme.aut.android.chat_app/drawable/default_profilepic")
 
-            if (currentConversation?.code?.let { it1 ->
-                    validateNewUser(binding.editTextUserName.text.toString(), binding.editTextUserName, it1)
-                } == true) {
-                listener.onAddUser(binding.editTextUserName.text.toString())
+            viewModel.addUserToConversation(binding.editTextUserName.text.toString(), conversation)
 
 
-
-                dialog?.dismiss()
-            }
 
         }
 
@@ -73,9 +69,21 @@ class AddUserDialog : RainbowCakeDialogFragment<AddUserViewState, AddUserViewMod
         fun onAddUser(userName: String)
     }
 
+    override fun onEvent(event: OneShotEvent) {
+        when(event){
+            AddUserViewModel.AddUserCancel -> binding.etUserName.error = "User doesn't exist"
+            AddUserViewModel.AddUserAlreadyAdded -> binding.etUserName.error = "User already in conversation"
+        }
+    }
+
     override fun render(viewState: AddUserViewState) {
         when (viewState) {
             Initial -> Unit
+            UserAddedError -> Unit
+            UserAddedSuccess -> {
+                dialog?.dismiss()
+            }
+            UserAddedCancel -> Unit
         }.exhaustive
     }
 }

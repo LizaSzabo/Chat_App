@@ -7,6 +7,7 @@ import hu.bme.aut.android.chatApp.ChatApplication.Companion.Users
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.currentConversation
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.currentUser
 import hu.bme.aut.android.chatApp.Model.Conversation
+import hu.bme.aut.android.chatApp.Model.User
 import javax.inject.Inject
 
 class ConversationInteractor @Inject constructor() {
@@ -76,5 +77,32 @@ class ConversationInteractor @Inject constructor() {
                 return true
             }
         return false
+    }
+
+    fun addUserToConversation(userName: String, conversation: Conversation): Boolean{
+        for(c in Conversations)
+            if(c.id == conversation.id)
+                c.usersName.add(userName)
+            return true
+    }
+
+    fun isUserNameAdded(userName: String, conversation: Conversation): Boolean{
+        for(c in Conversations)
+            if(c.id == conversation.id){
+                if(c.usersName.contains(userName))
+                 return true
+            }
+        return false
+    }
+
+    fun getUsersOfConversation(conversationId : String) : List<User> {
+        val users = mutableListOf<User>()
+        for(conversation in Conversations)
+            if(conversation.id == conversationId)
+               for(userName in conversation.usersName)
+                   for(user in Users)
+                       if(user.userName == userName)
+                           users.add(user)
+        return users
     }
 }
