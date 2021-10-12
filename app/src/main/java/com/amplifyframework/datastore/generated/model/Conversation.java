@@ -1,7 +1,5 @@
 package com.amplifyframework.datastore.generated.model;
 
-import com.amplifyframework.core.model.annotations.BelongsTo;
-import com.amplifyframework.core.model.annotations.HasMany;
 
 import java.util.List;
 import java.util.UUID;
@@ -20,25 +18,29 @@ import static com.amplifyframework.core.model.query.predicate.QueryField.field;
 /** This is an auto generated class representing the Conversation type in your schema. */
 @SuppressWarnings("all")
 @ModelConfig(pluralName = "Conversations")
-@Index(name = "byUser", fields = {"userID"})
 public final class Conversation implements Model {
   public static final QueryField ID = field("Conversation", "id");
+  public static final QueryField MODEL_ID = field("Conversation", "modelId");
   public static final QueryField NAME = field("Conversation", "name");
   public static final QueryField TYPE = field("Conversation", "type");
   public static final QueryField PICTURE = field("Conversation", "picture");
   public static final QueryField FAVOURITE = field("Conversation", "favourite");
-  public static final QueryField CODE = field("Conversation", "code");
-  public static final QueryField USER = field("Conversation", "userID");
+  public static final QueryField USERS_ID = field("Conversation", "usersId");
+  public static final QueryField MESSAGES_ID = field("Conversation", "messagesId");
   private final @ModelField(targetType="ID", isRequired = true) String id;
+  private final @ModelField(targetType="String", isRequired = true) String modelId;
   private final @ModelField(targetType="String", isRequired = true) String name;
   private final @ModelField(targetType="String", isRequired = true) String type;
   private final @ModelField(targetType="String", isRequired = true) String picture;
   private final @ModelField(targetType="Boolean", isRequired = true) Boolean favourite;
-  private final @ModelField(targetType="String") String code;
-  private final @ModelField(targetType="User") @BelongsTo(targetName = "userID", type = User.class) User user;
-  private final @ModelField(targetType="Message") @HasMany(associatedWith = "conversation", type = Message.class) List<Message> messages = null;
+  private final @ModelField(targetType="String") List<String> usersId;
+  private final @ModelField(targetType="String") List<String> messagesId;
   public String getId() {
       return id;
+  }
+  
+  public String getModelId() {
+      return modelId;
   }
   
   public String getName() {
@@ -57,26 +59,23 @@ public final class Conversation implements Model {
       return favourite;
   }
   
-  public String getCode() {
-      return code;
+  public List<String> getUsersId() {
+      return usersId;
   }
   
-  public User getUser() {
-      return user;
+  public List<String> getMessagesId() {
+      return messagesId;
   }
   
-  public List<Message> getMessages() {
-      return messages;
-  }
-  
-  private Conversation(String id, String name, String type, String picture, Boolean favourite, String code, User user) {
+  private Conversation(String id, String modelId, String name, String type, String picture, Boolean favourite, List<String> usersId, List<String> messagesId) {
     this.id = id;
+    this.modelId = modelId;
     this.name = name;
     this.type = type;
     this.picture = picture;
     this.favourite = favourite;
-    this.code = code;
-    this.user = user;
+    this.usersId = usersId;
+    this.messagesId = messagesId;
   }
   
   @Override
@@ -88,12 +87,13 @@ public final class Conversation implements Model {
       } else {
       Conversation conversation = (Conversation) obj;
       return ObjectsCompat.equals(getId(), conversation.getId()) &&
+              ObjectsCompat.equals(getModelId(), conversation.getModelId()) &&
               ObjectsCompat.equals(getName(), conversation.getName()) &&
               ObjectsCompat.equals(getType(), conversation.getType()) &&
               ObjectsCompat.equals(getPicture(), conversation.getPicture()) &&
               ObjectsCompat.equals(getFavourite(), conversation.getFavourite()) &&
-              ObjectsCompat.equals(getCode(), conversation.getCode()) &&
-              ObjectsCompat.equals(getUser(), conversation.getUser());
+              ObjectsCompat.equals(getUsersId(), conversation.getUsersId()) &&
+              ObjectsCompat.equals(getMessagesId(), conversation.getMessagesId());
       }
   }
   
@@ -101,12 +101,13 @@ public final class Conversation implements Model {
    public int hashCode() {
     return new StringBuilder()
       .append(getId())
+      .append(getModelId())
       .append(getName())
       .append(getType())
       .append(getPicture())
       .append(getFavourite())
-      .append(getCode())
-      .append(getUser())
+      .append(getUsersId())
+      .append(getMessagesId())
       .toString()
       .hashCode();
   }
@@ -116,17 +117,18 @@ public final class Conversation implements Model {
     return new StringBuilder()
       .append("Conversation {")
       .append("id=" + String.valueOf(getId()) + ", ")
+      .append("modelId=" + String.valueOf(getModelId()) + ", ")
       .append("name=" + String.valueOf(getName()) + ", ")
       .append("type=" + String.valueOf(getType()) + ", ")
       .append("picture=" + String.valueOf(getPicture()) + ", ")
       .append("favourite=" + String.valueOf(getFavourite()) + ", ")
-      .append("code=" + String.valueOf(getCode()) + ", ")
-      .append("user=" + String.valueOf(getUser()))
+      .append("usersId=" + String.valueOf(getUsersId()) + ", ")
+      .append("messagesId=" + String.valueOf(getMessagesId()))
       .append("}")
       .toString();
   }
   
-  public static NameStep builder() {
+  public static ModelIdStep builder() {
       return new Builder();
   }
   
@@ -156,19 +158,26 @@ public final class Conversation implements Model {
       null,
       null,
       null,
+      null,
       null
     );
   }
   
   public CopyOfBuilder copyOfBuilder() {
     return new CopyOfBuilder(id,
+      modelId,
       name,
       type,
       picture,
       favourite,
-      code,
-      user);
+      usersId,
+      messagesId);
   }
+  public interface ModelIdStep {
+    NameStep modelId(String modelId);
+  }
+  
+
   public interface NameStep {
     TypeStep name(String name);
   }
@@ -192,31 +201,40 @@ public final class Conversation implements Model {
   public interface BuildStep {
     Conversation build();
     BuildStep id(String id) throws IllegalArgumentException;
-    BuildStep code(String code);
-    BuildStep user(User user);
+    BuildStep usersId(List<String> usersId);
+    BuildStep messagesId(List<String> messagesId);
   }
   
 
-  public static class Builder implements NameStep, TypeStep, PictureStep, FavouriteStep, BuildStep {
+  public static class Builder implements ModelIdStep, NameStep, TypeStep, PictureStep, FavouriteStep, BuildStep {
     private String id;
+    private String modelId;
     private String name;
     private String type;
     private String picture;
     private Boolean favourite;
-    private String code;
-    private User user;
+    private List<String> usersId;
+    private List<String> messagesId;
     @Override
      public Conversation build() {
         String id = this.id != null ? this.id : UUID.randomUUID().toString();
         
         return new Conversation(
           id,
+          modelId,
           name,
           type,
           picture,
           favourite,
-          code,
-          user);
+          usersId,
+          messagesId);
+    }
+    
+    @Override
+     public NameStep modelId(String modelId) {
+        Objects.requireNonNull(modelId);
+        this.modelId = modelId;
+        return this;
     }
     
     @Override
@@ -248,14 +266,14 @@ public final class Conversation implements Model {
     }
     
     @Override
-     public BuildStep code(String code) {
-        this.code = code;
+     public BuildStep usersId(List<String> usersId) {
+        this.usersId = usersId;
         return this;
     }
     
     @Override
-     public BuildStep user(User user) {
-        this.user = user;
+     public BuildStep messagesId(List<String> messagesId) {
+        this.messagesId = messagesId;
         return this;
     }
     
@@ -282,14 +300,20 @@ public final class Conversation implements Model {
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, String name, String type, String picture, Boolean favourite, String code, User user) {
+    private CopyOfBuilder(String id, String modelId, String name, String type, String picture, Boolean favourite, List<String> usersId, List<String> messagesId) {
       super.id(id);
-      super.name(name)
+      super.modelId(modelId)
+        .name(name)
         .type(type)
         .picture(picture)
         .favourite(favourite)
-        .code(code)
-        .user(user);
+        .usersId(usersId)
+        .messagesId(messagesId);
+    }
+    
+    @Override
+     public CopyOfBuilder modelId(String modelId) {
+      return (CopyOfBuilder) super.modelId(modelId);
     }
     
     @Override
@@ -313,13 +337,13 @@ public final class Conversation implements Model {
     }
     
     @Override
-     public CopyOfBuilder code(String code) {
-      return (CopyOfBuilder) super.code(code);
+     public CopyOfBuilder usersId(List<String> usersId) {
+      return (CopyOfBuilder) super.usersId(usersId);
     }
     
     @Override
-     public CopyOfBuilder user(User user) {
-      return (CopyOfBuilder) super.user(user);
+     public CopyOfBuilder messagesId(List<String> messagesId) {
+      return (CopyOfBuilder) super.messagesId(messagesId);
     }
   }
   

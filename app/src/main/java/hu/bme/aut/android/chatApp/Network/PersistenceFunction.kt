@@ -1,24 +1,17 @@
 package hu.bme.aut.android.chatApp.Network
 
-import android.content.Context
+import android.R.attr.bitmap
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Base64
 import android.util.Log
 import com.amplifyframework.core.Amplify
-import com.amplifyframework.core.model.query.Where
 import hu.bme.aut.android.chatApp.ChatApplication
-import hu.bme.aut.android.chatApp.ChatApplication.Companion.allConversationList
-import hu.bme.aut.android.chatApp.ChatApplication.Companion.allMessagesList
-import hu.bme.aut.android.chatApp.ChatApplication.Companion.currentUser
-import hu.bme.aut.android.chatApp.ChatApplication.Companion.lastDate
-import hu.bme.aut.android.chatApp.ChatApplication.Companion.messageText
-import hu.bme.aut.android.chatApp.ChatApplication.Companion.update
-import hu.bme.aut.android.chatApp.ChatApplication.Companion.usersList
-import hu.bme.aut.android.chatApp.Model.Conversation
-import hu.bme.aut.android.chatApp.Model.Message
+import hu.bme.aut.android.chatApp.ChatApplication.Companion.Users
 import hu.bme.aut.android.chatApp.Model.User
 import java.io.ByteArrayOutputStream
+
+
 /*
  fun UpdateUser(user: User) {
 
@@ -329,3 +322,61 @@ fun bitMapToString(bitmap: Bitmap): String? {
     val b: ByteArray = baos.toByteArray()
     return Base64.encodeToString(b, Base64.DEFAULT)
 }*/
+
+fun saveUsers(){
+    for(u in ChatApplication.Users){
+        val user = com.amplifyframework.datastore.generated.model.User.builder()
+            .modelId(u.id)
+            .userName(u.userName)
+            .password(u.password)
+            .profilePicture(encodeImage(u.profilePicture))
+            .conversations(u.conversationsId)
+            .build()
+
+        Amplify.DataStore.save(user,
+            { Log.i("MyAmplifyApp", "Saved all users") },
+            { Log.e("MyAmplifyApp", "Save all users failed", it) }
+        )
+    }
+}
+
+fun saveUser(u : User){
+    val user = com.amplifyframework.datastore.generated.model.User.builder()
+        .modelId(u.id)
+        .userName(u.userName)
+        .password(u.password)
+        .profilePicture(encodeImage(u.profilePicture))
+        .conversations(u.conversationsId)
+        .build()
+
+    Amplify.DataStore.save(user,
+        { Log.i("MyAmplifyApp", "Saved a user") },
+        { Log.e("MyAmplifyApp", "Save user failed", it) }
+    )
+}
+
+fun getAllUsers() {
+    Users.clear()
+    Amplify.DataStore.query(com.amplifyframework.datastore.generated.model.User::class.java,
+        { users ->
+            while (users.hasNext()) {
+                val user = users.next()
+                val decodedString: ByteArray = Base64.decode(user.profilePicture, Base64.DEFAULT)
+                val decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
+                val u = User(user.modelId, user.userName, user.password, decodedByte, user.conversations )
+                Users.add(u)
+                Log.i("MyAmplifyApp", "Title: ${user.userName}")
+            }
+        },
+        { Log.e("MyAmplifyApp", "Query failed", it) }
+    )
+}
+
+private fun encodeImage(bm: Bitmap): String? {
+    val byteArrayOutputStream = ByteArrayOutputStream()
+    bm.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
+    val byteArray = byteArrayOutputStream.toByteArray()
+    return Base64.encodeToString(byteArray, Base64.DEFAULT);
+}
+
+

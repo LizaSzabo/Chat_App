@@ -6,6 +6,8 @@ import hu.bme.aut.android.chatApp.ChatApplication.Companion.Users
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.currentUser
 import hu.bme.aut.android.chatApp.Model.Conversation
 import hu.bme.aut.android.chatApp.Model.User
+import hu.bme.aut.android.chatApp.Network.getAllUsers
+import hu.bme.aut.android.chatApp.Network.saveUser
 import javax.inject.Inject
 
 class UserInteractor @Inject constructor() {
@@ -13,11 +15,13 @@ class UserInteractor @Inject constructor() {
     fun saveRegisteredUser(user: User): Boolean {
         Users.add(user)
         logUsers()
+        saveUser(user)
         return true
     }
 
     fun getUsers(): List<User> {
         logUsers()
+        getAllUsers()
         return Users
     }
 

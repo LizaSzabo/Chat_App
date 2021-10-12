@@ -1,6 +1,5 @@
 package com.amplifyframework.datastore.generated.model;
 
-import com.amplifyframework.core.model.annotations.HasMany;
 
 import java.util.List;
 import java.util.UUID;
@@ -21,16 +20,23 @@ import static com.amplifyframework.core.model.query.predicate.QueryField.field;
 @ModelConfig(pluralName = "Users")
 public final class User implements Model {
   public static final QueryField ID = field("User", "id");
+  public static final QueryField MODEL_ID = field("User", "modelId");
   public static final QueryField USER_NAME = field("User", "userName");
   public static final QueryField PASSWORD = field("User", "password");
   public static final QueryField PROFILE_PICTURE = field("User", "profilePicture");
+  public static final QueryField CONVERSATIONS = field("User", "conversations");
   private final @ModelField(targetType="ID", isRequired = true) String id;
+  private final @ModelField(targetType="String", isRequired = true) String modelId;
   private final @ModelField(targetType="String", isRequired = true) String userName;
   private final @ModelField(targetType="String", isRequired = true) String password;
   private final @ModelField(targetType="String", isRequired = true) String profilePicture;
-  private final @ModelField(targetType="Conversation") @HasMany(associatedWith = "user", type = Conversation.class) List<Conversation> conversations = null;
+  private final @ModelField(targetType="String") List<String> conversations;
   public String getId() {
       return id;
+  }
+  
+  public String getModelId() {
+      return modelId;
   }
   
   public String getUserName() {
@@ -45,15 +51,17 @@ public final class User implements Model {
       return profilePicture;
   }
   
-  public List<Conversation> getConversations() {
+  public List<String> getConversations() {
       return conversations;
   }
   
-  private User(String id, String userName, String password, String profilePicture) {
+  private User(String id, String modelId, String userName, String password, String profilePicture, List<String> conversations) {
     this.id = id;
+    this.modelId = modelId;
     this.userName = userName;
     this.password = password;
     this.profilePicture = profilePicture;
+    this.conversations = conversations;
   }
   
   @Override
@@ -65,9 +73,11 @@ public final class User implements Model {
       } else {
       User user = (User) obj;
       return ObjectsCompat.equals(getId(), user.getId()) &&
+              ObjectsCompat.equals(getModelId(), user.getModelId()) &&
               ObjectsCompat.equals(getUserName(), user.getUserName()) &&
               ObjectsCompat.equals(getPassword(), user.getPassword()) &&
-              ObjectsCompat.equals(getProfilePicture(), user.getProfilePicture());
+              ObjectsCompat.equals(getProfilePicture(), user.getProfilePicture()) &&
+              ObjectsCompat.equals(getConversations(), user.getConversations());
       }
   }
   
@@ -75,9 +85,11 @@ public final class User implements Model {
    public int hashCode() {
     return new StringBuilder()
       .append(getId())
+      .append(getModelId())
       .append(getUserName())
       .append(getPassword())
       .append(getProfilePicture())
+      .append(getConversations())
       .toString()
       .hashCode();
   }
@@ -87,14 +99,16 @@ public final class User implements Model {
     return new StringBuilder()
       .append("User {")
       .append("id=" + String.valueOf(getId()) + ", ")
+      .append("modelId=" + String.valueOf(getModelId()) + ", ")
       .append("userName=" + String.valueOf(getUserName()) + ", ")
       .append("password=" + String.valueOf(getPassword()) + ", ")
-      .append("profilePicture=" + String.valueOf(getProfilePicture()))
+      .append("profilePicture=" + String.valueOf(getProfilePicture()) + ", ")
+      .append("conversations=" + String.valueOf(getConversations()))
       .append("}")
       .toString();
   }
   
-  public static UserNameStep builder() {
+  public static ModelIdStep builder() {
       return new Builder();
   }
   
@@ -121,16 +135,25 @@ public final class User implements Model {
       id,
       null,
       null,
+      null,
+      null,
       null
     );
   }
   
   public CopyOfBuilder copyOfBuilder() {
     return new CopyOfBuilder(id,
+      modelId,
       userName,
       password,
-      profilePicture);
+      profilePicture,
+      conversations);
   }
+  public interface ModelIdStep {
+    UserNameStep modelId(String modelId);
+  }
+  
+
   public interface UserNameStep {
     PasswordStep userName(String userName);
   }
@@ -149,23 +172,35 @@ public final class User implements Model {
   public interface BuildStep {
     User build();
     BuildStep id(String id) throws IllegalArgumentException;
+    BuildStep conversations(List<String> conversations);
   }
   
 
-  public static class Builder implements UserNameStep, PasswordStep, ProfilePictureStep, BuildStep {
+  public static class Builder implements ModelIdStep, UserNameStep, PasswordStep, ProfilePictureStep, BuildStep {
     private String id;
+    private String modelId;
     private String userName;
     private String password;
     private String profilePicture;
+    private List<String> conversations;
     @Override
      public User build() {
         String id = this.id != null ? this.id : UUID.randomUUID().toString();
         
         return new User(
           id,
+          modelId,
           userName,
           password,
-          profilePicture);
+          profilePicture,
+          conversations);
+    }
+    
+    @Override
+     public UserNameStep modelId(String modelId) {
+        Objects.requireNonNull(modelId);
+        this.modelId = modelId;
+        return this;
     }
     
     @Override
@@ -186,6 +221,12 @@ public final class User implements Model {
      public BuildStep profilePicture(String profilePicture) {
         Objects.requireNonNull(profilePicture);
         this.profilePicture = profilePicture;
+        return this;
+    }
+    
+    @Override
+     public BuildStep conversations(List<String> conversations) {
+        this.conversations = conversations;
         return this;
     }
     
@@ -212,11 +253,18 @@ public final class User implements Model {
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, String userName, String password, String profilePicture) {
+    private CopyOfBuilder(String id, String modelId, String userName, String password, String profilePicture, List<String> conversations) {
       super.id(id);
-      super.userName(userName)
+      super.modelId(modelId)
+        .userName(userName)
         .password(password)
-        .profilePicture(profilePicture);
+        .profilePicture(profilePicture)
+        .conversations(conversations);
+    }
+    
+    @Override
+     public CopyOfBuilder modelId(String modelId) {
+      return (CopyOfBuilder) super.modelId(modelId);
     }
     
     @Override
@@ -232,6 +280,11 @@ public final class User implements Model {
     @Override
      public CopyOfBuilder profilePicture(String profilePicture) {
       return (CopyOfBuilder) super.profilePicture(profilePicture);
+    }
+    
+    @Override
+     public CopyOfBuilder conversations(List<String> conversations) {
+      return (CopyOfBuilder) super.conversations(conversations);
     }
   }
   

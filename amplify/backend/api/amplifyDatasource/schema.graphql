@@ -1,31 +1,29 @@
 type User @model{
-  id: ID!
-  userName: String!
-  password: String!
-  profilePicture: String!
-  conversations: [Conversation] @connection(keyName: "byUser", fields: ["id"])
+    id: ID!
+    modelId : String!
+    userName: String!
+    password: String!
+    profilePicture: String!
+    conversations: [String]
 }
 
 type Conversation @model
-  @key(name: "byUser", fields: ["userID"]) {
-  id: ID!
-  userID: ID!
-  name: String!
-  type: String!
-  picture: String!
-  favourite: Boolean!
-  code: String
-  user: User @connection(fields: ["userID"])
-  messages: [Message]  @connection(keyName: "byConversation", fields: ["id"])
+{
+    id: ID!
+    modelId : String!
+    name: String!
+    type: String!
+    picture: String!
+    favourite: Boolean!
+    usersId: [String]
+    messagesId: [String]
 }
 
-type Message @model
-@key(name: "byConversation", fields: ["conversationID"]) {
-  id: ID!
-  conversationID: ID!
-  sender: String!
-  receivers: String
-  content: String!
-  date: String!
-  conversation: Conversation @connection(fields: ["conversationID"])
+
+type Message @model {
+    id: ID!
+    modelId : String!
+    sender: String!
+    content: String!
+    date: String!
 }

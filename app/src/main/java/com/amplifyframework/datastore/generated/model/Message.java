@@ -1,6 +1,5 @@
 package com.amplifyframework.datastore.generated.model;
 
-import com.amplifyframework.core.model.annotations.BelongsTo;
 
 import java.util.List;
 import java.util.UUID;
@@ -19,30 +18,27 @@ import static com.amplifyframework.core.model.query.predicate.QueryField.field;
 /** This is an auto generated class representing the Message type in your schema. */
 @SuppressWarnings("all")
 @ModelConfig(pluralName = "Messages")
-@Index(name = "byConversation", fields = {"conversationID"})
 public final class Message implements Model {
   public static final QueryField ID = field("Message", "id");
+  public static final QueryField MODEL_ID = field("Message", "modelId");
   public static final QueryField SENDER = field("Message", "sender");
-  public static final QueryField RECEIVERS = field("Message", "receivers");
   public static final QueryField CONTENT = field("Message", "content");
   public static final QueryField DATE = field("Message", "date");
-  public static final QueryField CONVERSATION = field("Message", "conversationID");
   private final @ModelField(targetType="ID", isRequired = true) String id;
+  private final @ModelField(targetType="String", isRequired = true) String modelId;
   private final @ModelField(targetType="String", isRequired = true) String sender;
-  private final @ModelField(targetType="String") String receivers;
   private final @ModelField(targetType="String", isRequired = true) String content;
   private final @ModelField(targetType="String", isRequired = true) String date;
-  private final @ModelField(targetType="Conversation") @BelongsTo(targetName = "conversationID", type = Conversation.class) Conversation conversation;
   public String getId() {
       return id;
   }
   
-  public String getSender() {
-      return sender;
+  public String getModelId() {
+      return modelId;
   }
   
-  public String getReceivers() {
-      return receivers;
+  public String getSender() {
+      return sender;
   }
   
   public String getContent() {
@@ -53,17 +49,12 @@ public final class Message implements Model {
       return date;
   }
   
-  public Conversation getConversation() {
-      return conversation;
-  }
-  
-  private Message(String id, String sender, String receivers, String content, String date, Conversation conversation) {
+  private Message(String id, String modelId, String sender, String content, String date) {
     this.id = id;
+    this.modelId = modelId;
     this.sender = sender;
-    this.receivers = receivers;
     this.content = content;
     this.date = date;
-    this.conversation = conversation;
   }
   
   @Override
@@ -75,11 +66,10 @@ public final class Message implements Model {
       } else {
       Message message = (Message) obj;
       return ObjectsCompat.equals(getId(), message.getId()) &&
+              ObjectsCompat.equals(getModelId(), message.getModelId()) &&
               ObjectsCompat.equals(getSender(), message.getSender()) &&
-              ObjectsCompat.equals(getReceivers(), message.getReceivers()) &&
               ObjectsCompat.equals(getContent(), message.getContent()) &&
-              ObjectsCompat.equals(getDate(), message.getDate()) &&
-              ObjectsCompat.equals(getConversation(), message.getConversation());
+              ObjectsCompat.equals(getDate(), message.getDate());
       }
   }
   
@@ -87,11 +77,10 @@ public final class Message implements Model {
    public int hashCode() {
     return new StringBuilder()
       .append(getId())
+      .append(getModelId())
       .append(getSender())
-      .append(getReceivers())
       .append(getContent())
       .append(getDate())
-      .append(getConversation())
       .toString()
       .hashCode();
   }
@@ -101,16 +90,15 @@ public final class Message implements Model {
     return new StringBuilder()
       .append("Message {")
       .append("id=" + String.valueOf(getId()) + ", ")
+      .append("modelId=" + String.valueOf(getModelId()) + ", ")
       .append("sender=" + String.valueOf(getSender()) + ", ")
-      .append("receivers=" + String.valueOf(getReceivers()) + ", ")
       .append("content=" + String.valueOf(getContent()) + ", ")
-      .append("date=" + String.valueOf(getDate()) + ", ")
-      .append("conversation=" + String.valueOf(getConversation()))
+      .append("date=" + String.valueOf(getDate()))
       .append("}")
       .toString();
   }
   
-  public static SenderStep builder() {
+  public static ModelIdStep builder() {
       return new Builder();
   }
   
@@ -138,19 +126,22 @@ public final class Message implements Model {
       null,
       null,
       null,
-      null,
       null
     );
   }
   
   public CopyOfBuilder copyOfBuilder() {
     return new CopyOfBuilder(id,
+      modelId,
       sender,
-      receivers,
       content,
-      date,
-      conversation);
+      date);
   }
+  public interface ModelIdStep {
+    SenderStep modelId(String modelId);
+  }
+  
+
   public interface SenderStep {
     ContentStep sender(String sender);
   }
@@ -169,29 +160,32 @@ public final class Message implements Model {
   public interface BuildStep {
     Message build();
     BuildStep id(String id) throws IllegalArgumentException;
-    BuildStep receivers(String receivers);
-    BuildStep conversation(Conversation conversation);
   }
   
 
-  public static class Builder implements SenderStep, ContentStep, DateStep, BuildStep {
+  public static class Builder implements ModelIdStep, SenderStep, ContentStep, DateStep, BuildStep {
     private String id;
+    private String modelId;
     private String sender;
     private String content;
     private String date;
-    private String receivers;
-    private Conversation conversation;
     @Override
      public Message build() {
         String id = this.id != null ? this.id : UUID.randomUUID().toString();
         
         return new Message(
           id,
+          modelId,
           sender,
-          receivers,
           content,
-          date,
-          conversation);
+          date);
+    }
+    
+    @Override
+     public SenderStep modelId(String modelId) {
+        Objects.requireNonNull(modelId);
+        this.modelId = modelId;
+        return this;
     }
     
     @Override
@@ -212,18 +206,6 @@ public final class Message implements Model {
      public BuildStep date(String date) {
         Objects.requireNonNull(date);
         this.date = date;
-        return this;
-    }
-    
-    @Override
-     public BuildStep receivers(String receivers) {
-        this.receivers = receivers;
-        return this;
-    }
-    
-    @Override
-     public BuildStep conversation(Conversation conversation) {
-        this.conversation = conversation;
         return this;
     }
     
@@ -250,13 +232,17 @@ public final class Message implements Model {
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, String sender, String receivers, String content, String date, Conversation conversation) {
+    private CopyOfBuilder(String id, String modelId, String sender, String content, String date) {
       super.id(id);
-      super.sender(sender)
+      super.modelId(modelId)
+        .sender(sender)
         .content(content)
-        .date(date)
-        .receivers(receivers)
-        .conversation(conversation);
+        .date(date);
+    }
+    
+    @Override
+     public CopyOfBuilder modelId(String modelId) {
+      return (CopyOfBuilder) super.modelId(modelId);
     }
     
     @Override
@@ -272,16 +258,6 @@ public final class Message implements Model {
     @Override
      public CopyOfBuilder date(String date) {
       return (CopyOfBuilder) super.date(date);
-    }
-    
-    @Override
-     public CopyOfBuilder receivers(String receivers) {
-      return (CopyOfBuilder) super.receivers(receivers);
-    }
-    
-    @Override
-     public CopyOfBuilder conversation(Conversation conversation) {
-      return (CopyOfBuilder) super.conversation(conversation);
     }
   }
   

@@ -43,11 +43,14 @@ class ChatApplication : RainbowCakeApplication() {
         var lastDate : String = ""
 
 
-        var Users = mutableListOf<User>()
+        var Users: MutableList<User> = mutableListOf()
+            private set
         var Conversations = mutableListOf<Conversation>()
         var Messages = mutableListOf(
             Message("1","user1", "Hello!", "2021-10-10")
         )
+
+
     }
 
     override lateinit var injector: RainbowCakeComponent
@@ -61,29 +64,17 @@ class ChatApplication : RainbowCakeApplication() {
             isDebug = BuildConfig.DEBUG
         }
 
-
-
-
-
         Timber.plant(Timber.DebugTree())
-        val uri: Uri = Uri.parse("android.resource://hu.bme.aut.android.chat_app/drawable/default_profile_picture")
-        val b: Bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
 
         try {
             Amplify.addPlugin(AWSDataStorePlugin())
-            Amplify.addPlugin(AWSApiPlugin())
-            Amplify.addPlugin(AWSDataStorePlugin(DataStoreConfiguration.builder().
-            syncExpression(com.amplifyframework.datastore.generated.model.Message::class.java){ QueryPredicates.all()}.build()))
+
             Amplify.configure(applicationContext)
-
-
 
             Log.i("MyAmplifyApp", "Initialized Amplify")
         } catch (error: AmplifyException) {
             Log.e("MyAmplifyApp", "Could not initialize Amplify", error)
         }
-
-
 
         //querys(b)
         Amplify.Hub.subscribe(HubChannel.DATASTORE,
@@ -99,5 +90,4 @@ class ChatApplication : RainbowCakeApplication() {
     override fun setupInjector() {
         injector = DaggerAppComponent.create()
     }
-
 }
