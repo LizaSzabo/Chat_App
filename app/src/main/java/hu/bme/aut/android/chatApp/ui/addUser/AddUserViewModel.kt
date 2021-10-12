@@ -1,6 +1,5 @@
 package hu.bme.aut.android.chatApp.ui.addUser
 
-import android.util.Log
 import co.zsmb.rainbowcake.base.OneShotEvent
 import co.zsmb.rainbowcake.base.RainbowCakeViewModel
 import hu.bme.aut.android.chatApp.Model.Conversation
@@ -12,17 +11,16 @@ class AddUserViewModel @Inject constructor(
 
     fun addUserToConversation(userName: String, conversation: Conversation) = execute {
         val alreadyExists = addUserPresenter.existsUserName(userName)
-        Log.i("exists", alreadyExists.toString())
+
         if (!alreadyExists) {
             viewState = UserAddedCancel
             postEvent(AddUserCancel)
         } else {
             val alreadyAdded = addUserPresenter.isUserNameAdded(userName, conversation)
-            if(alreadyAdded){
+            if (alreadyAdded) {
                 viewState = UserAddedCancel
                 postEvent(AddUserAlreadyAdded)
-            }
-            else {
+            } else {
                 val added = addUserPresenter.addUserToConversation(userName, conversation)
                 if (added) viewState = UserAddedSuccess else UserAddedError
             }
@@ -30,5 +28,5 @@ class AddUserViewModel @Inject constructor(
     }
 
     object AddUserCancel : OneShotEvent
-    object AddUserAlreadyAdded: OneShotEvent
+    object AddUserAlreadyAdded : OneShotEvent
 }

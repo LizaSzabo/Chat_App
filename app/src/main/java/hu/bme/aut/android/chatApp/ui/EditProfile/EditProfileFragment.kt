@@ -48,7 +48,6 @@ class EditProfileFragment : RainbowCakeFragment<EditProfileViewState, EditProfil
             if (null != selectedImageUri) {
                 val yourBitmap: Bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, selectedImageUri)
                 val resized = yourBitmap.resizeByHeight(fragmentBinding.imageButtonEditProfile.layoutParams.height)
-                //currentUser?.profilePicture = resized
 
                 viewModel.updateUserProfileImage(resized)
 
@@ -90,5 +89,4 @@ class EditProfileFragment : RainbowCakeFragment<EditProfileViewState, EditProfil
             }
         }.exhaustive
     }
-
 }

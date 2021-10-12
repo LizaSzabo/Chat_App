@@ -14,7 +14,7 @@ import hu.bme.aut.android.chatApp.databinding.ItemMessageReceivedBinding
 import hu.bme.aut.android.chatApp.databinding.ItemSentMessageBinding
 
 
-class ChatAdapter : ListAdapter<Message, ChatAdapter.ChatViewHolder>(itemCallback)  {
+class ChatAdapter : ListAdapter<Message, ChatAdapter.ChatViewHolder>(ItemCallBack) {
 
     var messageList = emptyList<Message>()
 
@@ -24,7 +24,7 @@ class ChatAdapter : ListAdapter<Message, ChatAdapter.ChatViewHolder>(itemCallbac
         private const val TYPE_SENT = 0
         private const val TYPE_RECEIVED = 1
 
-        object itemCallback : DiffUtil.ItemCallback<Message>() {
+        object ItemCallBack : DiffUtil.ItemCallback<Message>() {
             override fun areItemsTheSame(oldItem: Message, newItem: Message): Boolean {
                 return oldItem == newItem
             }
@@ -42,7 +42,6 @@ class ChatAdapter : ListAdapter<Message, ChatAdapter.ChatViewHolder>(itemCallbac
         var message: Message? = null
     }
 
-
     inner class ReceivedViewHolder(val binding: ItemMessageReceivedBinding) : ChatViewHolder(binding.root) {
         val tvMessageReceived: TextView = binding.tvMessageReceived
         var tvDate: TextView = binding.dateReceived
@@ -52,22 +51,10 @@ class ChatAdapter : ListAdapter<Message, ChatAdapter.ChatViewHolder>(itemCallbac
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatViewHolder {
         return when (viewType) {
             TYPE_SENT -> {
-                SentViewHolder(
-                    ItemSentMessageBinding.inflate(
-                        LayoutInflater.from(parent.context),
-                        parent,
-                        false
-                    )
-                )
+                SentViewHolder(ItemSentMessageBinding.inflate(LayoutInflater.from(parent.context), parent, false))
             }
             TYPE_RECEIVED -> {
-                ReceivedViewHolder(
-                    ItemMessageReceivedBinding.inflate(
-                        LayoutInflater.from(parent.context),
-                        parent,
-                        false
-                    )
-                )
+                ReceivedViewHolder(ItemMessageReceivedBinding.inflate(LayoutInflater.from(parent.context), parent, false))
             }
             else -> throw IllegalArgumentException("Invalid view type")
         }
@@ -95,13 +82,6 @@ class ChatAdapter : ListAdapter<Message, ChatAdapter.ChatViewHolder>(itemCallbac
         return messageList.size
     }
 
-   /* fun addAll(){
-        if(currentConversation?.messages != null){
-        val messages: MutableList<Message> = currentConversation?.messages!!
-        messageList += messages
-        submitList(messages)}
-    }*/
-
     override fun getItemViewType(position: Int): Int {
         return when (messageList[position].senderId) {
             currentUser?.id -> TYPE_SENT
@@ -109,32 +89,14 @@ class ChatAdapter : ListAdapter<Message, ChatAdapter.ChatViewHolder>(itemCallbac
         }
     }
 
-    /*fun addMessage(message: Message){
-        messageList += message
-        currentConversation?.messages?.add(message)
-
-        for(user in usersList){
-            for(conversation in user.conversations!!){
-                if(conversation.code == currentConversation?.code){
-                    val index = user.conversations!!.indexOf(conversation)
-                    user.conversations!![index] = currentConversation!!
-
-                    UpdateUser(user)
-                }
-            }
-        }
-        submitList(messageList)
-    }*/
-
-    fun addAllMessages(messages : List<Message>){
+    fun addAllMessages(messages: List<Message>) {
         messageList -= messageList
         messageList += messages
         submitList(messageList)
     }
 
-    fun add(message : Message){
+    fun add(message: Message) {
         messageList += message
         submitList(messageList)
     }
-
 }

@@ -42,17 +42,13 @@ class ViewUsersInConversation : RainbowCakeFragment<ViewUsersViewState, ViewUser
         usersAdapter = UsersAdapter()
         fragmentBinding.rvUsers.layoutManager = LinearLayoutManager(context)
         fragmentBinding.rvUsers.adapter = usersAdapter
-       // usersAdapter.addAll()
     }
 
 
     override fun render(viewState: ViewUsersViewState) {
         when (viewState) {
-            Initial -> {
-
-            }
-            UsersLoadError -> {
-            }
+            Initial -> {}
+            UsersLoadError -> {}
             UsersLoadSuccess -> {
                 Toast.makeText(context, "Users loaded!", Toast.LENGTH_LONG).show()
             }

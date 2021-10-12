@@ -45,7 +45,6 @@ class RegisterFragment : RainbowCakeFragment<RegisterViewState, RegisterViewMode
                     fragmentBinding.tvTextUserName.text.toString(),
                     fragmentBinding.tvTextPassword.text.toString()
                 )
-
             }
         }
 
@@ -102,7 +101,6 @@ class RegisterFragment : RainbowCakeFragment<RegisterViewState, RegisterViewMode
             }
         }
     }
-
 
     override fun render(viewState: RegisterViewState) {
         when (viewState) {

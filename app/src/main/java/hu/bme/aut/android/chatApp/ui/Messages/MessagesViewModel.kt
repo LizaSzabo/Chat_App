@@ -48,10 +48,6 @@ class MessagesViewModel @Inject constructor(
         conversationsAdapter.addConversation(conversation)
     }
 
-    fun updateUser(user: User) {
-        messagesPresenter.updateUser(user)
-    }
-
     fun updateConversationImage(conversation: Conversation, conversationPicture: Bitmap, pos: Int) = execute {
         val updated = messagesPresenter.updateConversationImage(conversation, conversationPicture)
         if (updated) {

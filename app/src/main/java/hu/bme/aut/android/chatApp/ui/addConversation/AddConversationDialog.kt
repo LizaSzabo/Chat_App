@@ -15,9 +15,7 @@ import co.zsmb.rainbowcake.base.OneShotEvent
 import co.zsmb.rainbowcake.base.RainbowCakeDialogFragment
 import co.zsmb.rainbowcake.dagger.getViewModelFromFactory
 import co.zsmb.rainbowcake.extensions.exhaustive
-import hu.bme.aut.android.chatApp.ChatApplication.Companion.currentUser
 import hu.bme.aut.android.chatApp.Model.Conversation
-import hu.bme.aut.android.chatApp.Model.Message
 import hu.bme.aut.android.chatApp.R
 import hu.bme.aut.android.chatApp.databinding.DialogAddconversationBinding
 import java.util.*
@@ -30,7 +28,7 @@ class AddConversationDialog : RainbowCakeDialogFragment<AddConversationViewState
 
     private lateinit var binding: DialogAddconversationBinding
     lateinit var listener: AddConversationListener
-    val generatedId = UUID.randomUUID().toString()
+    private val generatedId = UUID.randomUUID().toString()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DialogAddconversationBinding.inflate(inflater, container, false)
@@ -80,7 +78,7 @@ class AddConversationDialog : RainbowCakeDialogFragment<AddConversationViewState
                 listener.onAddConversation(
                     Conversation(
                         generatedId, binding.editTextConversationTitle.text.toString(),
-                        binding.editTextTypeTitle.text.toString(),  defaultUsers, defaultMessages,b, false
+                        binding.editTextTypeTitle.text.toString(), defaultUsers, defaultMessages, b, false
                     )
                 )
                 dismiss()
@@ -98,20 +96,17 @@ class AddConversationDialog : RainbowCakeDialogFragment<AddConversationViewState
             binding.editTextTypeTitle.error = "conversation type cannot be empty"
             return false
         }
-
-        // viewModel.existsConversation(binding.editTextCode.text.toString())
-
         return true
     }
 
-    fun validateInputText(input: String): Boolean {
+    private fun validateInputText(input: String): Boolean {
         if (input.isEmpty()) return false
         return true
     }
 
-   interface AddConversationListener {
+    interface AddConversationListener {
         fun onAddConversation(conversation: Conversation)
-   }
+    }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         when (position) {
@@ -140,5 +135,4 @@ class AddConversationDialog : RainbowCakeDialogFragment<AddConversationViewState
             }
         }.exhaustive
     }
-
 }

@@ -2,7 +2,6 @@ package hu.bme.aut.android.chatApp.domain
 
 import android.graphics.Bitmap
 import android.util.Log
-import hu.bme.aut.android.chatApp.ChatApplication.Companion.Conversations
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.Users
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.currentUser
 import hu.bme.aut.android.chatApp.Model.Conversation
@@ -58,7 +57,6 @@ class UserInteractor @Inject constructor() {
     }
 
     fun updateUserProfilePicture(picture: Bitmap): Boolean {
-        //updateUserPicture(picture)
         for (user in Users) {
             if (user.userName == currentUser?.userName) {
                 user.profilePicture = picture

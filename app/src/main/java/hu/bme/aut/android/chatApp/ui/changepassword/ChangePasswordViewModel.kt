@@ -8,11 +8,10 @@ class ChangePasswordViewModel @Inject constructor(
 ) : RainbowCakeViewModel<ChangePasswordViewState>(Initial) {
     private var changed = false
 
-    fun changeUserPassword(newPassword : String) = execute {
+    fun changeUserPassword(newPassword: String) = execute {
         changed = changePasswordPresenter.changeUserPassword(newPassword)
-        if(changed){
-            viewState = ChangeSuccess
-        }
-        else viewState = ChangeError
+        viewState = if (changed) {
+            ChangeSuccess
+        } else ChangeError
     }
 }

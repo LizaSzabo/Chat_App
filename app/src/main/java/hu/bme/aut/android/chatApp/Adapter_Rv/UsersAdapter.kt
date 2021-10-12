@@ -4,16 +4,14 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.recyclerview.widget.ListAdapter
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import hu.bme.aut.android.chatApp.ChatApplication.Companion.currentConversation
-import hu.bme.aut.android.chatApp.ChatApplication.Companion.usersList
 import hu.bme.aut.android.chatApp.Model.User
 import hu.bme.aut.android.chatApp.databinding.ItemUserBinding
 
-class UsersAdapter: ListAdapter<User, UsersAdapter.UsersViewHolder>(ItemCallback)  {
+class UsersAdapter : ListAdapter<User, UsersAdapter.UsersViewHolder>(ItemCallback) {
 
     private var usersViewList = emptyList<User>()
 
@@ -21,29 +19,14 @@ class UsersAdapter: ListAdapter<User, UsersAdapter.UsersViewHolder>(ItemCallback
         var ivUserImage: ImageView = binding.ivUserImage
         var tvUserName: TextView = binding.tvUserName
 
-        var user : User? = null
+        var user: User? = null
 
-        init{
-
+        init {
         }
     }
 
-    /*fun addAll(){
-        if(currentConversation != null){
-            val users : MutableList<User> = mutableListOf()
-            for(user in usersList){
-                for(conversation in user.conversations!!) {
-                    if (conversation.code == currentConversation?.code)
-                        users.add(user)
-                }
-            }
-            usersViewList += users
-            submitList(usersViewList)
-        }
-    }*/
-
-    fun addAllUsers(users : List<User>){
-        usersViewList -=   usersViewList
+    fun addAllUsers(users: List<User>) {
+        usersViewList -= usersViewList
         usersViewList += users
         submitList(usersViewList)
     }
@@ -59,7 +42,7 @@ class UsersAdapter: ListAdapter<User, UsersAdapter.UsersViewHolder>(ItemCallback
     override fun onBindViewHolder(holder: UsersAdapter.UsersViewHolder, position: Int) {
         val user = usersViewList[position]
         holder.tvUserName.text = user.userName
-        holder.user  = user
+        holder.user = user
         holder.ivUserImage.setImageBitmap(user.profilePicture)
 
     }

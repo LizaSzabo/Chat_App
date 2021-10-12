@@ -33,7 +33,7 @@ import hu.bme.aut.android.chatApp.ui.addUser.AddUserDialog
 import hu.bme.aut.android.chatApp.ui.editconversation.EditConversationDialog
 
 class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewModel>(), ConversationsAdapter.ConversationItemClickListener,
-    EditConversationDialog.EditConversationListener, AddUserDialog.AddUserListener {
+    EditConversationDialog.EditConversationListener {
 
     override fun getViewResource() = R.layout.fragment_messages
     override fun provideViewModel() = getViewModelFromFactory()
@@ -154,18 +154,10 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
                     conversationDialog.show(parentFragmentManager, "")
                 }
                 R.id.editPicture -> {
-                    //    val intent = Intent()
-                    //  intent.type = "image/*"
-                    // intent.action = Intent.ACTION_GET_CONTENT
-                    // startActivityForResult(Intent.createChooser(intent, "Select Picture"), pickImage)
-
                     openSomeActivityForResult()
-                    // conversationsAdapter.updateConversationPicture(conversation, position)
-
                 }
                 R.id.addUser -> {
                     val addUserDialog = AddUserDialog(conversation)
-                    addUserDialog.listener = this
                     addUserDialog.show(parentFragmentManager, "")
                 }
             }
@@ -186,7 +178,6 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
             val data: Intent? = result.data
             val selectedImageUri: Uri? = data?.data
             if (null != selectedImageUri) {
-                //fragmentBinding.ivAddPicture.setImageURI(selectedImageUri)
                 val conversationPicture: Bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, selectedImageUri)
                 viewModel.updateConversationImage(currentConversation!!, conversationPicture, positionOfSelectedImage)
                 uri = selectedImageUri
@@ -230,10 +221,6 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
 
     override fun onConversationTitleChange(conversation: Conversation, pos: Int) {
         conversationsAdapter.updateConversation(conversation, pos)
-    }
-
-    override fun onAddUser(userName: String) {
-        // conversationsAdapter.addConversationToUser(userName)
     }
 
     override fun onEvent(event: OneShotEvent) {

@@ -31,25 +31,6 @@ class EditConversationDialog(private var pos: Int, private val conversation: Con
                 binding.editTextConversationTitle.error = getString(R.string.title_not_empty)
             } else {
                 viewModel.updateConversationName(conversation, binding.editTextConversationTitle.text.toString())
-                /*currentConversation?.let { it1 ->
-                    currentConversation?.picture?.let { it2 ->
-                        currentConversation?.favourite?.let { it3 ->
-                            currentConversation?.id?.let { it4 ->
-                                currentConversation?.code?.let { it5 ->
-                                    Conversation(
-                                        it4, binding.editTextConversationTitle.text.toString(),
-                                        "", it1.messages, it2, it3, it5
-                                    )
-                                }
-                            }
-                        }
-                    }
-                }?.let { it2 ->
-                    listener.onConversationTitleChange(
-                        it2, pos
-                    )
-                }
-                */
             }
         }
 
@@ -67,8 +48,6 @@ class EditConversationDialog(private var pos: Int, private val conversation: Con
                     updatedConversation, pos
                 )
 
-                /*val action = MessagesFragmentDirections.actionMessagesFragmentSelf()
-                findNavController().navigate(action)*/
                 dialog?.dismiss()
             }
         }

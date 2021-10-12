@@ -11,10 +11,6 @@ class MessagesPresenter @Inject constructor(
    private val conversationInterector: ConversationInteractor
 ){
 
-    fun updateUser(user: User){
-      //  UpdateUser(user)
-    }
-
     suspend fun getConversations(): List<Conversation> = withIOContext {
         conversationInterector.getConversations()
     }

@@ -8,4 +8,4 @@ data class User(
     var password: String,
     var profilePicture: Bitmap,
     var conversationsId: MutableList<String>
-        )
+)

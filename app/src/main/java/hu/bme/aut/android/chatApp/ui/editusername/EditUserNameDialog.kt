@@ -28,40 +28,7 @@ class EditUserNameDialog(private var editbinding: FragmentEditProfileBinding) :
 
 
         binding.btnSave.setOnClickListener {
-            /*var ok = true
-            for (user in usersList) {
-                if (user.userName == binding.editTextLoginName.text.toString()) {
-                    binding.editTextLoginName.error = "User Name already exists"
-                    ok = false
-                }
-            }
-            if (binding.editTextLoginName.text.toString().isEmpty()) {
-                binding.editTextLoginName.error = getString(R.string.user_not_empty)
-                ok = false
-            }
-            if (ok) {
-
-                val user = currentUser
-                val name = user?.userName
-                currentUser?.userName = binding.editTextLoginName.text.toString()
-                usersList.find { it == user }?.userName = currentUser?.userName.toString()
-                if (user?.conversations != null) {
-                    for (conv in user.conversations!!) {
-                        for (message in conv.messages!!) {
-                            if (message.sender == name) {
-                                message.sender = binding.editTextLoginName.text.toString()
-                            }
-                        }
-                    }
-                }
-                editbinding.tvUserName.text = currentUser?.userName
-
-                updateUserName(binding.editTextLoginName.text.toString(), name)*/
-
-               // dialog?.dismiss()
-            //}
-
-            if(inputIsValid()){
+            if (inputIsValid()) {
                 viewModel.updateUserName(binding.editTextLoginName.text.toString())
             }
         }
@@ -72,20 +39,20 @@ class EditUserNameDialog(private var editbinding: FragmentEditProfileBinding) :
         return binding.root
     }
 
-    private fun inputIsValid() : Boolean{
+    private fun inputIsValid(): Boolean {
         if (binding.editTextLoginName.text.toString() == currentUser?.userName) {
             binding.editTextLoginName.error = getString(R.string.your_name)
             return false
         }
         if (binding.editTextLoginName.text.toString().isEmpty()) {
             binding.editTextLoginName.error = getString(R.string.user_not_empty)
-           return false
+            return false
         }
         return true
     }
 
     override fun onEvent(event: OneShotEvent) {
-        when(event){
+        when (event) {
             is EditUserViewModel.EditCancelled -> binding.editTextLoginName.error = "User Name already exists"
         }
     }

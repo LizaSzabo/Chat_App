@@ -33,22 +33,6 @@ class ChangePassDialog : RainbowCakeDialogFragment<ChangePasswordViewState, Chan
                 )
             ) {
                 viewModel.changeUserPassword(binding.editNewPass.text.toString())
-                /*val user = currentUser
-                currentUser = currentUser?.let { it1 ->
-                    currentUser?.profilePicture?.let { it2 ->
-                        currentUser?.userName?.let { it3 ->
-                            User(
-                                it3, binding.editNewPass.text.toString(),
-                                it2, it1.conversations
-                            )
-                        }
-                    }
-                }
-                usersList.find { it == user }?.password = currentUser?.password.toString()
-
-                updateUserPassword(currentUser?.password.toString())*/
-
-
             }
         }
 
@@ -70,7 +54,6 @@ class ChangePassDialog : RainbowCakeDialogFragment<ChangePasswordViewState, Chan
         when {
             actualPassText.isEmpty() -> {
                 actualPass?.error = getString(R.string.wrong_pass)
-                // binding.editActualPass.backgroundTintList = (ColorStateList.valueOf(Color.parseColor("#ff0000")))
                 return false
             }
             editPassText.isEmpty() -> {
