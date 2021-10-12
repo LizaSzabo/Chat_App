@@ -103,8 +103,8 @@ class ChatAdapter : ListAdapter<Message, ChatAdapter.ChatViewHolder>(itemCallbac
     }*/
 
     override fun getItemViewType(position: Int): Int {
-        return when (messageList[position].sender) {
-            currentUser?.userName -> TYPE_SENT
+        return when (messageList[position].senderId) {
+            currentUser?.id -> TYPE_SENT
             else -> TYPE_RECEIVED
         }
     }

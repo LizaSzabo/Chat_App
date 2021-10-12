@@ -9,8 +9,8 @@ class AddConversationPresenter @Inject constructor(
     private val conversationInteractor: ConversationInteractor
 ) {
 
-    suspend fun existsConversation(conversationCode: String) : Boolean = withIOContext {
-        conversationInteractor.existsConversation(conversationCode)
+    suspend fun existsConversation(conversationId: String) : Boolean = withIOContext {
+        conversationInteractor.existsConversation(conversationId)
     }
 
     suspend fun addConversation(conversation: Conversation) : Boolean = withIOContext {

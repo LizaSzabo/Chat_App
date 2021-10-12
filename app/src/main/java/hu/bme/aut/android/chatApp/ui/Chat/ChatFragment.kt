@@ -56,7 +56,7 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
                 val time = dateFormat.format(Calendar.getInstance().time)
 
 
-                viewModel.addMessage(currentUser!!.userName, "receiver", fragmentBinding.text.text.toString(), time, currentConversationId)
+                viewModel.addMessage(currentUser!!.id,  fragmentBinding.text.text.toString(), time, currentConversationId)
                 /*if (message != null) {
                     chatAdapter.addMessage(message)
                     messageText = "Waiting for messages..."

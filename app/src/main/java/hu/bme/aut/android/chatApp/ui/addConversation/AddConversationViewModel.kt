@@ -24,32 +24,21 @@ class AddConversationViewModel @Inject constructor(
         conversationId: String,
         conversationName: String,
         conversationType: String,
-        conversationImage: Bitmap,
-        conversationCode: String
+        conversationImage: Bitmap
     ) = execute {
-        exists = addConversationPresenter.existsConversation(conversationCode)
-        Log.i("exists iff", exists.toString())
-        if (exists){
-            viewState = ConversationAddCancel
-            postEvent(ConversationCancelled)
-        }
-        else {
             val conversation = Conversation(
                 conversationId,
                 conversationName,
                 conversationType,
                 mutableListOf(),
-                mutableListOf(currentUser?.userName!!),
+                mutableListOf(currentUser?.id!!),
                 conversationImage,
-                false,
-                conversationCode
+                false
             )
             add = addConversationPresenter.addConversation(conversation)
             viewState = if (add) ConversationAddSuccess else ConversationAddError
             if(viewState is ConversationAddSuccess) postEvent(ConversationAdded)
-        }
     }
 
     object ConversationAdded : OneShotEvent
-    object ConversationCancelled : OneShotEvent
 }

@@ -44,8 +44,7 @@ class AddConversationDialog : RainbowCakeDialogFragment<AddConversationViewState
                     generatedId,
                     binding.editTextConversationTitle.text.toString(),
                     binding.editTextTypeTitle.text.toString(),
-                    b,
-                    binding.editTextCode.text.toString()
+                    b
                 )
             }
         }
@@ -81,13 +80,10 @@ class AddConversationDialog : RainbowCakeDialogFragment<AddConversationViewState
                 listener.onAddConversation(
                     Conversation(
                         generatedId, binding.editTextConversationTitle.text.toString(),
-                        binding.editTextTypeTitle.text.toString(),  defaultUsers, defaultMessages,b, false, binding.editTextCode.text.toString()
+                        binding.editTextTypeTitle.text.toString(),  defaultUsers, defaultMessages,b, false
                     )
                 )
                 dismiss()
-            }
-            is AddConversationViewModel.ConversationCancelled ->{
-                binding.editTextCode.error = "code already exists"
             }
         }
     }
@@ -136,16 +132,12 @@ class AddConversationDialog : RainbowCakeDialogFragment<AddConversationViewState
     override fun render(viewState: AddConversationViewState) {
         when (viewState) {
             Initial -> Unit
-            ConversationAddCancel -> {
-                binding.editTextCode.error = "code already exists"
-            }
             ConversationAddError -> {
                 Toast.makeText(context, "Conversation Add Failed", Toast.LENGTH_LONG).show()
             }
             ConversationAddSuccess -> {
                 Toast.makeText(context, "Conversation Add Succeeded", Toast.LENGTH_LONG).show()
             }
-            else -> {}
         }.exhaustive
     }
 

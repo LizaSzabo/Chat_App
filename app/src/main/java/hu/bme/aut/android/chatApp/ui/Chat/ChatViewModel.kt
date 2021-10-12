@@ -23,8 +23,8 @@ class ChatViewModel @Inject constructor(
         }
     }
 
-    fun addMessage(senderUserName: String, receiver: String, content: String, time: String, currentConversationId : String) = execute {
-        val message = Message(UUID.randomUUID().toString(), senderUserName, receiver, content, time)
+    fun addMessage(senderId: String, content: String, time: String, currentConversationId : String) = execute {
+        val message = Message(UUID.randomUUID().toString(), senderId, content, time)
         added = chatPresenter.addMessage(message, currentConversationId)
         if (added) {
             viewState = MessageAddSuccess

@@ -47,14 +47,7 @@ class UserInteractor @Inject constructor() {
 
     fun updateUserName(newUserName: String): Boolean {
         for (user in Users) {
-            if (user.userName == currentUser?.userName) {
-
-                for (conversation in Conversations)
-                    if (conversation.usersName.contains(user.userName)) {
-                        conversation.usersName.add( newUserName)
-                        conversation.usersName.remove(user.userName)
-                        Log.i("user", currentUser?.userName.toString())
-                    }
+            if (user.id == currentUser?.id) {
 
                 user.userName = newUserName
                 currentUser?.userName = newUserName

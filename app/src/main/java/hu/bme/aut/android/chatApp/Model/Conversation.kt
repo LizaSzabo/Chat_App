@@ -8,8 +8,7 @@ data class Conversation(
     var name: String,
     val type: String,
     val messagesId: MutableList<String>,
-    val usersName : MutableList<String>,
+    val usersId : MutableList<String>,
     var picture: Bitmap,
-    var favourite: Boolean,
-    val code: String
+    var favourite: Boolean
         )
