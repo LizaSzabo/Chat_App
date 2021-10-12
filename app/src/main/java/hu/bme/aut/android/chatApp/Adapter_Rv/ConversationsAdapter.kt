@@ -134,9 +134,15 @@ class ConversationsAdapter : ListAdapter<Conversation, ConversationsAdapter.Conv
          }
      }*/
 
-    fun addAllConversations(conversations: List<Conversation>) {
+    fun addAllConversations(conversations: List<Conversation>, searchText : String) {
+        val selectedConversations= mutableListOf<Conversation>()
+
+        for(c in conversations)
+            if(c.name.contains(searchText, ignoreCase = true))
+                selectedConversations.add(c)
+
         conversationList -= conversationList
-        conversationList += conversations
+        conversationList += selectedConversations
         submitList(conversationList)
     }
 

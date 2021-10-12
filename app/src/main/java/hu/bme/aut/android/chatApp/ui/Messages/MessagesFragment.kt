@@ -17,6 +17,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.core.widget.doOnTextChanged
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import co.zsmb.rainbowcake.base.OneShotEvent
@@ -40,7 +41,6 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
 
     private lateinit var fragmentBinding: FragmentMessagesBinding
     private lateinit var conversationsAdapter: ConversationsAdapter
-    private val pickImage = 1
     private var positionOfSelectedImage: Int = -1
 
     var uri: Uri = Uri.parse("android.resource://hu.bme.aut.android.chat_app/drawable/default_profilepic")
@@ -62,9 +62,9 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
         fragmentBinding.chatListToolbar.title = ""
         fragmentBinding.txtTitle.text = currentUser?.userName
         fragmentBinding.ibSearch.setOnClickListener {
-            // conversationsAdapter.addAll(fragmentBinding.editTextSearch.text.toString())
+             viewModel.init(fragmentBinding.editTextSearch.text.toString(), conversationsAdapter)
         }
-        //   fragmentBinding.editTextSearch.doOnTextChanged { _, _, _, _ -> conversationsAdapter.addAll(fragmentBinding.editTextSearch.text.toString()) }
+        fragmentBinding.editTextSearch.doOnTextChanged { _, _, _, _ -> viewModel.init(fragmentBinding.editTextSearch.text.toString(), conversationsAdapter) }
 
         var resized: Bitmap? = null
         resized = if (currentUser?.profilePicture?.height!! > currentUser?.profilePicture?.width!!) {
@@ -108,7 +108,6 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
         fragmentBinding.rvConversations.layoutManager = LinearLayoutManager(context)
         fragmentBinding.rvConversations.adapter = conversationsAdapter
         conversationsAdapter.itemClickListener = this
-        // conversationsAdapter.addAll(fragmentBinding.editTextSearch.text.toString())
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -231,5 +230,10 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
             is MessagesViewModel.UpdateConversationImageSuccess -> {
             }
         }
+    }
+
+    override fun onPause() {
+        fragmentBinding.editTextSearch.setText("")
+        super.onPause()
     }
 }

@@ -22,7 +22,7 @@ class MessagesViewModel @Inject constructor(
         conversations = messagesPresenter.getConversations()
         viewState = ConversationLoadSuccess //ConversationLoadError
         conversationsAdapter = adapter
-        conversationsAdapter.addAllConversations(conversations)
+        conversationsAdapter.addAllConversations(conversations, searchText)
     }
 
     fun deleteConversation(position: Int, conversation: Conversation) = execute {
