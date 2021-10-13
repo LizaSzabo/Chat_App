@@ -1,8 +1,5 @@
 package hu.bme.aut.android.chatApp
 
-import android.graphics.Bitmap
-import android.net.Uri
-import android.provider.MediaStore
 import android.util.Log
 import co.zsmb.rainbowcake.config.Loggers
 import co.zsmb.rainbowcake.config.rainbowCake
@@ -12,12 +9,7 @@ import co.zsmb.rainbowcake.timber.TIMBER
 import com.amplifyframework.AmplifyException
 import com.amplifyframework.api.aws.AWSApiPlugin
 import com.amplifyframework.core.Amplify
-import com.amplifyframework.core.model.query.predicate.QueryPredicates
 import com.amplifyframework.datastore.AWSDataStorePlugin
-import com.amplifyframework.datastore.DataStoreChannelEventName
-import com.amplifyframework.datastore.DataStoreConfiguration
-import com.amplifyframework.hub.HubChannel
-import com.amplifyframework.hub.HubEvent
 import hu.bme.aut.android.chatApp.Model.Conversation
 import hu.bme.aut.android.chatApp.Model.Message
 import hu.bme.aut.android.chatApp.Model.User
@@ -67,9 +59,10 @@ class ChatApplication : RainbowCakeApplication() {
         Timber.plant(Timber.DebugTree())
 
         try {
+            Amplify.addPlugin(AWSApiPlugin())
             Amplify.addPlugin(AWSDataStorePlugin())
-
             Amplify.configure(applicationContext)
+
 
             Log.i("MyAmplifyApp", "Initialized Amplify")
         } catch (error: AmplifyException) {
@@ -77,12 +70,7 @@ class ChatApplication : RainbowCakeApplication() {
         }
 
         //querys(b)
-        Amplify.Hub.subscribe(HubChannel.DATASTORE,
-            { hubEvent: HubEvent<*> -> DataStoreChannelEventName.READY.equals(hubEvent.name) }
-        ) { hubEvent: HubEvent<*>? ->
-            Log.i("MyAmplifyApp", "AAAAAAAAAAAAAAAAAAAAAAAd")
 
-        }
 
        // observeData(b, this)
     }

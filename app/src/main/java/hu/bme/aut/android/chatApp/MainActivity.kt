@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
             this, FloatingService::class.java
         )
 
-        startService(intentChatWindowService)
+       // startService(intentChatWindowService)
 
 }
 
