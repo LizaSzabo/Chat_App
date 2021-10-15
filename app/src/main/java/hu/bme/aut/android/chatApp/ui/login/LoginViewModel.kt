@@ -2,8 +2,8 @@ package hu.bme.aut.android.chatApp.ui.login
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.util.Log
 import androidx.navigation.NavController
+import co.zsmb.rainbowcake.base.OneShotEvent
 import co.zsmb.rainbowcake.base.RainbowCakeViewModel
 import hu.bme.aut.android.chatApp.ChatApplication
 import hu.bme.aut.android.chatApp.Model.User
@@ -29,13 +29,15 @@ class LoginViewModel @Inject constructor(
         viewState = if (users.isNotEmpty()) UsersInitSuccess else UsersInitError
     }
 
-    fun validUserAndPass(userNameText: String, passwordText: String): Boolean {
+    fun validUserAndPass(userNameText: String, passwordText: String) : Boolean {
         for (user in users) {
             if (validUser(userNameText, passwordText, user.userName, user.password)) {
                 ChatApplication.currentUser = user
+                postEvent(ValidUser)
                 return true
             }
         }
+        postEvent(WrongUser)
         return false
     }
 
@@ -68,5 +70,9 @@ class LoginViewModel @Inject constructor(
         config.setLocale(Locale(locale.toLowerCase(Locale.ROOT)))
         resources.updateConfiguration(config, dm)
     }
+
+    object ValidUser : OneShotEvent
+    object WrongUser : OneShotEvent
+
 }
 

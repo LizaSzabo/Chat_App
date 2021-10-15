@@ -13,8 +13,11 @@ import com.amplifyframework.datastore.AWSDataStorePlugin
 import hu.bme.aut.android.chatApp.Model.Conversation
 import hu.bme.aut.android.chatApp.Model.Message
 import hu.bme.aut.android.chatApp.Model.User
+import hu.bme.aut.android.chatApp.Network.startDataStore
 import hu.bme.aut.android.chatApp.di.DaggerAppComponent
 import timber.log.Timber
+import java.lang.Thread.sleep
+import java.sql.Time
 
 
 class ChatApplication : RainbowCakeApplication() {
@@ -65,9 +68,23 @@ class ChatApplication : RainbowCakeApplication() {
 
 
             Log.i("MyAmplifyApp", "Initialized Amplify")
+            //startDataStore()
+           /* Amplify.DataStore.clear(
+                {
+                    Amplify.DataStore.start(
+                        {
+                            Log.i("MyAmplifyApp", "DataStore started")
+                        },
+                        { Log.e("MyAmplifyApp", "Error starting DataStore", it) }
+                    )
+
+                },
+                { Log.e("MyAmplifyApp", "Error clearing DataStore", it) }
+            )*/
         } catch (error: AmplifyException) {
             Log.e("MyAmplifyApp", "Could not initialize Amplify", error)
         }
+
 
         //querys(b)
 

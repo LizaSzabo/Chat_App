@@ -7,8 +7,10 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import co.zsmb.rainbowcake.base.OneShotEvent
 import co.zsmb.rainbowcake.base.RainbowCakeFragment
 import co.zsmb.rainbowcake.dagger.getViewModelFromFactory
 import co.zsmb.rainbowcake.extensions.exhaustive
@@ -43,8 +45,12 @@ class LoginFragment : RainbowCakeFragment<LoginViewState, LoginViewModel>(), Ada
         }
         fragmentBinding.buttonOk.setOnClickListener {
             if (isLoginValid()) {
-                val action = LoginFragmentDirections.actionLoginFragmentToMessagesFragment()
-                findNavController().navigate(action)
+                viewModel.validUserAndPass(
+                    fragmentBinding.editTextLoginName.text.toString(),
+                    fragmentBinding.editTextLoginPassword.text.toString()
+                )
+                /*  val action = LoginFragmentDirections.actionLoginFragmentToMessagesFragment()
+                  findNavController().navigate(action)*/
             }
         }
 
@@ -72,17 +78,28 @@ class LoginFragment : RainbowCakeFragment<LoginViewState, LoginViewModel>(), Ada
             fragmentBinding.editTextLoginPassword.error = getString(R.string.pass_required)
             return false
         }
-        if (!viewModel.validUserAndPass(
-                fragmentBinding.editTextLoginName.text.toString(),
-                fragmentBinding.editTextLoginPassword.text.toString()
-            )
-        ) {
-            Snackbar.make(fragmentBinding.root, getString(R.string.wrong_input), Snackbar.LENGTH_LONG)
-                .setBackgroundTint(Color.RED)
-                .show()
-            return false
-        }
+        /* if (!viewModel.validUserAndPass(
+                 fragmentBinding.editTextLoginName.text.toString(),
+                 fragmentBinding.editTextLoginPassword.text.toString()
+             )
+         ) {
+             Snackbar.make(fragmentBinding.root, getString(R.string.wrong_input), Snackbar.LENGTH_LONG)
+                 .setBackgroundTint(Color.RED)
+                 .show()
+             return false
+         }*/
         return true
+    }
+
+    override fun onEvent(event: OneShotEvent) {
+        when (event) {
+            LoginViewModel.ValidUser -> {
+                val action = LoginFragmentDirections.actionLoginFragmentToMessagesFragment()
+                findNavController().navigate(action)
+            }
+            LoginViewModel.WrongUser -> Snackbar.make(fragmentBinding.root, getString(R.string.wrong_input), Snackbar.LENGTH_LONG)
+                .setBackgroundTint(Color.RED).show()
+        }
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
@@ -99,7 +116,12 @@ class LoginFragment : RainbowCakeFragment<LoginViewState, LoginViewModel>(), Ada
             Initial -> {
 
             }
-            UsersInitSuccess -> Unit
+            Loading -> {
+
+            }
+            UsersInitSuccess -> {
+
+            }
             UsersInitError -> Unit
         }.exhaustive
     }

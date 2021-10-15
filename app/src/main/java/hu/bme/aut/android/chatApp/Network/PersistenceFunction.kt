@@ -1,6 +1,5 @@
 package hu.bme.aut.android.chatApp.Network
 
-import android.R.attr.bitmap
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Base64
@@ -322,9 +321,22 @@ fun bitMapToString(bitmap: Bitmap): String? {
     val b: ByteArray = baos.toByteArray()
     return Base64.encodeToString(b, Base64.DEFAULT)
 }*/
+fun startDataStore() {
+    Amplify.DataStore.clear(
+        {
+            Amplify.DataStore.start(
+                {
+                    Log.i("MyAmplifyApp", "DataStore started")
+                },
+                { Log.e("MyAmplifyApp", "Error starting DataStore", it) }
+            )
+        },
+        { Log.e("MyAmplifyApp", "Error clearing DataStore", it) }
+    )
+}
 
-fun saveUsers(){
-    for(u in ChatApplication.Users){
+fun saveUsers() {
+    for (u in ChatApplication.Users) {
         val user = com.amplifyframework.datastore.generated.model.User.builder()
             .modelId(u.id)
             .userName(u.userName)
@@ -340,7 +352,7 @@ fun saveUsers(){
     }
 }
 
-fun saveUser(u : User){
+fun saveUser(u: User) {
     val user = com.amplifyframework.datastore.generated.model.User.builder()
         .modelId(u.id)
         .userName(u.userName)
@@ -355,7 +367,9 @@ fun saveUser(u : User){
     )
 }
 
-fun getAllUsers() {
+fun getAllUsers() : Boolean {
+    var ok = true
+    Log.i("MyAmplifyApp", "Load Users: ")
     Users.clear()
     Amplify.DataStore.query(com.amplifyframework.datastore.generated.model.User::class.java,
         { users ->
@@ -363,13 +377,15 @@ fun getAllUsers() {
                 val user = users.next()
                 val decodedString: ByteArray = Base64.decode(user.profilePicture, Base64.DEFAULT)
                 val decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
-                val u = User(user.modelId, user.userName, user.password, decodedByte, user.conversations )
+                val u = User(user.modelId, user.userName, user.password, decodedByte, user.conversations)
                 Users.add(u)
                 Log.i("MyAmplifyApp", "Title: ${user.userName}")
             }
         },
-        { Log.e("MyAmplifyApp", "Query failed", it) }
+        { Log.e("MyAmplifyApp", "Query failed", it)
+            ok = false}
     )
+    return ok
 }
 
 private fun encodeImage(bm: Bitmap): String? {

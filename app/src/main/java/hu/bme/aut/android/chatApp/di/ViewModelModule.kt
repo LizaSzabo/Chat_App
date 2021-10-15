@@ -16,6 +16,7 @@ import hu.bme.aut.android.chatApp.ui.addUser.AddUserViewModel
 import hu.bme.aut.android.chatApp.ui.changepassword.ChangePasswordViewModel
 import hu.bme.aut.android.chatApp.ui.editconversation.EditConversationViewModel
 import hu.bme.aut.android.chatApp.ui.editusername.EditUserViewModel
+import hu.bme.aut.android.chatApp.ui.loading.LoadingViewModel
 
 @Suppress("unused")
 @Module
@@ -72,6 +73,11 @@ abstract class ViewModelModule{
 
     @Binds
     @IntoMap
+    @ViewModelKey(LoadingViewModel::class)
+    abstract fun bindEditUserViewModel(userViewModel: LoadingViewModel): ViewModel
+
+    @Binds
+    @IntoMap
     @ViewModelKey(EditUserViewModel::class)
-    abstract fun bindEditUserViewModel(userViewModel: EditUserViewModel): ViewModel
+    abstract fun bindLoadingViewModel(userViewModel: EditUserViewModel): ViewModel
 }

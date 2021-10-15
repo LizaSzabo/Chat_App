@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
 
 }
 
-    override fun onStop() {
+    /*override fun onStop() {
         Amplify.DataStore.clear(
             {
                 Amplify.DataStore.start(
@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
 
         messageText = "Waiting for messages..."
         super.onStop()
-    }
+    }*/
 
 
 }
