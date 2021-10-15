@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory
 import android.util.Base64
 import android.util.Log
 import com.amplifyframework.core.Amplify
+import com.amplifyframework.core.model.query.Where
 import hu.bme.aut.android.chatApp.ChatApplication
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.Users
 import hu.bme.aut.android.chatApp.Model.User
@@ -367,7 +368,7 @@ fun saveUser(u: User) {
     )
 }
 
-fun getAllUsers() : Boolean {
+fun getAllUsers(): Boolean {
     var ok = true
     Log.i("MyAmplifyApp", "Load Users: ")
     Users.clear()
@@ -382,8 +383,34 @@ fun getAllUsers() : Boolean {
                 Log.i("MyAmplifyApp", "Title: ${user.userName}")
             }
         },
-        { Log.e("MyAmplifyApp", "Query failed", it)
-            ok = false}
+        {
+            Log.e("MyAmplifyApp", "Query failed", it)
+            ok = false
+        }
+    )
+    return ok
+}
+
+fun changeUserPasswordDb(user: User, newPassword: String): Boolean {
+    var ok = true
+    Amplify.DataStore.query(com.amplifyframework.datastore.generated.model.User::class.java,
+        Where.matches(com.amplifyframework.datastore.generated.model.User.MODEL_ID.eq(user.id)),
+        { matches ->
+            if (matches.hasNext()) {
+                val original = matches.next()
+                val edited = original.copyOfBuilder()
+                    .password(newPassword)
+                    .build()
+                Amplify.DataStore.save(edited,
+                    { Log.i("MyAmplifyApp", "Updated ${user.userName} password") },
+                    { Log.e("MyAmplifyApp", "Update failed", it) }
+                )
+            }
+        },
+        {
+            Log.e("MyAmplifyApp", "Query failed", it)
+            ok = false
+        }
     )
     return ok
 }

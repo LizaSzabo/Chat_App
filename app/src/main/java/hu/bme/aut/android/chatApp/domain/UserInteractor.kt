@@ -6,6 +6,7 @@ import hu.bme.aut.android.chatApp.ChatApplication.Companion.Users
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.currentUser
 import hu.bme.aut.android.chatApp.Model.Conversation
 import hu.bme.aut.android.chatApp.Model.User
+import hu.bme.aut.android.chatApp.Network.changeUserPasswordDb
 import hu.bme.aut.android.chatApp.Network.getAllUsers
 import hu.bme.aut.android.chatApp.Network.saveUser
 import javax.inject.Inject
@@ -31,14 +32,17 @@ class UserInteractor @Inject constructor() {
     }
 
     fun changeUserPassword(newPassword: String): Boolean {
-        for (user in Users) {
-            if (user.userName == currentUser?.userName) {
-                user.password = newPassword
-                currentUser?.password = newPassword
-                return true
+        val change = changeUserPasswordDb(currentUser!!, newPassword)
+        Log.i("change", change.toString())
+        return if(change) {
+            for (user in Users) {
+                if (user.userName == currentUser?.userName) {
+                    user.password = newPassword
+                    currentUser?.password = newPassword
+                }
             }
-        }
-        return false
+            true
+        } else false
     }
 
     fun existsUserName(newUserName: String): Boolean {
