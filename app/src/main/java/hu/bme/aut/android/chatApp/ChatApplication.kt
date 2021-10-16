@@ -68,7 +68,8 @@ class ChatApplication : RainbowCakeApplication() {
 
 
             Log.i("MyAmplifyApp", "Initialized Amplify")
-            //startDataStore()
+
+            startDataStore()
            /* Amplify.DataStore.clear(
                 {
                     Amplify.DataStore.start(

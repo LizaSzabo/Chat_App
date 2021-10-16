@@ -7,3 +7,5 @@ object Initial:EditProfileViewState()
 object UserProfileUpdateSuccess : EditProfileViewState()
 
 object UserProfileUpdateError : EditProfileViewState()
+
+object UserProfileUpdateSaving : EditProfileViewState()

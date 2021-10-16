@@ -6,9 +6,7 @@ import hu.bme.aut.android.chatApp.ChatApplication.Companion.Users
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.currentUser
 import hu.bme.aut.android.chatApp.Model.Conversation
 import hu.bme.aut.android.chatApp.Model.User
-import hu.bme.aut.android.chatApp.Network.changeUserPasswordDb
-import hu.bme.aut.android.chatApp.Network.getAllUsers
-import hu.bme.aut.android.chatApp.Network.saveUser
+import hu.bme.aut.android.chatApp.Network.*
 import javax.inject.Inject
 
 class UserInteractor @Inject constructor() {
@@ -33,8 +31,8 @@ class UserInteractor @Inject constructor() {
 
     fun changeUserPassword(newPassword: String): Boolean {
         val change = changeUserPasswordDb(currentUser!!, newPassword)
-        Log.i("change", change.toString())
-        return if(change) {
+        Log.i("change password", change.toString())
+        return if (change) {
             for (user in Users) {
                 if (user.userName == currentUser?.userName) {
                     user.password = newPassword
@@ -46,6 +44,7 @@ class UserInteractor @Inject constructor() {
     }
 
     fun existsUserName(newUserName: String): Boolean {
+        getAllUsers()
         for (user in Users)
             if (user.userName == newUserName)
                 return true
@@ -53,32 +52,45 @@ class UserInteractor @Inject constructor() {
     }
 
     fun updateUserName(newUserName: String): Boolean {
-        for (user in Users) {
-            if (user.id == currentUser?.id) {
+        val change = changeUserName(currentUser!!, newUserName)
+        return if(change) {
+            for (user in Users) {
+                if (user.id == currentUser?.id) {
 
-                user.userName = newUserName
-                currentUser?.userName = newUserName
-                return true
+                    user.userName = newUserName
+                    currentUser?.userName = newUserName
+                }
             }
+             true
         }
-        return false
+        else false
     }
 
     fun updateUserProfilePicture(picture: Bitmap): Boolean {
-        for (user in Users) {
-            if (user.userName == currentUser?.userName) {
-                user.profilePicture = picture
-                currentUser?.profilePicture = picture
-                return true
+        val change = changeUserProfilePictureDb(currentUser!!, picture)
+        Log.i("change picture", change.toString())
+        return if (change) {
+            for (user in Users) {
+                if (user.userName == currentUser?.userName) {
+                    user.profilePicture = picture
+                    currentUser?.profilePicture = picture
+                }
             }
-        }
-        return false
+            true
+        } else false
     }
 
     fun addConversationToUser(userName: String, conversation: Conversation): Boolean {
         for (user in Users)
-            if (user.userName == userName)
-                user.conversationsId.add(conversation.id)
-        return true
+            if (user.userName == userName){
+                val conversationList = user.conversationsId
+                conversationList.add(conversation.id)
+                val add = addConversationToUser(user, conversationList)
+                if(add) {
+                    user.conversationsId.add(conversation.id)
+                    return true
+                }
+            }
+        return false
     }
 }

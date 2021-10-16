@@ -87,6 +87,9 @@ class EditProfileFragment : RainbowCakeFragment<EditProfileViewState, EditProfil
             UserProfileUpdateSuccess -> {
                 Toast.makeText(context, "Profile picture successfully updated!", Toast.LENGTH_LONG).show()
             }
+            UserProfileUpdateSaving -> {
+                Toast.makeText(context, "Saving new profile picture!", Toast.LENGTH_LONG).show()
+            }
         }.exhaustive
     }
 }

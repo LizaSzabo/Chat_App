@@ -393,6 +393,7 @@ fun getAllUsers(): Boolean {
 
 fun changeUserPasswordDb(user: User, newPassword: String): Boolean {
     var ok = true
+    encodeImage(user.profilePicture)?.let { Log.i("user picture", it) }
     Amplify.DataStore.query(com.amplifyframework.datastore.generated.model.User::class.java,
         Where.matches(com.amplifyframework.datastore.generated.model.User.MODEL_ID.eq(user.id)),
         { matches ->
@@ -401,9 +402,84 @@ fun changeUserPasswordDb(user: User, newPassword: String): Boolean {
                 val edited = original.copyOfBuilder()
                     .password(newPassword)
                     .build()
+                Log.i("user picture", edited.profilePicture)
                 Amplify.DataStore.save(edited,
                     { Log.i("MyAmplifyApp", "Updated ${user.userName} password") },
                     { Log.e("MyAmplifyApp", "Update failed", it) }
+                )
+            }
+        },
+        {
+            Log.e("MyAmplifyApp", "Query failed", it)
+            ok = false
+        }
+    )
+    return ok
+}
+
+fun changeUserProfilePictureDb(user: User, picture : Bitmap): Boolean {
+    var ok = true
+    encodeImage(user.profilePicture)?.let { Log.i("user picture", it) }
+    Amplify.DataStore.query(com.amplifyframework.datastore.generated.model.User::class.java,
+        Where.matches(com.amplifyframework.datastore.generated.model.User.MODEL_ID.eq(user.id)),
+        { matches ->
+            if (matches.hasNext()) {
+                val original = matches.next()
+                val edited = original.copyOfBuilder()
+                    .profilePicture(encodeImage(picture))
+                    .build()
+                encodeImage(user.profilePicture)?.let { Log.i("user picture", it) }
+                Amplify.DataStore.save(edited,
+                    { Log.i("MyAmplifyApp", "Updated ${user.userName} picture") },
+                    { Log.e("MyAmplifyApp", "Update ${user.userName} picture failed", it) }
+                )
+            }
+        },
+        {
+            Log.e("MyAmplifyApp", "Query failed", it)
+            ok = false
+        }
+    )
+    return ok
+}
+
+fun changeUserName(user: User, newUserName : String): Boolean {
+    var ok = true
+    Amplify.DataStore.query(com.amplifyframework.datastore.generated.model.User::class.java,
+        Where.matches(com.amplifyframework.datastore.generated.model.User.MODEL_ID.eq(user.id)),
+        { matches ->
+            if (matches.hasNext()) {
+                val original = matches.next()
+                val edited = original.copyOfBuilder()
+                    .userName(newUserName)
+                    .build()
+                Amplify.DataStore.save(edited,
+                    { Log.i("MyAmplifyApp", "Updated ${user.userName} to ${edited.userName}") },
+                    { Log.e("MyAmplifyApp", "Update ${user.userName} picture failed", it) }
+                )
+            }
+        },
+        {
+            Log.e("MyAmplifyApp", "Query failed", it)
+            ok = false
+        }
+    )
+    return ok
+}
+
+fun addConversationToUser(user: User, conversationsId : MutableList<String>): Boolean {
+    var ok = true
+    Amplify.DataStore.query(com.amplifyframework.datastore.generated.model.User::class.java,
+        Where.matches(com.amplifyframework.datastore.generated.model.User.MODEL_ID.eq(user.id)),
+        { matches ->
+            if (matches.hasNext()) {
+                val original = matches.next()
+                val edited = original.copyOfBuilder()
+                    .conversations(conversationsId)
+                    .build()
+                Amplify.DataStore.save(edited,
+                    { Log.i("MyAmplifyApp", "Updated ${user.userName} conversations list") },
+                    { Log.e("MyAmplifyApp", "Update ${user.userName} conversations failed", it) }
                 )
             }
         },
