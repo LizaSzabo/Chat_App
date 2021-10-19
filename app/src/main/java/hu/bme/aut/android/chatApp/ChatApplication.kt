@@ -40,7 +40,8 @@ class ChatApplication : RainbowCakeApplication() {
 
         var Users: MutableList<User> = mutableListOf()
             private set
-        var Conversations = mutableListOf<Conversation>()
+        var Conversations : MutableList<Conversation> = mutableListOf()
+            private set
         var Messages = mutableListOf(
             Message("1","user1", "Hello!", "2021-10-10")
         )
@@ -69,7 +70,7 @@ class ChatApplication : RainbowCakeApplication() {
 
             Log.i("MyAmplifyApp", "Initialized Amplify")
 
-            startDataStore()
+
            /* Amplify.DataStore.clear(
                 {
                     Amplify.DataStore.start(

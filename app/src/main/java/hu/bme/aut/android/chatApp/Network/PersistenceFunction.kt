@@ -7,7 +7,9 @@ import android.util.Log
 import com.amplifyframework.core.Amplify
 import com.amplifyframework.core.model.query.Where
 import hu.bme.aut.android.chatApp.ChatApplication
+import hu.bme.aut.android.chatApp.ChatApplication.Companion.Conversations
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.Users
+import hu.bme.aut.android.chatApp.Model.Conversation
 import hu.bme.aut.android.chatApp.Model.User
 import java.io.ByteArrayOutputStream
 
@@ -322,18 +324,26 @@ fun bitMapToString(bitmap: Bitmap): String? {
     val b: ByteArray = baos.toByteArray()
     return Base64.encodeToString(b, Base64.DEFAULT)
 }*/
-fun startDataStore() {
+fun startDataStore(): Boolean {
+    var ok = true
     Amplify.DataStore.clear(
         {
             Amplify.DataStore.start(
                 {
                     Log.i("MyAmplifyApp", "DataStore started")
                 },
-                { Log.e("MyAmplifyApp", "Error starting DataStore", it) }
+                {
+                    Log.e("MyAmplifyApp", "Error starting DataStore", it)
+                    ok = false
+                }
             )
         },
-        { Log.e("MyAmplifyApp", "Error clearing DataStore", it) }
+        {
+            Log.e("MyAmplifyApp", "Error clearing DataStore", it)
+            ok = false
+        }
     )
+    return ok
 }
 
 fun saveUsers() {
@@ -417,7 +427,7 @@ fun changeUserPasswordDb(user: User, newPassword: String): Boolean {
     return ok
 }
 
-fun changeUserProfilePictureDb(user: User, picture : Bitmap): Boolean {
+fun changeUserProfilePictureDb(user: User, picture: Bitmap): Boolean {
     var ok = true
     encodeImage(user.profilePicture)?.let { Log.i("user picture", it) }
     Amplify.DataStore.query(com.amplifyframework.datastore.generated.model.User::class.java,
@@ -443,7 +453,7 @@ fun changeUserProfilePictureDb(user: User, picture : Bitmap): Boolean {
     return ok
 }
 
-fun changeUserName(user: User, newUserName : String): Boolean {
+fun changeUserName(user: User, newUserName: String): Boolean {
     var ok = true
     Amplify.DataStore.query(com.amplifyframework.datastore.generated.model.User::class.java,
         Where.matches(com.amplifyframework.datastore.generated.model.User.MODEL_ID.eq(user.id)),
@@ -467,7 +477,7 @@ fun changeUserName(user: User, newUserName : String): Boolean {
     return ok
 }
 
-fun addConversationToUser(user: User, conversationsId : MutableList<String>): Boolean {
+fun updateConversationsToUser(user: User, conversationsId: MutableList<String>): Boolean {
     var ok = true
     Amplify.DataStore.query(com.amplifyframework.datastore.generated.model.User::class.java,
         Where.matches(com.amplifyframework.datastore.generated.model.User.MODEL_ID.eq(user.id)),
@@ -489,6 +499,82 @@ fun addConversationToUser(user: User, conversationsId : MutableList<String>): Bo
         }
     )
     return ok
+}
+
+fun getAllConversations(): Boolean {
+    var ok = true
+    Log.i("MyAmplifyApp", "Load Conversations: ")
+    Conversations.clear()
+    Amplify.DataStore.query(com.amplifyframework.datastore.generated.model.Conversation::class.java,
+        { conversations ->
+            while (conversations.hasNext()) {
+                val conversation = conversations.next()
+                val decodedString: ByteArray = Base64.decode(conversation.picture, Base64.DEFAULT)
+                val decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
+                val c = Conversation(
+                    conversation.modelId,
+                    conversation.name,
+                    conversation.type,
+                    conversation.messagesId,
+                    conversation.usersId,
+                    decodedByte,
+                    conversation.favourite
+                )
+                Conversations.add(c)
+                Log.i("MyAmplifyApp", "Title: ${conversation.name}")
+            }
+        },
+        {
+            Log.e("MyAmplifyApp", "Query failed", it)
+            ok = false
+        }
+    )
+    return ok
+}
+
+fun saveConversation(c: Conversation): Boolean {
+    var added = true
+
+    val conversation = com.amplifyframework.datastore.generated.model.Conversation.builder()
+        .modelId(c.id)
+        .name(c.name)
+        .type(c.type)
+        .picture(encodeImage(c.picture))
+        .favourite(c.favourite)
+        .usersId(c.usersId)
+        .messagesId(c.messagesId)
+        .build()
+
+    Amplify.DataStore.save(conversation,
+        { Log.i("MyAmplifyApp", "Saved a conversation") },
+        {
+            Log.e("MyAmplifyApp", "Save conversation failed", it)
+            added = false
+        }
+    )
+    return added
+}
+
+fun deleteUserFromConversation(conversation : Conversation, updateUsers : MutableList<String>) {
+    Amplify.DataStore.query(com.amplifyframework.datastore.generated.model.Conversation::class.java,
+        Where.matches(com.amplifyframework.datastore.generated.model.Conversation.MODEL_ID.eq(conversation.id)),
+        { conversations ->
+            while (conversations.hasNext()) {
+                val original = conversations.next()
+                val edited = original.copyOfBuilder()
+                    .usersId(updateUsers)
+                    .build()
+                Amplify.DataStore.save(edited,
+                    { Log.i("MyAmplifyApp", "Updated ${original.name} users list") },
+                    { Log.e("MyAmplifyApp", "Update ${original.name} users failed", it) }
+                )
+            }
+        },
+        {
+            Log.e("MyAmplifyApp", "Query failed", it)
+        }
+    )
+
 }
 
 private fun encodeImage(bm: Bitmap): String? {

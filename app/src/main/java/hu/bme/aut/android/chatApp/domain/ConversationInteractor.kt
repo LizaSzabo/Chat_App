@@ -8,6 +8,7 @@ import hu.bme.aut.android.chatApp.ChatApplication.Companion.currentConversation
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.currentUser
 import hu.bme.aut.android.chatApp.Model.Conversation
 import hu.bme.aut.android.chatApp.Model.User
+import hu.bme.aut.android.chatApp.Network.*
 import javax.inject.Inject
 
 class ConversationInteractor @Inject constructor() {
@@ -17,35 +18,37 @@ class ConversationInteractor @Inject constructor() {
         for (conversation in Conversations)
             if (conversation.usersId.contains(currentUser?.id))
                 conversations.add(conversation)
-        return conversations
+        return Conversations
     }
 
     fun deleteConversation(conversation: Conversation): Boolean {
+        updateConversationsToUser(currentUser!!, currentUser?.conversationsId!!)
+        deleteUserFromConversation(conversation, conversation.usersId)
         if (conversation.usersId.contains(currentUser?.id)) {
             for (user in Users)
                 if (user.id == currentUser?.id) {
                     user.conversationsId.remove(conversation.id)
                     conversation.usersId.remove(user.id)
+                    //deleteUserFromConversation(conversation, conversation.usersId)
                 }
             currentUser?.conversationsId?.remove(conversation.id)
+
         }
         return true
     }
 
     fun addConversation(conversation: Conversation): Boolean {
-        Conversations.add(conversation)
+        val added = saveConversation(conversation)
+        if (added) Conversations.add(conversation)
 
-        for (user in Users)
-            if (conversation.usersId.contains(user.id))
-                user.conversationsId.add(conversation.id)
-        return true
-    }
-
-    fun existsConversation(conversationId: String): Boolean {
-        for (conversation in Conversations)
-            if (conversation.id == conversationId)
-                return true
-        return false
+        for (user in Users) {
+            if (conversation.usersId.contains(user.id)) {
+                val conversationsIdList = user.conversationsId
+                val addedToUser = updateConversationsToUser(user, conversationsIdList)
+                if (addedToUser) user.conversationsId.add(conversation.id)
+            }
+        }
+        return added
     }
 
     fun updateConversationName(conversation: Conversation, conversationNewName: String): Boolean {

@@ -6,6 +6,7 @@ import androidx.navigation.NavController
 import co.zsmb.rainbowcake.base.OneShotEvent
 import co.zsmb.rainbowcake.base.RainbowCakeViewModel
 import hu.bme.aut.android.chatApp.Adapter_Rv.ConversationsAdapter
+import hu.bme.aut.android.chatApp.ChatApplication.Companion.Conversations
 import hu.bme.aut.android.chatApp.Model.Conversation
 import hu.bme.aut.android.chatApp.Model.User
 import hu.bme.aut.android.chatApp.ui.addConversation.AddConversationDialog

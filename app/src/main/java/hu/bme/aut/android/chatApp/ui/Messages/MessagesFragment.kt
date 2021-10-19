@@ -25,6 +25,7 @@ import co.zsmb.rainbowcake.base.RainbowCakeFragment
 import co.zsmb.rainbowcake.dagger.getViewModelFromFactory
 import co.zsmb.rainbowcake.extensions.exhaustive
 import hu.bme.aut.android.chatApp.Adapter_Rv.ConversationsAdapter
+import hu.bme.aut.android.chatApp.ChatApplication.Companion.Conversations
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.currentConversation
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.currentUser
 import hu.bme.aut.android.chatApp.Model.Conversation
@@ -76,7 +77,7 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
         fragmentBinding.imageButtonProfile.setImageBitmap(resized)
 
         initRecyclerView()
-        viewModel.init(fragmentBinding.editTextSearch.text.toString(), conversationsAdapter)
+
     }
 
     private fun Bitmap.resizeByHeight(height: Int): Bitmap {
@@ -108,6 +109,7 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
         fragmentBinding.rvConversations.layoutManager = LinearLayoutManager(context)
         fragmentBinding.rvConversations.adapter = conversationsAdapter
         conversationsAdapter.itemClickListener = this
+       // conversationsAdapter.addAllConversations(Conversations, fragmentBinding.editTextSearch.text.toString())
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -194,13 +196,14 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
     override fun render(viewState: MessagesViewState) {
         when (viewState) {
             Initial -> {
-
+                viewModel.init(fragmentBinding.editTextSearch.text.toString(), conversationsAdapter)
             }
             ConversationLoadSuccess -> {
                 Toast.makeText(context, "Conversation successfully loaded", Toast.LENGTH_LONG).show()
                 fragmentBinding.imageButtonWrite.isVisible = true
             }
             ConversationLoadError -> {
+
             }
             ConversationDeleteSuccess -> {
                 Toast.makeText(context, "Conversation successfully deleted", Toast.LENGTH_LONG).show()

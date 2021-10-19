@@ -23,14 +23,14 @@ class LoadingFragment : RainbowCakeFragment<LoadingViewState, LoadingViewModel>(
         val binding = FragmentLoadingBinding.bind(view)
         fragmentBinding = binding
 
-        viewModel.initData()
+
     }
 
 
     override fun render(viewState: LoadingViewState) {
         when (viewState) {
             Initial -> {
-
+                viewModel.initData()
             }
         }.exhaustive
     }

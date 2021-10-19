@@ -21,6 +21,7 @@ class UserInteractor @Inject constructor() {
     fun getUsers(): List<User> {
         logUsers()
         getAllUsers()
+        getAllConversations()
         return Users
     }
 
@@ -44,7 +45,7 @@ class UserInteractor @Inject constructor() {
     }
 
     fun existsUserName(newUserName: String): Boolean {
-        getAllUsers()
+        //getAllUsers()
         for (user in Users)
             if (user.userName == newUserName)
                 return true
@@ -53,7 +54,7 @@ class UserInteractor @Inject constructor() {
 
     fun updateUserName(newUserName: String): Boolean {
         val change = changeUserName(currentUser!!, newUserName)
-        return if(change) {
+
             for (user in Users) {
                 if (user.id == currentUser?.id) {
 
@@ -61,9 +62,8 @@ class UserInteractor @Inject constructor() {
                     currentUser?.userName = newUserName
                 }
             }
-             true
-        }
-        else false
+
+      return true
     }
 
     fun updateUserProfilePicture(picture: Bitmap): Boolean {
@@ -85,7 +85,7 @@ class UserInteractor @Inject constructor() {
             if (user.userName == userName){
                 val conversationList = user.conversationsId
                 conversationList.add(conversation.id)
-                val add = addConversationToUser(user, conversationList)
+                val add = updateConversationsToUser(user, conversationList)
                 if(add) {
                     user.conversationsId.add(conversation.id)
                     return true

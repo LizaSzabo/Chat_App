@@ -10,7 +10,6 @@ import javax.inject.Inject
 class AddConversationViewModel @Inject constructor(
     private val addConversationPresenter: AddConversationPresenter
 ) : RainbowCakeViewModel<AddConversationViewState>(Initial) {
-    private var exists: Boolean = false
     private var add: Boolean = false
 
     fun addConversation(
@@ -31,7 +30,9 @@ class AddConversationViewModel @Inject constructor(
         add = addConversationPresenter.addConversation(conversation)
         viewState = if (add) ConversationAddSuccess else ConversationAddError
         if (viewState is ConversationAddSuccess) postEvent(ConversationAdded)
+        if (viewState is ConversationAddError) postEvent(ConversationAddedError)
     }
 
     object ConversationAdded : OneShotEvent
+    object ConversationAddedError : OneShotEvent
 }

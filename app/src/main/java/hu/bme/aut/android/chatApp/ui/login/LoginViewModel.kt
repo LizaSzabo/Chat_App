@@ -20,7 +20,7 @@ class LoginViewModel @Inject constructor(
     private var lastSelected by Delegates.notNull<Int>()
     private var users: List<User> = mutableListOf()
 
-    fun getUsers() = execute {
+    private fun getUsers() = execute {
         users = loginPresenter.getUsers()
     }
 

@@ -83,6 +83,7 @@ class AddConversationDialog : RainbowCakeDialogFragment<AddConversationViewState
                 )
                 dismiss()
             }
+            is AddConversationViewModel.ConversationAddedError -> dismiss()
         }
     }
 
