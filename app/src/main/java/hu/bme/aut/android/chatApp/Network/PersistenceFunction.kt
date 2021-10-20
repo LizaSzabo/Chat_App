@@ -8,9 +8,13 @@ import com.amplifyframework.core.Amplify
 import com.amplifyframework.core.model.query.Where
 import hu.bme.aut.android.chatApp.ChatApplication
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.Conversations
+import hu.bme.aut.android.chatApp.ChatApplication.Companion.Messages
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.Users
 import hu.bme.aut.android.chatApp.Model.Conversation
+import hu.bme.aut.android.chatApp.Model.Message
 import hu.bme.aut.android.chatApp.Model.User
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.asFlow
 import java.io.ByteArrayOutputStream
 
 
@@ -674,6 +678,71 @@ fun changeUsersId(conversation: Conversation, usersId: MutableList<String>): Boo
     )
     return ok
 }
+
+fun saveMessage(m: Message) {
+    val message = com.amplifyframework.datastore.generated.model.Message.builder()
+        .modelId(m.id)
+        .sender(m.senderId)
+        .content(m.content)
+        .date(m.date)
+        .build()
+
+    Amplify.DataStore.save(message,
+        { Log.i("MyAmplifyApp", "Saved a message") },
+        { Log.e("MyAmplifyApp", "Save message failed", it) }
+    )
+}
+
+fun addMessageToConversation(conversation: Conversation, messagesId: MutableList<String>): Boolean {
+    var ok = true
+    Amplify.DataStore.query(com.amplifyframework.datastore.generated.model.Conversation::class.java,
+        Where.matches(com.amplifyframework.datastore.generated.model.Conversation.MODEL_ID.eq(conversation.id)),
+        { matches ->
+            if (matches.hasNext()) {
+                val original = matches.next()
+                val edited = original.copyOfBuilder()
+                    .messagesId(messagesId)
+                    .build()
+                Amplify.DataStore.save(edited,
+                    { Log.i("MyAmplifyApp", "Updated  ${conversation.name} messages list") },
+                    { Log.e("MyAmplifyApp", "Update  ${conversation.name} messages failed", it) }
+                )
+            }
+        },
+        {
+            Log.e("MyAmplifyApp", "Query failed", it)
+            ok = false
+        }
+    )
+    return ok
+}
+
+fun getAllMessages(): Flow<Message> {
+    var ok = true
+    Log.i("MyAmplifyApp", "Load Messages: ")
+    Messages.clear()
+    Amplify.DataStore.query(com.amplifyframework.datastore.generated.model.Message::class.java,
+        { messages ->
+            while (messages.hasNext()) {
+                val message = messages.next()
+                val m = Message(
+                    message.modelId,
+                    message.sender,
+                    message.content,
+                    message.date
+                )
+                Messages.add(m)
+                Log.i("MyAmplifyApp", "Title: ${message.content}")
+            }
+        },
+        {
+            Log.e("MyAmplifyApp", "Query failed", it)
+            ok = false
+        }
+    )
+    return Messages.asFlow()
+}
+
 
 private fun encodeImage(bm: Bitmap): String? {
     val byteArrayOutputStream = ByteArrayOutputStream()

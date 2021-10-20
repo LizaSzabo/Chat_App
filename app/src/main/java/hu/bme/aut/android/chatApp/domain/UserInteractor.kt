@@ -22,6 +22,7 @@ class UserInteractor @Inject constructor() {
         logUsers()
         getAllUsers()
         getAllConversations()
+        getAllMessages()
         return Users
     }
 
