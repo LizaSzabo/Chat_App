@@ -53,6 +53,7 @@ class ConversationInteractor @Inject constructor() {
     }
 
     fun updateConversationName(conversation: Conversation, conversationNewName: String): Boolean {
+        changeConversationName(conversation, conversationNewName)
         for (c in Conversations)
             if (c.id == conversation.id) {
                 c.name = conversationNewName
@@ -62,6 +63,7 @@ class ConversationInteractor @Inject constructor() {
     }
 
     fun updateConversationImage(conversation: Conversation, conversationPicture: Bitmap): Boolean {
+        changeConversationImage(conversation, conversationPicture)
         for (c in Conversations)
             if (c.id == conversation.id) {
                 c.picture = conversationPicture
@@ -72,6 +74,7 @@ class ConversationInteractor @Inject constructor() {
     }
 
     fun updateConversationFavourite(conversation: Conversation): Boolean {
+        changeConversationFavourite(conversation)
         for (c in Conversations)
             if (c.id == conversation.id) {
                 c.favourite = conversation.favourite
@@ -87,8 +90,10 @@ class ConversationInteractor @Inject constructor() {
             if (user.userName == userName)
                 userId = user.id
         for (c in Conversations)
-            if (c.id == conversation.id)
+            if (c.id == conversation.id){
                 c.usersId.add(userId)
+                changeUsersId(c, c.usersId)
+            }
         return true
     }
 
