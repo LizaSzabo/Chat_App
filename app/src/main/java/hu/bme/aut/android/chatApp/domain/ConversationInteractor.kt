@@ -33,8 +33,8 @@ class ConversationInteractor @Inject constructor() {
             currentUser?.conversationsId?.remove(conversation.id)
 
         }
-        updateConversationsToUser(currentUser!!, mutableListOf())
-        deleteUserFromConversation(conversation, mutableListOf())
+        updateConversationsToUser(currentUser!!, currentUser?.conversationsId!!)
+        deleteUserFromConversation(conversation, conversation.usersId)
         return true
     }
 
