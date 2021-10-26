@@ -8,10 +8,10 @@
 
     <ImageView
         android:id="@+id/ivConversationImage"
-        android:src="@mipmap/ic_launcher"
         android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_height="48dp"
         android:paddingStart="15dp"
+        android:layout_marginVertical="8dp"
         android:background="@drawable/default_float_window"/>
 
     <TextView

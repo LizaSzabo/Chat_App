@@ -10,11 +10,12 @@ import hu.bme.aut.android.chatApp.ChatApplication
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.Conversations
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.Messages
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.Users
+import hu.bme.aut.android.chatApp.ChatApplication.Companion.currentUser
+import hu.bme.aut.android.chatApp.ChatApplication.Companion.newMessage
+import hu.bme.aut.android.chatApp.ChatApplication.Companion.newMessagePicture
 import hu.bme.aut.android.chatApp.Model.Conversation
 import hu.bme.aut.android.chatApp.Model.Message
 import hu.bme.aut.android.chatApp.Model.User
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.asFlow
 import java.io.ByteArrayOutputStream
 
 
@@ -559,7 +560,7 @@ fun saveConversation(c: Conversation): Boolean {
     return added
 }
 
-fun deleteUserFromConversation(conversation : Conversation, updateUsers : MutableList<String>) {
+fun deleteUserFromConversation(conversation: Conversation, updateUsers: MutableList<String>) {
     Amplify.DataStore.query(com.amplifyframework.datastore.generated.model.Conversation::class.java,
         Where.matches(com.amplifyframework.datastore.generated.model.Conversation.MODEL_ID.eq(conversation.id)),
         { conversations ->
@@ -582,7 +583,7 @@ fun deleteUserFromConversation(conversation : Conversation, updateUsers : Mutabl
 }
 
 
-fun changeConversationName(conversation : Conversation, newName : String) : Boolean{
+fun changeConversationName(conversation: Conversation, newName: String): Boolean {
     var ok = true
     Amplify.DataStore.query(com.amplifyframework.datastore.generated.model.Conversation::class.java,
         Where.matches(com.amplifyframework.datastore.generated.model.Conversation.MODEL_ID.eq(conversation.id)),
@@ -606,7 +607,7 @@ fun changeConversationName(conversation : Conversation, newName : String) : Bool
     return ok
 }
 
-fun changeConversationImage(conversation : Conversation, picture : Bitmap) : Boolean{
+fun changeConversationImage(conversation: Conversation, picture: Bitmap): Boolean {
     var ok = true
     Amplify.DataStore.query(com.amplifyframework.datastore.generated.model.Conversation::class.java,
         Where.matches(com.amplifyframework.datastore.generated.model.Conversation.MODEL_ID.eq(conversation.id)),
@@ -630,7 +631,7 @@ fun changeConversationImage(conversation : Conversation, picture : Bitmap) : Boo
     return ok
 }
 
-fun changeConversationFavourite(conversation : Conversation) : Boolean{
+fun changeConversationFavourite(conversation: Conversation): Boolean {
     var ok = true
     Amplify.DataStore.query(com.amplifyframework.datastore.generated.model.Conversation::class.java,
         Where.matches(com.amplifyframework.datastore.generated.model.Conversation.MODEL_ID.eq(conversation.id)),
@@ -717,7 +718,7 @@ fun addMessageToConversation(conversation: Conversation, messagesId: MutableList
     return ok
 }
 
-fun getAllMessages(): Flow<Message> {
+fun getAllMessages() {
     var ok = true
     Log.i("MyAmplifyApp", "Load Messages: ")
     Messages.clear()
@@ -740,9 +741,29 @@ fun getAllMessages(): Flow<Message> {
             ok = false
         }
     )
-    return Messages.asFlow()
 }
 
+fun observeNewMessages() {
+
+    Amplify.DataStore.observe(com.amplifyframework.datastore.generated.model.Message::class.java,
+        { Log.i("MyAmplifyApp", "Observation began") },
+        {
+            val message = it.item()
+            for (user in Users) {
+                if (user.id == it.item().sender) {
+                    newMessagePicture = user.profilePicture
+                    Log.i("MyAmplifyApp", "Message Picture:  $newMessagePicture")
+                }
+            }
+            if (it.item().sender != currentUser?.id)
+                newMessage = it.item().content
+            //FloatingService.newMessageArrived(it.item().content)
+            Log.i("MyAmplifyApp", "Message: $message")
+        },
+        { Log.e("MyAmplifyApp", "Observation failed", it) },
+        { Log.i("MyAmplifyApp", "Observation complete") }
+    )
+}
 
 private fun encodeImage(bm: Bitmap): String? {
     val byteArrayOutputStream = ByteArrayOutputStream()

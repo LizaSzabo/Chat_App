@@ -1,5 +1,6 @@
 package hu.bme.aut.android.chatApp
 
+import android.graphics.Bitmap
 import android.util.Log
 import co.zsmb.rainbowcake.config.Loggers
 import co.zsmb.rainbowcake.config.rainbowCake
@@ -46,7 +47,8 @@ class ChatApplication : RainbowCakeApplication() {
             Message("1","user1", "Hello!", "2021-10-10")
         )
 
-
+        var newMessage : String = "..."
+        var newMessagePicture : Bitmap? = null
     }
 
     override lateinit var injector: RainbowCakeComponent

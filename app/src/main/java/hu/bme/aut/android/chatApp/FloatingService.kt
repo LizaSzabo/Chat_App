@@ -1,5 +1,6 @@
 package hu.bme.aut.android.chatApp
 
+import android.annotation.SuppressLint
 import android.app.*
 import android.content.Context
 import android.content.Intent
@@ -15,7 +16,10 @@ import android.widget.TextView
 import androidx.core.app.NotificationCompat
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.currentConversation
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.messageText
+import hu.bme.aut.android.chatApp.ChatApplication.Companion.newMessage
+import hu.bme.aut.android.chatApp.ChatApplication.Companion.newMessagePicture
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.update
+import hu.bme.aut.android.chatApp.Network.observeNewMessages
 import java.util.*
 
 class FloatingService : Service() {
@@ -25,6 +29,7 @@ class FloatingService : Service() {
     private var floatingView: View? = null
     private var tvMessage: TextView? = null
     private var ivConversation: ImageView? = null
+    private var actualContent : String = "..."
 
     companion object{
         private const val NOTIFICATION_ID = 101
@@ -34,7 +39,7 @@ class FloatingService : Service() {
 
     private inner class MyMessageShower : Thread() {
         override fun run() {
-            val h = Handler(this@FloatingService.getMainLooper())
+            val h = Handler(this@FloatingService.mainLooper)
             while (enabled) {
                 h.post {
                   /* if(!currentConversation?.messages.isNullOrEmpty()){
@@ -48,7 +53,11 @@ class FloatingService : Service() {
                        updateNotification(messageText)
                         update = false
                     }*/
-
+                    if(newMessage != actualContent){
+                        floatingView?.visibility = View.VISIBLE
+                        updateNotification(newMessage)
+                        actualContent = newMessage
+                    }
                 }
 
 
@@ -65,6 +74,7 @@ class FloatingService : Service() {
         return null
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreate() {
         super.onCreate()
 
@@ -78,7 +88,7 @@ class FloatingService : Service() {
 
 
         ivConversation = floatingView?.findViewById(R.id.ivConversationImage)
-        ivConversation?.setImageBitmap(currentConversation?.picture)
+
 
         floatingView?.visibility = View.INVISIBLE
 
@@ -103,6 +113,7 @@ class FloatingService : Service() {
 
         windowManager?.addView(floatingView, params)
 
+
         floatingView?.setOnTouchListener(object : View.OnTouchListener {
             private var initialX: Int = 0
             private var initialY: Int = 0
@@ -118,6 +129,7 @@ class FloatingService : Service() {
                         initialTouchY = event.rawY
                     }
                     MotionEvent.ACTION_UP -> {
+                        if(params.x < 50 && params.y < 50)  floatingView?.visibility = View.INVISIBLE
                     }
                     MotionEvent.ACTION_MOVE -> {
                         params.x = initialX + (event.rawX - initialTouchX).toInt()
@@ -128,6 +140,8 @@ class FloatingService : Service() {
                 return false
             }
         })
+
+        observeNewMessages()
 
     }
 
@@ -141,9 +155,8 @@ class FloatingService : Service() {
         enabled = true
         startForeground(NOTIFICATION_ID, createNotification("Waiting for messages..."))
         MyMessageShower().start()
-       /* if(!currentConversation?.messages.isNullOrEmpty()) {
-            updateNotification(messageText)
-        }*/
+        updateNotification(newMessage)
+
 
         return super.onStartCommand(intent, flags, startId)
     }
@@ -169,7 +182,8 @@ class FloatingService : Service() {
     }
 
     fun updateNotification(text: String) {
-        tvMessage?.text = messageText
+        tvMessage?.text = newMessage
+        ivConversation?.setImageBitmap(newMessagePicture)
         val notification = createNotification(text)
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.notify(NOTIFICATION_ID, notification)
@@ -188,5 +202,6 @@ class FloatingService : Service() {
             manager.createNotificationChannel(serviceChannel)
         }
     }
+
 
 }
