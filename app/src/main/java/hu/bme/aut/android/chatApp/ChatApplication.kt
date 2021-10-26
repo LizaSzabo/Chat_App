@@ -48,6 +48,7 @@ class ChatApplication : RainbowCakeApplication() {
         )
 
         var newMessage : String = "..."
+        var newMessageContent : String = "..."
         var newMessagePicture : Bitmap? = null
     }
 

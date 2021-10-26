@@ -12,6 +12,7 @@ import hu.bme.aut.android.chatApp.ChatApplication.Companion.Messages
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.Users
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.currentUser
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.newMessage
+import hu.bme.aut.android.chatApp.ChatApplication.Companion.newMessageContent
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.newMessagePicture
 import hu.bme.aut.android.chatApp.Model.Conversation
 import hu.bme.aut.android.chatApp.Model.Message
@@ -755,10 +756,27 @@ fun observeNewMessages() {
                     Log.i("MyAmplifyApp", "Message Picture:  $newMessagePicture")
                 }
             }
-            if (it.item().sender != currentUser?.id)
-                newMessage = it.item().content
-            //FloatingService.newMessageArrived(it.item().content)
+            if (it.item().sender != currentUser?.id) {
+                newMessageContent = it.item().content
+            }
+
             Log.i("MyAmplifyApp", "Message: $message")
+        },
+        { Log.e("MyAmplifyApp", "Observation failed", it) },
+        { Log.i("MyAmplifyApp", "Observation complete") }
+    )
+}
+
+fun observeConversations() {
+
+    Amplify.DataStore.observe(com.amplifyframework.datastore.generated.model.Conversation::class.java,
+        { Log.i("MyAmplifyApp", "Observation began") },
+        {
+
+            val conversation = it.item()
+            if (currentUser?.conversationsId?.contains(conversation.modelId) == true)
+                newMessage =  newMessageContent
+                Log.i("MyAmplifyApp", "Conversation $conversation")
         },
         { Log.e("MyAmplifyApp", "Observation failed", it) },
         { Log.i("MyAmplifyApp", "Observation complete") }

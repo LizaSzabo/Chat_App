@@ -14,11 +14,9 @@ import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.app.NotificationCompat
-import hu.bme.aut.android.chatApp.ChatApplication.Companion.currentConversation
-import hu.bme.aut.android.chatApp.ChatApplication.Companion.messageText
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.newMessage
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.newMessagePicture
-import hu.bme.aut.android.chatApp.ChatApplication.Companion.update
+import hu.bme.aut.android.chatApp.Network.observeConversations
 import hu.bme.aut.android.chatApp.Network.observeNewMessages
 import java.util.*
 
@@ -29,9 +27,9 @@ class FloatingService : Service() {
     private var floatingView: View? = null
     private var tvMessage: TextView? = null
     private var ivConversation: ImageView? = null
-    private var actualContent : String = "..."
+    private var actualContent: String = "..."
 
-    companion object{
+    companion object {
         private const val NOTIFICATION_ID = 101
         const val CHANNEL_ID = "ForegroundServiceChannel"
 
@@ -42,25 +40,12 @@ class FloatingService : Service() {
             val h = Handler(this@FloatingService.mainLooper)
             while (enabled) {
                 h.post {
-                  /* if(!currentConversation?.messages.isNullOrEmpty()){
-                        tvMessage?.text = messageText
-                        floatingView?.visibility = View.VISIBLE
-                }
-                    else floatingView?.visibility = View.INVISIBLE
-                    ivConversation?.setImageBitmap(currentConversation?.picture)
-
-                    if(update){
-                       updateNotification(messageText)
-                        update = false
-                    }*/
-                    if(newMessage != actualContent){
+                    if (newMessage != actualContent) {
                         floatingView?.visibility = View.VISIBLE
                         updateNotification(newMessage)
                         actualContent = newMessage
                     }
                 }
-
-
                 try {
                     sleep(5000)
                 } catch (e: InterruptedException) {
@@ -79,40 +64,32 @@ class FloatingService : Service() {
         super.onCreate()
 
         windowManager = getSystemService(WINDOW_SERVICE) as WindowManager
+        floatingView = (getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater).inflate(R.layout.float_layout, null)
 
-        floatingView = (getSystemService(
-            LAYOUT_INFLATER_SERVICE) as LayoutInflater).inflate(
-            R.layout.float_layout, null)
-
-        tvMessage = floatingView?.findViewById<TextView>(R.id.tvMessage)
-
-
+        tvMessage = floatingView?.findViewById(R.id.tvMessage)
         ivConversation = floatingView?.findViewById(R.id.ivConversationImage)
-
-
         floatingView?.visibility = View.INVISIBLE
 
-        val LAYOUT_FLAG: Int
-        if (Build.VERSION.SDK_INT >= VERSION_CODES.O) {
-            LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
+        val layoutFlag: Int = if (Build.VERSION.SDK_INT >= VERSION_CODES.O) {
+            WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
         } else {
-            LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_PHONE;
+            WindowManager.LayoutParams.TYPE_PHONE;
         }
 
-        Log.i("flag", LAYOUT_FLAG.toString())
+        Log.i("flag", layoutFlag.toString())
         val params = WindowManager.LayoutParams(
             WindowManager.LayoutParams.WRAP_CONTENT,
             WindowManager.LayoutParams.WRAP_CONTENT,
-            LAYOUT_FLAG,
+            layoutFlag,
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-            PixelFormat.TRANSLUCENT)
+            PixelFormat.TRANSLUCENT
+        )
 
         params.gravity = Gravity.TOP or Gravity.LEFT
         params.x = 0
         params.y = 100
 
         windowManager?.addView(floatingView, params)
-
 
         floatingView?.setOnTouchListener(object : View.OnTouchListener {
             private var initialX: Int = 0
@@ -129,7 +106,7 @@ class FloatingService : Service() {
                         initialTouchY = event.rawY
                     }
                     MotionEvent.ACTION_UP -> {
-                        if(params.x < 50 && params.y < 50)  floatingView?.visibility = View.INVISIBLE
+                        if (params.x < 50 && params.y < 50) floatingView?.visibility = View.INVISIBLE
                     }
                     MotionEvent.ACTION_MOVE -> {
                         params.x = initialX + (event.rawX - initialTouchX).toInt()
@@ -142,7 +119,7 @@ class FloatingService : Service() {
         })
 
         observeNewMessages()
-
+        observeConversations()
     }
 
     override fun onDestroy() {
@@ -157,7 +134,6 @@ class FloatingService : Service() {
         MyMessageShower().start()
         updateNotification(newMessage)
 
-
         return super.onStartCommand(intent, flags, startId)
     }
 
@@ -167,10 +143,12 @@ class FloatingService : Service() {
 
         createNotificationChannel()
 
-        val contentIntent = PendingIntent.getActivity(this,
+        val contentIntent = PendingIntent.getActivity(
+            this,
             NOTIFICATION_ID,
             notificationIntent,
-            PendingIntent.FLAG_CANCEL_CURRENT)
+            PendingIntent.FLAG_CANCEL_CURRENT
+        )
 
         return NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle("Chat App")
