@@ -6,10 +6,12 @@ import android.util.Base64
 import android.util.Log
 import com.amplifyframework.core.Amplify
 import com.amplifyframework.core.model.query.Where
+import hu.bme.aut.android.chatApp.Adapter_Rv.ChatAdapter
 import hu.bme.aut.android.chatApp.ChatApplication
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.Conversations
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.Messages
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.Users
+import hu.bme.aut.android.chatApp.ChatApplication.Companion.currentConversation
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.currentUser
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.newMessage
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.newMessageContent
@@ -17,6 +19,7 @@ import hu.bme.aut.android.chatApp.ChatApplication.Companion.newMessagePicture
 import hu.bme.aut.android.chatApp.Model.Conversation
 import hu.bme.aut.android.chatApp.Model.Message
 import hu.bme.aut.android.chatApp.Model.User
+import hu.bme.aut.android.chatApp.ui.Chat.ChatViewModel
 import java.io.ByteArrayOutputStream
 
 
@@ -777,6 +780,44 @@ fun observeConversations() {
             if (currentUser?.conversationsId?.contains(conversation.modelId) == true)
                 newMessage =  newMessageContent
                 Log.i("MyAmplifyApp", "Conversation $conversation")
+        },
+        { Log.e("MyAmplifyApp", "Observation failed", it) },
+        { Log.i("MyAmplifyApp", "Observation complete") }
+    )
+}
+
+fun observeNewMessage(viewModel : ChatViewModel, adapter : ChatAdapter) {
+
+    Amplify.DataStore.observe(com.amplifyframework.datastore.generated.model.Message::class.java,
+        { Log.i("MyAmplifyApp", "Observation began") },
+        {
+
+            val message = it.item()
+
+            if(!Messages.contains(message) && it.item().sender != currentUser?.id){
+                val modelMessage = Message(message.modelId, message.sender, message.content, message.date)
+                Messages.add(modelMessage)
+                for(conversation in Conversations)
+                    if(conversation.id == currentConversation?.id)
+                        conversation.messagesId.add(message.modelId)
+                currentConversation?.id?.let { it1 -> viewModel.loadAllMessages(adapter, it1) }
+            }
+            Log.i("MyAmplifyApp", "Conversation $message")
+        },
+        { Log.e("MyAmplifyApp", "Observation failed", it) },
+        { Log.i("MyAmplifyApp", "Observation complete") }
+    )
+}
+
+fun observeNewMessageInConversation() {
+
+    Amplify.DataStore.observe(com.amplifyframework.datastore.generated.model.Conversation::class.java,
+        { Log.i("MyAmplifyApp", "Observation began") },
+        {
+
+            val conversation = it.item()
+
+            Log.i("MyAmplifyApp", "Conversation $conversation")
         },
         { Log.e("MyAmplifyApp", "Observation failed", it) },
         { Log.i("MyAmplifyApp", "Observation complete") }
