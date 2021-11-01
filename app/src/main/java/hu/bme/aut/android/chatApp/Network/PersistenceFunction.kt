@@ -794,13 +794,14 @@ fun observeNewMessage(viewModel : ChatViewModel, adapter : ChatAdapter) {
 
             val message = it.item()
 
+
             if(!Messages.contains(message) && it.item().sender != currentUser?.id){
                 val modelMessage = Message(message.modelId, message.sender, message.content, message.date)
                 Messages.add(modelMessage)
-                for(conversation in Conversations)
+               /* for(conversation in Conversations)
                     if(conversation.id == currentConversation?.id)
                         conversation.messagesId.add(message.modelId)
-                currentConversation?.id?.let { it1 -> viewModel.loadAllMessages(adapter, it1) }
+                currentConversation?.id?.let { it1 -> viewModel.loadAllMessages(adapter, it1) }*/
             }
             Log.i("MyAmplifyApp", "Conversation $message")
         },
@@ -809,14 +810,20 @@ fun observeNewMessage(viewModel : ChatViewModel, adapter : ChatAdapter) {
     )
 }
 
-fun observeNewMessageInConversation() {
+fun observeNewConversation() {
 
     Amplify.DataStore.observe(com.amplifyframework.datastore.generated.model.Conversation::class.java,
         { Log.i("MyAmplifyApp", "Observation began") },
         {
 
             val conversation = it.item()
-
+            val decodedString: ByteArray = Base64.decode(conversation.picture, Base64.DEFAULT)
+            val decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
+            val modelConversation = Conversation(conversation.modelId, conversation.name, conversation.type, conversation.messagesId, conversation.usersId, decodedByte, conversation.favourite)
+            if(!Conversations.contains(modelConversation) && conversation.usersId.contains(currentUser?.id)){
+                Conversations.add(modelConversation)
+                currentUser?.conversationsId?.add(modelConversation.id)
+            }
             Log.i("MyAmplifyApp", "Conversation $conversation")
         },
         { Log.e("MyAmplifyApp", "Observation failed", it) },

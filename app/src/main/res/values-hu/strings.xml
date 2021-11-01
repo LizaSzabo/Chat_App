@@ -39,6 +39,7 @@
     <string name="user_name_change_failed">Sikertelen névváltoztatás!</string>
     <string name="your_name">Nem változtattál a neveden!</string>
     <string name="registration_failed">Sikertelen Regisztráció!</string>
+    <string name="add_location">Hely kiválasztás</string>
 
     <string-array name="languages">
         <item>EN</item>

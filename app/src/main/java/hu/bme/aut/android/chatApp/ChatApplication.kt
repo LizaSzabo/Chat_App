@@ -74,18 +74,7 @@ class ChatApplication : RainbowCakeApplication() {
             Log.i("MyAmplifyApp", "Initialized Amplify")
 
 
-           /* Amplify.DataStore.clear(
-                {
-                    Amplify.DataStore.start(
-                        {
-                            Log.i("MyAmplifyApp", "DataStore started")
-                        },
-                        { Log.e("MyAmplifyApp", "Error starting DataStore", it) }
-                    )
 
-                },
-                { Log.e("MyAmplifyApp", "Error clearing DataStore", it) }
-            )*/
         } catch (error: AmplifyException) {
             Log.e("MyAmplifyApp", "Could not initialize Amplify", error)
         }

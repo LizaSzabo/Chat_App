@@ -74,10 +74,11 @@ abstract class ViewModelModule{
     @Binds
     @IntoMap
     @ViewModelKey(LoadingViewModel::class)
-    abstract fun bindEditUserViewModel(userViewModel: LoadingViewModel): ViewModel
+    abstract fun bindLoadingViewModel(userViewModel: LoadingViewModel): ViewModel
 
     @Binds
     @IntoMap
     @ViewModelKey(EditUserViewModel::class)
-    abstract fun bindLoadingViewModel(userViewModel: EditUserViewModel): ViewModel
+    abstract fun bindEditUserViewModel(userViewModel: EditUserViewModel): ViewModel
+
 }

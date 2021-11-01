@@ -19,7 +19,7 @@ class ChatAdapter : ListAdapter<Message, ChatAdapter.ChatViewHolder>(ItemCallBac
     var messageList = emptyList<Message>()
 
     abstract class ChatViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {}
-
+    ///Rw: scroll to position
     companion object {
         private const val TYPE_SENT = 0
         private const val TYPE_RECEIVED = 1

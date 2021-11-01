@@ -1,10 +1,13 @@
 package hu.bme.aut.android.chatApp.ui.Chat
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -20,7 +23,6 @@ import co.zsmb.rainbowcake.extensions.exhaustive
 import hu.bme.aut.android.chatApp.Adapter_Rv.ChatAdapter
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.currentConversation
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.currentUser
-import hu.bme.aut.android.chatApp.Network.observeNewMessage
 import hu.bme.aut.android.chatApp.R
 import hu.bme.aut.android.chatApp.databinding.FragmentChatBinding
 import java.text.SimpleDateFormat
@@ -49,7 +51,6 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
 
         currentConversationId = args.currentConversationId
 
-
         fragmentBinding.chatButtomToolbar.title = ""
         fragmentBinding.ibSend.setOnClickListener {
             if (fragmentBinding.text.text.toString().isNotEmpty()) {
@@ -70,6 +71,7 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
             val action = ChatFragmentDirections.actionChatFragmentToViewUsersInConversation(currentConversationId)
             findNavController().navigate(action)
         }
+
         fragmentBinding.conversationTitle.text = currentConversation?.name
 
         val resized: Bitmap?
@@ -89,6 +91,7 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
        // observeNewMessage(viewModel, chatAdapter)
 
     }
+
 
     private fun initRecyclerView() {
         chatAdapter = ChatAdapter()
@@ -129,6 +132,19 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if(item.itemId == R.id.add_location)
+        {
+          /*  val uri: String = java.lang.String.format(Locale.ENGLISH, "geo:%f,%f", 47.0, 19.0)
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
+            requireContext().startActivity(intent)*/
+            val action = ChatFragmentDirections.actionChatFragmentToMapFragment2()
+            findNavController().navigate(action)
+
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun onEvent(event: OneShotEvent) {
         when (event) {
             ChatViewModel.AddError -> fragmentBinding.text.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
@@ -152,6 +168,7 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
             MessageAddSuccess -> {
                 fragmentBinding.text.setText("")
                 fragmentBinding.text.setTextColor(ContextCompat.getColor(requireContext(), R.color.textColor))
+                fragmentBinding.rvChat.scrollToPosition(chatAdapter.itemCount-2)
             }
             MessageLoadError -> {
             }

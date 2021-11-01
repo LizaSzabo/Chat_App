@@ -86,6 +86,9 @@
                 android:defaultValue="0"
                 app:argType="string" />
         </action>
+        <action
+            android:id="@+id/action_chatFragment_to_mapFragment2"
+            app:destination="@id/mapFragment2" />
     </fragment>
     <fragment
         android:id="@+id/viewUsersInConversation"
@@ -99,9 +102,23 @@
     <fragment
         android:id="@+id/loadingFragment"
         android:name="hu.bme.aut.android.chatApp.ui.loading.LoadingFragment"
-        android:label="LoadingFragment" >
+        android:label="LoadingFragment">
         <action
             android:id="@+id/action_loadingFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mapFragment2"
+        android:name="hu.bme.aut.android.chatApp.ui.map.MapFragment"
+        android:label="fragment_map"
+        tools:layout="@layout/fragment_map">
+        <action
+            android:id="@+id/action_mapFragment2_to_chatFragment"
+            app:destination="@id/chatFragment">
+            <argument
+                android:name="currentConversationId"
+                android:defaultValue="0"
+                app:argType="string" />
+        </action>
     </fragment>
 </navigation>

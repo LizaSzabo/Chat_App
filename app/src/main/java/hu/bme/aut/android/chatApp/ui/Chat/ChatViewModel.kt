@@ -20,6 +20,7 @@ class ChatViewModel @Inject constructor(
         if (messages.isNotEmpty()) {
             viewState = MessageLoadSuccess
             adapter.addAllMessages(messages)
+
         }
     }
 
@@ -27,8 +28,8 @@ class ChatViewModel @Inject constructor(
         val message = Message(UUID.randomUUID().toString(), senderId, content, time)
         added = chatPresenter.addMessage(message, currentConversationId)
         if (added) {
-            viewState = MessageAddSuccess
             adapter.add(message)
+            viewState = MessageAddSuccess
         } else {
             viewState = MessageAddError
             postEvent(AddError)
