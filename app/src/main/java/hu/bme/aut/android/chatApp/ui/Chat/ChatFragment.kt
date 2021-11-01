@@ -86,7 +86,8 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
         }
 
         initRecyclerView()
-        observeNewMessage(viewModel, chatAdapter)
+       // observeNewMessage(viewModel, chatAdapter)
+
     }
 
     private fun initRecyclerView() {
@@ -95,6 +96,7 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
         fragmentBinding.rvChat.adapter = chatAdapter
         //chatAdapter.addAll()
         viewModel.loadAllMessages(chatAdapter, currentConversationId)
+
     }
 
 
@@ -142,6 +144,7 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
             }
             MessageLoadSuccess -> {
                 Toast.makeText(context, "Load Succeeded", Toast.LENGTH_LONG).show()
+                fragmentBinding.rvChat.scrollToPosition(chatAdapter.itemCount-1)
             }
             MessageAddError -> {
 
