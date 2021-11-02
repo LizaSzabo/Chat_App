@@ -1,6 +1,7 @@
 package hu.bme.aut.android.chatApp.Adapter_Rv
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,9 +18,11 @@ import hu.bme.aut.android.chatApp.databinding.ItemSentMessageBinding
 class ChatAdapter : ListAdapter<Message, ChatAdapter.ChatViewHolder>(ItemCallBack) {
 
     var messageList = emptyList<Message>()
+    var itemClickListener : ChatAdapter.ChatItemClickListener? = null
 
-    abstract class ChatViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {}
-    ///Rw: scroll to position
+    abstract class ChatViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+    }
     companion object {
         private const val TYPE_SENT = 0
         private const val TYPE_RECEIVED = 1
@@ -76,6 +79,10 @@ class ChatAdapter : ListAdapter<Message, ChatAdapter.ChatViewHolder>(ItemCallBac
             }
             else -> throw IllegalArgumentException()
         }
+        holder.itemView.setOnClickListener {
+            Log.i("init", "init")
+            itemClickListener?.onItemClick(message)
+        }
     }
 
     override fun getItemCount(): Int {
@@ -98,5 +105,9 @@ class ChatAdapter : ListAdapter<Message, ChatAdapter.ChatViewHolder>(ItemCallBac
     fun add(message: Message) {
         messageList += message
         submitList(messageList)
+    }
+
+    interface ChatItemClickListener{
+        fun onItemClick(message: Message)
     }
 }

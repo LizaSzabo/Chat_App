@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -23,13 +24,14 @@ import co.zsmb.rainbowcake.extensions.exhaustive
 import hu.bme.aut.android.chatApp.Adapter_Rv.ChatAdapter
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.currentConversation
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.currentUser
+import hu.bme.aut.android.chatApp.Model.Message
 import hu.bme.aut.android.chatApp.R
 import hu.bme.aut.android.chatApp.databinding.FragmentChatBinding
 import java.text.SimpleDateFormat
 import java.util.*
 
 
-class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
+class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>(), ChatAdapter.ChatItemClickListener {
 
     override fun getViewResource() = R.layout.fragment_chat
     override fun provideViewModel() = getViewModelFromFactory()
@@ -103,6 +105,7 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
         fragmentBinding.rvChat.layoutManager = LinearLayoutManager(context)
         fragmentBinding.rvChat.adapter = chatAdapter
         //chatAdapter.addAll()
+        chatAdapter.itemClickListener = this
         viewModel.loadAllMessages(chatAdapter, currentConversationId)
 
     }
@@ -177,5 +180,16 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
             MessageLoadError -> {
             }
         }.exhaustive
+    }
+
+    override fun onItemClick(message: Message) {
+        if(isLocation(message.content)){
+        val action = ChatFragmentDirections.actionChatFragmentToMapFragment2(message.content)
+        findNavController().navigate(action)
+        }
+    }
+
+    private fun isLocation(content: String) : Boolean{
+        return content.startsWith("lat/lng:") && content.endsWith(")") && content.contains(",")
     }
 }
