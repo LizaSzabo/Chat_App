@@ -24,9 +24,12 @@ class MapFragment: Fragment() {
     private var location: String = ""
 
     private val callback = OnMapReadyCallback { googleMap ->
-
-        if(args.location != "0") location = args.location
-        val myMarker = stringToLocation(location)
+        val myMarker : LatLng
+        if(args.location != "0"){
+            location = args.location
+            myMarker = stringToLocation(location)
+        }
+        else myMarker = LatLng(0.0, 0.0)
         googleMap.addMarker(MarkerOptions().position(myMarker).title("Actual location"))
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(myMarker))
 
@@ -75,6 +78,5 @@ class MapFragment: Fragment() {
         val long = locationString.subSequence(longx, longy).toString().fullTrim().toDouble()
         return LatLng(lat, long)
     }
-
-    private fun String.fullTrim() = trim().replace("\uFEFF", "")
+    fun String.fullTrim() = trim().replace("\uFEFF", "")
 }
