@@ -38,7 +38,7 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
     private lateinit var chatAdapter: ChatAdapter
     private val args: ChatFragmentArgs by navArgs()
     private lateinit var currentConversationId: String
-
+    private lateinit var location: String
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -50,6 +50,11 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
         setHasOptionsMenu(true)
 
         currentConversationId = args.currentConversationId
+        location = args.location
+
+        if(location != "0")
+            fragmentBinding.text.setText(location)
+        else  fragmentBinding.text.setText("")
 
         fragmentBinding.chatButtomToolbar.title = ""
         fragmentBinding.ibSend.setOnClickListener {
@@ -155,7 +160,6 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>() {
     override fun render(viewState: ChatViewState) {
         when (viewState) {
             Initial -> {
-                fragmentBinding.text.setText("")
                 fragmentBinding.text.setTextColor(ContextCompat.getColor(requireContext(), R.color.textColor))
             }
             MessageLoadSuccess -> {

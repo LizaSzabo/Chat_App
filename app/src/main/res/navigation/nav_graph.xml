@@ -78,6 +78,10 @@
             android:name="currentConversationId"
             android:defaultValue="0"
             app:argType="string" />
+        <argument
+            android:name="location"
+            android:defaultValue="0"
+            app:argType="string" />
         <action
             android:id="@+id/action_chatFragment_to_viewUsersInConversation"
             app:destination="@id/viewUsersInConversation">
@@ -117,6 +121,10 @@
             app:destination="@id/chatFragment">
             <argument
                 android:name="currentConversationId"
+                android:defaultValue="0"
+                app:argType="string" />
+            <argument
+                android:name="location"
                 android:defaultValue="0"
                 app:argType="string" />
         </action>
