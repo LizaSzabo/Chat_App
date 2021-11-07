@@ -25,6 +25,7 @@ import hu.bme.aut.android.chatApp.Adapter_Rv.ChatAdapter
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.currentConversation
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.currentUser
 import hu.bme.aut.android.chatApp.Model.Message
+import hu.bme.aut.android.chatApp.Network.observeNewMessage
 import hu.bme.aut.android.chatApp.R
 import hu.bme.aut.android.chatApp.databinding.FragmentChatBinding
 import java.text.SimpleDateFormat
@@ -95,7 +96,7 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>(), ChatAd
         }
 
         initRecyclerView()
-       // observeNewMessage(viewModel, chatAdapter)
+        observeNewMessage(viewModel, chatAdapter)
 
     }
 

@@ -118,8 +118,8 @@ class FloatingService : Service() {
             }
         })
 
-        //observeNewMessages()
-        //observeConversations()
+        observeNewMessages()
+        observeConversations()
     }
 
     override fun onDestroy() {

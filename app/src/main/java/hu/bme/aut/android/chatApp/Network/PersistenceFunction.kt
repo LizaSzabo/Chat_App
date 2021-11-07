@@ -797,11 +797,11 @@ fun observeNewMessage(viewModel : ChatViewModel, adapter : ChatAdapter) {
 
             if(!Messages.contains(message) && it.item().sender != currentUser?.id){
                 val modelMessage = Message(message.modelId, message.sender, message.content, message.date)
-                Messages.add(modelMessage)
-               /* for(conversation in Conversations)
+                if(currentConversation != null) Messages.add(modelMessage)
+                for(conversation in Conversations)
                     if(conversation.id == currentConversation?.id)
                         conversation.messagesId.add(message.modelId)
-                currentConversation?.id?.let { it1 -> viewModel.loadAllMessages(adapter, it1) }*/
+                currentConversation?.id?.let { it1 -> viewModel.loadAllMessages(adapter, it1) }
             }
             Log.i("MyAmplifyApp", "Conversation $message")
         },
