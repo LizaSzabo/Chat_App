@@ -50,6 +50,9 @@ class ChatApplication : RainbowCakeApplication() {
         var newMessage : String = "..."
         var newMessageContent : String = "..."
         var newMessagePicture : Bitmap? = null
+
+        var chatFragment = false
+
     }
 
     override lateinit var injector: RainbowCakeComponent

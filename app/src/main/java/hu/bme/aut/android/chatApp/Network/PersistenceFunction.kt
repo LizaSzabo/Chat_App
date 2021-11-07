@@ -11,6 +11,7 @@ import hu.bme.aut.android.chatApp.ChatApplication
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.Conversations
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.Messages
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.Users
+import hu.bme.aut.android.chatApp.ChatApplication.Companion.chatFragment
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.currentConversation
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.currentUser
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.newMessage
@@ -795,9 +796,9 @@ fun observeNewMessage(viewModel : ChatViewModel, adapter : ChatAdapter) {
             val message = it.item()
 
 
-            if(!Messages.contains(message) && it.item().sender != currentUser?.id){
+            if(!Messages.contains(message) && it.item().sender != currentUser?.id && chatFragment){
                 val modelMessage = Message(message.modelId, message.sender, message.content, message.date)
-                if(currentConversation != null) Messages.add(modelMessage)
+                Messages.add(modelMessage)
                 for(conversation in Conversations)
                     if(conversation.id == currentConversation?.id)
                         conversation.messagesId.add(message.modelId)

@@ -22,6 +22,7 @@ import co.zsmb.rainbowcake.base.RainbowCakeFragment
 import co.zsmb.rainbowcake.dagger.getViewModelFromFactory
 import co.zsmb.rainbowcake.extensions.exhaustive
 import hu.bme.aut.android.chatApp.Adapter_Rv.ChatAdapter
+import hu.bme.aut.android.chatApp.ChatApplication.Companion.chatFragment
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.currentConversation
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.currentUser
 import hu.bme.aut.android.chatApp.Model.Message
@@ -45,6 +46,8 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>(), ChatAd
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        chatFragment = true
 
         val binding = FragmentChatBinding.bind(view)
         fragmentBinding = binding
@@ -192,5 +195,10 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>(), ChatAd
 
     private fun isLocation(content: String) : Boolean{
         return content.startsWith("lat/lng:") && content.endsWith(")") && content.contains(",")
+    }
+
+    override fun onPause() {
+        chatFragment = false
+        super.onPause()
     }
 }
