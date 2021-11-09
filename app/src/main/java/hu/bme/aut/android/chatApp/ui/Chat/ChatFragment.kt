@@ -29,6 +29,8 @@ import hu.bme.aut.android.chatApp.Model.Message
 import hu.bme.aut.android.chatApp.Network.observeNewMessage
 import hu.bme.aut.android.chatApp.R
 import hu.bme.aut.android.chatApp.databinding.FragmentChatBinding
+import hu.bme.aut.android.chatApp.extensions.resizeByHeight
+import hu.bme.aut.android.chatApp.extensions.resizeByWidth
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -114,31 +116,6 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>(), ChatAd
 
     }
 
-
-    private fun Bitmap.resizeByHeight(height: Int): Bitmap {
-        val ratio: Float = this.height.toFloat() / this.width.toFloat()
-        val width: Int = Math.round(height / ratio)
-
-        return Bitmap.createScaledBitmap(
-            this,
-            width,
-            height,
-            false
-        )
-    }
-
-    private fun Bitmap.resizeByWidth(width: Int): Bitmap {
-        val ratio: Float = this.width.toFloat() / this.height.toFloat()
-        val height: Int = Math.round(width / ratio)
-
-        return Bitmap.createScaledBitmap(
-            this,
-            width,
-            height,
-            false
-        )
-    }
-
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.chat_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
@@ -150,7 +127,7 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>(), ChatAd
           /*  val uri: String = java.lang.String.format(Locale.ENGLISH, "geo:%f,%f", 47.0, 19.0)
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
             requireContext().startActivity(intent)*/
-            val action = ChatFragmentDirections.actionChatFragmentToMapFragment2()
+            val action = ChatFragmentDirections.actionChatFragmentToMapFragment()
             findNavController().navigate(action)
 
         }
@@ -188,7 +165,7 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>(), ChatAd
 
     override fun onItemClick(message: Message) {
         if(isLocation(message.content)){
-        val action = ChatFragmentDirections.actionChatFragmentToMapFragment2(message.content)
+        val action = ChatFragmentDirections.actionChatFragmentToMapFragment(message.content)
         findNavController().navigate(action)
         }
     }

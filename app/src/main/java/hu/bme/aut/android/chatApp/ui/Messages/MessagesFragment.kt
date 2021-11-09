@@ -4,7 +4,9 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.ImageDecoder
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
@@ -15,6 +17,7 @@ import android.view.View
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
@@ -25,15 +28,16 @@ import co.zsmb.rainbowcake.base.RainbowCakeFragment
 import co.zsmb.rainbowcake.dagger.getViewModelFromFactory
 import co.zsmb.rainbowcake.extensions.exhaustive
 import hu.bme.aut.android.chatApp.Adapter_Rv.ConversationsAdapter
-import hu.bme.aut.android.chatApp.ChatApplication.Companion.Conversations
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.currentConversation
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.currentUser
 import hu.bme.aut.android.chatApp.Model.Conversation
-import hu.bme.aut.android.chatApp.Network.observeNewConversation
 import hu.bme.aut.android.chatApp.R
 import hu.bme.aut.android.chatApp.databinding.FragmentMessagesBinding
+import hu.bme.aut.android.chatApp.extensions.resizeByHeight
+import hu.bme.aut.android.chatApp.extensions.resizeByWidth
 import hu.bme.aut.android.chatApp.ui.addUser.AddUserDialog
 import hu.bme.aut.android.chatApp.ui.editconversation.EditConversationDialog
+import kotlin.math.roundToInt
 
 class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewModel>(), ConversationsAdapter.ConversationItemClickListener,
     EditConversationDialog.EditConversationListener {
@@ -81,29 +85,6 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
       //  observeNewConversation()
     }
 
-    private fun Bitmap.resizeByHeight(height: Int): Bitmap {
-        val ratio: Float = this.height.toFloat() / this.width.toFloat()
-        val width: Int = Math.round(height / ratio)
-
-        return Bitmap.createScaledBitmap(
-            this,
-            width,
-            height,
-            false
-        )
-    }
-
-    private fun Bitmap.resizeByWidth(width: Int): Bitmap {
-        val ratio: Float = this.width.toFloat() / this.height.toFloat()
-        val height: Int = Math.round(width / ratio)
-
-        return Bitmap.createScaledBitmap(
-            this,
-            width,
-            height,
-            false
-        )
-    }
 
     private fun initRecyclerView() {
         conversationsAdapter = ConversationsAdapter()
@@ -137,6 +118,7 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
         findNavController().navigate(action)
     }
 
+    @RequiresApi(Build.VERSION_CODES.P)
     @SuppressLint("ResourceAsColor")
     override fun onItemLongClick(position: Int, view: View, conversation: Conversation): Boolean {
         currentConversation = conversation
@@ -175,18 +157,20 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.P)
     private var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             val data: Intent? = result.data
             val selectedImageUri: Uri? = data?.data
             if (null != selectedImageUri) {
-                val conversationPicture: Bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, selectedImageUri)
+                val conversationPicture: Bitmap = getCapturedImage(selectedImageUri)
                 viewModel.updateConversationImage(currentConversation!!, conversationPicture, positionOfSelectedImage)
                 uri = selectedImageUri
             }
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.P)
     private fun openSomeActivityForResult() {
         val intent = Intent()
         intent.type = "image/*"
@@ -239,5 +223,19 @@ class MessagesFragment : RainbowCakeFragment<MessagesViewState, MessagesViewMode
     override fun onPause() {
         fragmentBinding.editTextSearch.setText("")
         super.onPause()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.P)
+    private fun getCapturedImage(selectedPhotoUri: Uri): Bitmap {
+        return when {
+            Build.VERSION.SDK_INT < 28 -> MediaStore.Images.Media.getBitmap(
+                activity?.contentResolver,
+                selectedPhotoUri
+            )
+            else -> {
+                val source = ImageDecoder.createSource(activity?.contentResolver!!, selectedPhotoUri)
+                ImageDecoder.decodeBitmap(source)
+            }
+        }
     }
 }

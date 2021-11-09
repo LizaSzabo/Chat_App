@@ -15,6 +15,7 @@ import co.zsmb.rainbowcake.extensions.exhaustive
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.currentUser
 import hu.bme.aut.android.chatApp.R
 import hu.bme.aut.android.chatApp.databinding.FragmentEditProfileBinding
+import hu.bme.aut.android.chatApp.extensions.resizeByHeight
 
 
 class EditProfileFragment : RainbowCakeFragment<EditProfileViewState, EditProfileViewModel>() {
@@ -61,19 +62,6 @@ class EditProfileFragment : RainbowCakeFragment<EditProfileViewState, EditProfil
         intent.type = "image/*"
         intent.action = Intent.ACTION_GET_CONTENT
         resultLauncher.launch(intent)
-    }
-
-
-    private fun Bitmap.resizeByHeight(height: Int): Bitmap {
-        val ratio: Float = this.height.toFloat() / this.width.toFloat()
-        val width: Int = Math.round(height / ratio)
-
-        return Bitmap.createScaledBitmap(
-            this,
-            width,
-            height,
-            false
-        )
     }
 
     override fun render(viewState: EditProfileViewState) {

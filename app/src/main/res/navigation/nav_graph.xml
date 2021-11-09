@@ -91,7 +91,7 @@
                 app:argType="string" />
         </action>
         <action
-            android:id="@+id/action_chatFragment_to_mapFragment2"
+            android:id="@+id/action_chatFragment_to_mapFragment"
             app:destination="@id/mapFragment2" >
             <argument
                 android:name="location"
