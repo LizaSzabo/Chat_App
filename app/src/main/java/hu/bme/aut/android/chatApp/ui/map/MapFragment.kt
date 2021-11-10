@@ -3,7 +3,6 @@ package hu.bme.aut.android.chatApp.ui.map
 import android.location.Address
 import android.location.Geocoder
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,6 +24,7 @@ import java.util.*
 class MapFragment : Fragment() {
     private val args: ChatFragmentArgs by navArgs()
     private var location: String = ""
+    private val zoomLevel = 16.0f //This goes up to 21
 
     private val callback = OnMapReadyCallback { googleMap ->
         val myMarker: LatLng
@@ -38,13 +38,13 @@ class MapFragment : Fragment() {
         }
 
         googleMap.addMarker(MarkerOptions().position(myMarker).title("Actual location"))
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(myMarker))
-       /* val openedGeocoder = Geocoder(context, Locale.getDefault())
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myMarker, zoomLevel))
+        val openedGeocoder = Geocoder(context, Locale.getDefault())
         val openedAddresses: List<Address?> = openedGeocoder.getFromLocation(myMarker.latitude, myMarker.longitude, 1);
         if (openedAddresses.isNotEmpty()) {
             val openedAddress = openedAddresses[0]?.getAddressLine(0)
             tvActualAddress.text = openedAddress
-        } else tvActualAddress.text = ""*/
+        } else tvActualAddress.text = ""
 
         googleMap.setOnMapClickListener() {
             googleMap.clear()
