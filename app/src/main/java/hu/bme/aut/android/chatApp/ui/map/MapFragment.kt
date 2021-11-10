@@ -1,5 +1,7 @@
 package hu.bme.aut.android.chatApp.ui.map
 
+import android.location.Address
+import android.location.Geocoder
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +18,7 @@ import hu.bme.aut.android.chatApp.ChatApplication.Companion.currentConversation
 import hu.bme.aut.android.chatApp.R
 import hu.bme.aut.android.chatApp.ui.Chat.ChatFragmentArgs
 import kotlinx.android.synthetic.main.fragment_map.*
+import java.util.*
 
 
 class MapFragment : Fragment() {
@@ -27,17 +30,29 @@ class MapFragment : Fragment() {
         if (args.location != "0") {
             location = args.location
             myMarker = stringToLocation(location)
-        } else myMarker = LatLng(0.0, 0.0)
+        } else myMarker = LatLng(47.0, 19.0)
+
         googleMap.addMarker(MarkerOptions().position(myMarker).title("Actual location"))
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(myMarker))
+        val openedGeocoder = Geocoder(context, Locale.getDefault())
+        val openedAddresses: List<Address?> = openedGeocoder.getFromLocation(myMarker.latitude, myMarker.longitude, 1);
+        if (openedAddresses.isNotEmpty()) {
+            val openedAddress = openedAddresses[0]?.getAddressLine(0)
+            tvActualAddress.text = openedAddress
+        } else tvActualAddress.text = ""
 
         googleMap.setOnMapClickListener() {
             googleMap.clear()
             googleMap.addMarker(MarkerOptions().position(it).title("Actual location"))
             googleMap.moveCamera(CameraUpdateFactory.newLatLng(it))
             location = it.toString()
+            val geocoder = Geocoder(context, Locale.getDefault())
+            val addresses: List<Address?> = geocoder.getFromLocation(it.latitude, it.longitude, 1);
+            if (addresses.isNotEmpty()) {
+                val address = addresses[0]?.getAddressLine(0)
+                tvActualAddress.text = address
+            } else tvActualAddress.text = ""
         }
-
     }
 
     override fun onCreateView(
@@ -76,5 +91,6 @@ class MapFragment : Fragment() {
         return LatLng(lat, long)
     }
 
+    //TODO: move to extensions
     fun String.fullTrim() = trim().replace("\uFEFF", "")
 }
