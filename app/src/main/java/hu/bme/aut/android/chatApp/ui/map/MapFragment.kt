@@ -3,6 +3,7 @@ package hu.bme.aut.android.chatApp.ui.map
 import android.location.Address
 import android.location.Geocoder
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,19 +28,23 @@ class MapFragment : Fragment() {
 
     private val callback = OnMapReadyCallback { googleMap ->
         val myMarker: LatLng
-        if (args.location != "0") {
-            location = args.location
-            myMarker = stringToLocation(location)
-        } else myMarker = LatLng(47.0, 19.0)
+        when {
+            args.location == "" -> myMarker = LatLng(47.0, 19.0)
+            args.location != "0" &&  args.location != "" -> {
+                location = args.location
+                myMarker = stringToLocation(location)
+            }
+            else -> myMarker = LatLng(47.0, 19.0)
+        }
 
         googleMap.addMarker(MarkerOptions().position(myMarker).title("Actual location"))
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(myMarker))
-        val openedGeocoder = Geocoder(context, Locale.getDefault())
+       /* val openedGeocoder = Geocoder(context, Locale.getDefault())
         val openedAddresses: List<Address?> = openedGeocoder.getFromLocation(myMarker.latitude, myMarker.longitude, 1);
         if (openedAddresses.isNotEmpty()) {
             val openedAddress = openedAddresses[0]?.getAddressLine(0)
             tvActualAddress.text = openedAddress
-        } else tvActualAddress.text = ""
+        } else tvActualAddress.text = ""*/
 
         googleMap.setOnMapClickListener() {
             googleMap.clear()
@@ -80,17 +85,22 @@ class MapFragment : Fragment() {
         val lat = locationString.subSequence(10, 27).toString().fullTrim().toDouble()
         var longx = 0
         var longy = 0
-        if (locationString[28] == ',') {
-            longx = 29
+        if (locationString[27] == ',') {
+            longx = 28
             longy = 43
         } else if (locationString[28] == ',') {
-            longx = 30
+            longx = 29
             longy = 44
         }
+        else if (locationString[29] == ',') {
+            longx = 30
+            longy = 45
+        }
+
         val long = locationString.subSequence(longx, longy).toString().fullTrim().toDouble()
         return LatLng(lat, long)
     }
 
     //TODO: move to extensions
-    fun String.fullTrim() = trim().replace("\uFEFF", "")
+    private fun String.fullTrim() = trim().replace("\uFEFF", "")
 }

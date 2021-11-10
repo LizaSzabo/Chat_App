@@ -165,6 +165,7 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>(), ChatAd
 
     override fun onItemClick(message: Message) {
         if(isLocation(message.content)){
+            Log.i("content", message.content)
         val action = ChatFragmentDirections.actionChatFragmentToMapFragment(message.content)
         findNavController().navigate(action)
         }
