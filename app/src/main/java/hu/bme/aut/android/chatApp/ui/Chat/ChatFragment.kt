@@ -1,9 +1,8 @@
 package hu.bme.aut.android.chatApp.ui.Chat
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.graphics.Bitmap
-import android.net.Uri
+import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -31,6 +30,7 @@ import hu.bme.aut.android.chatApp.R
 import hu.bme.aut.android.chatApp.databinding.FragmentChatBinding
 import hu.bme.aut.android.chatApp.extensions.resizeByHeight
 import hu.bme.aut.android.chatApp.extensions.resizeByWidth
+import okio.utf8Size
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -60,9 +60,9 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>(), ChatAd
         currentConversationId = args.currentConversationId
         location = args.location
 
-        if(location != "0")
+        if (location != "0")
             fragmentBinding.text.setText(location)
-        else  fragmentBinding.text.setText("")
+        else fragmentBinding.text.setText("")
 
         fragmentBinding.chatButtomToolbar.title = ""
         fragmentBinding.ibSend.setOnClickListener {
@@ -71,7 +71,7 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>(), ChatAd
                 val time = dateFormat.format(Calendar.getInstance().time)
 
 
-                viewModel.addMessage(currentUser!!.id,  fragmentBinding.text.text.toString(), time, currentConversationId)
+                viewModel.addMessage(currentUser!!.id, fragmentBinding.text.text.toString(), time, currentConversationId)
                 /*if (message != null) {
                     chatAdapter.addMessage(message)
                     messageText = "Waiting for messages..."
@@ -122,11 +122,10 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>(), ChatAd
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if(item.itemId == R.id.add_location)
-        {
-          /*  val uri: String = java.lang.String.format(Locale.ENGLISH, "geo:%f,%f", 47.0, 19.0)
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
-            requireContext().startActivity(intent)*/
+        if (item.itemId == R.id.add_location) {
+            /*  val uri: String = java.lang.String.format(Locale.ENGLISH, "geo:%f,%f", 47.0, 19.0)
+              val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
+              requireContext().startActivity(intent)*/
             val action = ChatFragmentDirections.actionChatFragmentToMapFragment()
             findNavController().navigate(action)
 
@@ -148,7 +147,7 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>(), ChatAd
             }
             MessageLoadSuccess -> {
                 Toast.makeText(context, "Load Succeeded", Toast.LENGTH_LONG).show()
-                fragmentBinding.rvChat.scrollToPosition(chatAdapter.itemCount-1)
+                fragmentBinding.rvChat.scrollToPosition(chatAdapter.itemCount - 1)
             }
             MessageAddError -> {
 
@@ -156,7 +155,7 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>(), ChatAd
             MessageAddSuccess -> {
                 fragmentBinding.text.setText("")
                 fragmentBinding.text.setTextColor(ContextCompat.getColor(requireContext(), R.color.textColor))
-                fragmentBinding.rvChat.scrollToPosition(chatAdapter.itemCount-2)
+                fragmentBinding.rvChat.scrollToPosition(chatAdapter.itemCount - 2)
             }
             MessageLoadError -> {
             }
@@ -164,15 +163,19 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>(), ChatAd
     }
 
     override fun onItemClick(message: Message) {
-        if(isLocation(message.content)){
+        if (isLocation(message.content)) {
             Log.i("content", message.content)
-        val action = ChatFragmentDirections.actionChatFragmentToMapFragment(message.content)
-        findNavController().navigate(action)
+            val action = ChatFragmentDirections.actionChatFragmentToMapFragment(message.content)
+            findNavController().navigate(action)
         }
     }
 
-    private fun isLocation(content: String) : Boolean{
-        return content.startsWith("lat/lng:") && content.endsWith(")") && content.contains(",")
+    private fun isLocation(content: String): Boolean {
+        return content.startsWith("lat/lng: (")
+                && content.endsWith(")")
+                && content.contains(",")
+                && content.substringAfter('(').substringBefore(',').matches("-?\\d+(\\.\\d+)?".toRegex())
+                && content.substringAfter(',').substringBefore(')').matches("-?\\d+(\\.\\d+)?".toRegex())
     }
 
     override fun onPause() {

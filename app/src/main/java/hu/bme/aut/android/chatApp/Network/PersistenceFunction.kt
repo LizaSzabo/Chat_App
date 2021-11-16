@@ -794,10 +794,9 @@ fun observeNewMessage(viewModel : ChatViewModel, adapter : ChatAdapter) {
         {
 
             val message = it.item()
+            val modelMessage = Message(message.modelId, message.sender, message.content, message.date)
 
-
-            if(!Messages.contains(message) && it.item().sender != currentUser?.id && chatFragment){
-                val modelMessage = Message(message.modelId, message.sender, message.content, message.date)
+            if(!Messages.contains(modelMessage) && it.item().sender != currentUser?.id && chatFragment){
                 Messages.add(modelMessage)
                 for(conversation in Conversations)
                     if(conversation.id == currentConversation?.id)

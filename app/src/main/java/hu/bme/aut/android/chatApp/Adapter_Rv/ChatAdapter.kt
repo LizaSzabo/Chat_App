@@ -18,11 +18,12 @@ import hu.bme.aut.android.chatApp.databinding.ItemSentMessageBinding
 class ChatAdapter : ListAdapter<Message, ChatAdapter.ChatViewHolder>(ItemCallBack) {
 
     var messageList = emptyList<Message>()
-    var itemClickListener : ChatAdapter.ChatItemClickListener? = null
+    var itemClickListener: ChatAdapter.ChatItemClickListener? = null
 
     abstract class ChatViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     }
+
     companion object {
         private const val TYPE_SENT = 0
         private const val TYPE_RECEIVED = 1
@@ -54,10 +55,18 @@ class ChatAdapter : ListAdapter<Message, ChatAdapter.ChatViewHolder>(ItemCallBac
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatViewHolder {
         return when (viewType) {
             TYPE_SENT -> {
-                SentViewHolder(ItemSentMessageBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+                SentViewHolder(
+                    ItemSentMessageBinding.inflate(
+                        LayoutInflater.from(parent.context), parent, false
+                    )
+                )
             }
             TYPE_RECEIVED -> {
-                ReceivedViewHolder(ItemMessageReceivedBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+                ReceivedViewHolder(
+                    ItemMessageReceivedBinding.inflate(
+                        LayoutInflater.from(parent.context), parent, false
+                    )
+                )
             }
             else -> throw IllegalArgumentException("Invalid view type")
         }
@@ -107,7 +116,7 @@ class ChatAdapter : ListAdapter<Message, ChatAdapter.ChatViewHolder>(ItemCallBac
         submitList(messageList)
     }
 
-    interface ChatItemClickListener{
+    interface ChatItemClickListener {
         fun onItemClick(message: Message)
     }
 }

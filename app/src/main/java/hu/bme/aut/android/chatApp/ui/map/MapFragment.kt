@@ -82,22 +82,10 @@ class MapFragment : Fragment() {
     }
 
     private fun stringToLocation(locationString: String): LatLng {
-        val lat = locationString.subSequence(10, 27).toString().fullTrim().toDouble()
-        var longx = 0
-        var longy = 0
-        if (locationString[27] == ',') {
-            longx = 28
-            longy = 43
-        } else if (locationString[28] == ',') {
-            longx = 29
-            longy = 44
-        }
-        else if (locationString[29] == ',') {
-            longx = 30
-            longy = 45
-        }
-
-        val long = locationString.subSequence(longx, longy).toString().fullTrim().toDouble()
+        val lat = locationString.substringAfter('(').
+                    substringBefore(',').fullTrim().toDouble()
+        val long = locationString.substringAfter(',').
+                    substringBefore(')').fullTrim().toDouble()
         return LatLng(lat, long)
     }
 

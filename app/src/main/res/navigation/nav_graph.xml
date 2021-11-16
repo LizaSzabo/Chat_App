@@ -102,6 +102,7 @@
     <fragment
         android:id="@+id/viewUsersInConversation"
         android:name="hu.bme.aut.android.chatApp.ui.ViewUsers.ViewUsersInConversation"
+        tools:layout="@layout/fragment_view_users"
         android:label="ViewUsersInConversation">
         <argument
             android:name="currentConversationId"
@@ -111,6 +112,7 @@
     <fragment
         android:id="@+id/loadingFragment"
         android:name="hu.bme.aut.android.chatApp.ui.loading.LoadingFragment"
+        tools:layout="@layout/fragment_loading"
         android:label="LoadingFragment">
         <action
             android:id="@+id/action_loadingFragment_to_loginFragment"

@@ -49,7 +49,7 @@ class RegisterFragment : RainbowCakeFragment<RegisterViewState, RegisterViewMode
         }
 
         fragmentBinding.ivAddPicture.setOnClickListener {
-            openSomeActivityForResult()
+            openSomeActivityForImageResult()
         }
 
         fragmentBinding.ivAddPicture.setImageURI(uri)
@@ -66,7 +66,7 @@ class RegisterFragment : RainbowCakeFragment<RegisterViewState, RegisterViewMode
         }
     }
 
-    private fun openSomeActivityForResult() {
+    private fun openSomeActivityForImageResult() {
         val intent = Intent()
         intent.type = "image/*"
         intent.action = Intent.ACTION_GET_CONTENT
