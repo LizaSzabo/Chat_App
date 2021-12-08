@@ -29,13 +29,12 @@ class ChatApplication : RainbowCakeApplication() {
         var currentConversation: Conversation? = null
         var allConversationList: MutableList<com.amplifyframework.datastore.generated.model.Conversation> = mutableListOf()
             private set
-        var allMessagesList: MutableList<com.amplifyframework.datastore.generated.model.Message> = mutableListOf()
-            private set
+
         var convid = 2
         var userid = 2
-        var update = false
+
         var messageText = ""
-        var lastDate : String = ""
+
 
 
         var Users: MutableList<User> = mutableListOf()

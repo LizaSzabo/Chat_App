@@ -112,33 +112,11 @@ class ConversationsAdapter : ListAdapter<Conversation, ConversationsAdapter.Conv
         submitList(conversationList)
     }
 
-    /* fun addAll(conversation: String){
-         val convs: MutableList<Conversation>
+    fun addAllConversations(conversations: List<Conversation>, searchText: String) {
+        val selectedConversations = mutableListOf<Conversation>()
 
-
-         if(conversation.isEmpty()) {
-             conversationList = emptyList()
-             if(currentUser?.conversations != null){
-             convs = currentUser?.conversations!!
-             conversationList += convs
-             submitList(conversationList)
-             }
-         }
-         else{
-             conversationList = emptyList()
-             for(c in currentUser?.conversations!!){
-                 if(c.name.contains(conversation, ignoreCase = true))
-                     conversationList += c
-                     submitList(conversationList)
-             }
-         }
-     }*/
-
-    fun addAllConversations(conversations: List<Conversation>, searchText : String) {
-        val selectedConversations= mutableListOf<Conversation>()
-
-        for(c in conversations)
-            if(c.name.contains(searchText, ignoreCase = true))
+        for (c in conversations)
+            if (c.name.contains(searchText, ignoreCase = true))
                 selectedConversations.add(c)
 
         conversationList -= conversationList

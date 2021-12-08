@@ -86,16 +86,6 @@ class LoginFragment : RainbowCakeFragment<LoginViewState, LoginViewModel>(), Ada
         }
         return true
     }
-        /* if (!viewModel.validUserAndPass(
-                 fragmentBinding.editTextLoginName.text.toString(),
-                 fragmentBinding.editTextLoginPassword.text.toString()
-             )
-         ) {
-             Snackbar.make(fragmentBinding.root, getString(R.string.wrong_input), Snackbar.LENGTH_LONG)
-                 .setBackgroundTint(Color.RED)
-                 .show()
-             return false
-         }*/
 
 
     override fun onEvent(event: OneShotEvent) {

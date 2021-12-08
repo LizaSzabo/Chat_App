@@ -2,7 +2,6 @@ package hu.bme.aut.android.chatApp.ui.Chat
 
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
-import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -30,7 +29,6 @@ import hu.bme.aut.android.chatApp.R
 import hu.bme.aut.android.chatApp.databinding.FragmentChatBinding
 import hu.bme.aut.android.chatApp.extensions.resizeByHeight
 import hu.bme.aut.android.chatApp.extensions.resizeByWidth
-import okio.utf8Size
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -123,9 +121,6 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>(), ChatAd
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.add_location) {
-            /*  val uri: String = java.lang.String.format(Locale.ENGLISH, "geo:%f,%f", 47.0, 19.0)
-              val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
-              requireContext().startActivity(intent)*/
             val action = ChatFragmentDirections.actionChatFragmentToMapFragment()
             findNavController().navigate(action)
 

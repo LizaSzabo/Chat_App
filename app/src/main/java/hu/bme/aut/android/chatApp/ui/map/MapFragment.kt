@@ -24,13 +24,13 @@ import java.util.*
 class MapFragment : Fragment() {
     private val args: ChatFragmentArgs by navArgs()
     private var location: String = ""
-    private val zoomLevel = 16.0f //This goes up to 21
+    private val zoomLevel = 16.0f
 
     private val callback = OnMapReadyCallback { googleMap ->
         val myMarker: LatLng
         when {
             args.location == "" -> myMarker = LatLng(47.0, 19.0)
-            args.location != "0" &&  args.location != "" -> {
+            args.location != "0" && args.location != "" -> {
                 location = args.location
                 myMarker = stringToLocation(location)
             }
@@ -82,13 +82,10 @@ class MapFragment : Fragment() {
     }
 
     private fun stringToLocation(locationString: String): LatLng {
-        val lat = locationString.substringAfter('(').
-                    substringBefore(',').fullTrim().toDouble()
-        val long = locationString.substringAfter(',').
-                    substringBefore(')').fullTrim().toDouble()
+        val lat = locationString.substringAfter('(').substringBefore(',').fullTrim().toDouble()
+        val long = locationString.substringAfter(',').substringBefore(')').fullTrim().toDouble()
         return LatLng(lat, long)
     }
 
-    //TODO: move to extensions
     private fun String.fullTrim() = trim().replace("\uFEFF", "")
 }

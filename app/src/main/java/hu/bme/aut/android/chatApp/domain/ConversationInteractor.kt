@@ -1,7 +1,6 @@
 package hu.bme.aut.android.chatApp.domain
 
 import android.graphics.Bitmap
-import android.util.Log
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.Conversations
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.Users
 import hu.bme.aut.android.chatApp.ChatApplication.Companion.currentConversation
@@ -28,7 +27,6 @@ class ConversationInteractor @Inject constructor() {
                 if (user.id == currentUser?.id) {
                     user.conversationsId.remove(conversation.id)
                     conversation.usersId.remove(user.id)
-                    //deleteUserFromConversation(conversation, conversation.usersId)
                 }
             currentUser?.conversationsId?.remove(conversation.id)
 
@@ -90,7 +88,7 @@ class ConversationInteractor @Inject constructor() {
             if (user.userName == userName)
                 userId = user.id
         for (c in Conversations)
-            if (c.id == conversation.id){
+            if (c.id == conversation.id) {
                 c.usersId.add(userId)
                 changeUsersId(c, c.usersId)
             }

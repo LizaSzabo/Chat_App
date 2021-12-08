@@ -22,8 +22,6 @@ class MainActivity : AppCompatActivity() {
 
         messageText = "Waiting for new messages..."
 
-
-        // querys(b)
         checkAndStartService()
 
     }
@@ -35,8 +33,8 @@ class MainActivity : AppCompatActivity() {
             AlertDialog.Builder(this)
                 .setMessage(
                     "For the app to use notifications and" +
-                    " floating window enable " +
-                    "'Allow over other apps' setting "
+                            " floating window enable " +
+                            "'Allow over other apps' setting "
                 )
                 .setPositiveButton("Ok", null)
                 .create().show()
@@ -50,24 +48,5 @@ class MainActivity : AppCompatActivity() {
             true
         }
     }
-
-    /*override fun onStop() {
-        Amplify.DataStore.clear(
-            {
-                Amplify.DataStore.start(
-                    {
-                        Log.i("MyAmplifyApp", "DataStore started")
-                    },
-                    { Log.e("MyAmplifyApp", "Error starting DataStore", it) }
-                )
-
-            },
-            { Log.e("MyAmplifyApp", "Error clearing DataStore", it) }
-        )
-
-        messageText = "Waiting for messages..."
-        super.onStop()
-    }*/
-
 
 }

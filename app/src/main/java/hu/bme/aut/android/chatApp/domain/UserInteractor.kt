@@ -46,7 +46,6 @@ class UserInteractor @Inject constructor() {
     }
 
     fun existsUserName(newUserName: String): Boolean {
-        //getAllUsers()
         for (user in Users)
             if (user.userName == newUserName)
                 return true

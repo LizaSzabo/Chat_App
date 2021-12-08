@@ -22,10 +22,7 @@ class LoadingFragment : RainbowCakeFragment<LoadingViewState, LoadingViewModel>(
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentLoadingBinding.bind(view)
         fragmentBinding = binding
-
-
     }
-
 
     override fun render(viewState: LoadingViewState) {
         when (viewState) {
