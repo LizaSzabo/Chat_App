@@ -21,7 +21,7 @@ class MessagesViewModel @Inject constructor(
 
     fun init(searchText: String, adapter: ConversationsAdapter) = execute {
         conversations = messagesPresenter.getConversations()
-        viewState = ConversationLoadSuccess //ConversationLoadError
+        viewState = ConversationLoadSuccess
         conversationsAdapter = adapter
         conversationsAdapter.addAllConversations(conversations, searchText)
     }

@@ -68,13 +68,7 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>(), ChatAd
                 val dateFormat = SimpleDateFormat("yyyy.MM.dd HH:mm")
                 val time = dateFormat.format(Calendar.getInstance().time)
 
-
                 viewModel.addMessage(currentUser!!.id, fragmentBinding.text.text.toString(), time, currentConversationId)
-                /*if (message != null) {
-                    chatAdapter.addMessage(message)
-                    messageText = "Waiting for messages..."
-                }*/
-
             }
         }
 
@@ -100,7 +94,6 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>(), ChatAd
 
         initRecyclerView()
         observeNewMessage(viewModel, chatAdapter)
-
     }
 
 
@@ -108,7 +101,6 @@ class ChatFragment : RainbowCakeFragment<ChatViewState, ChatViewModel>(), ChatAd
         chatAdapter = ChatAdapter()
         fragmentBinding.rvChat.layoutManager = LinearLayoutManager(context)
         fragmentBinding.rvChat.adapter = chatAdapter
-        //chatAdapter.addAll()
         chatAdapter.itemClickListener = this
         viewModel.loadAllMessages(chatAdapter, currentConversationId)
 

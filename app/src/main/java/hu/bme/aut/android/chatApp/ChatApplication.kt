@@ -32,10 +32,7 @@ class ChatApplication : RainbowCakeApplication() {
 
         var convid = 2
         var userid = 2
-
         var messageText = ""
-
-
 
         var Users: MutableList<User> = mutableListOf()
             private set
@@ -71,20 +68,11 @@ class ChatApplication : RainbowCakeApplication() {
             Amplify.addPlugin(AWSDataStorePlugin())
             Amplify.configure(applicationContext)
 
-
             Log.i("MyAmplifyApp", "Initialized Amplify")
-
-
 
         } catch (error: AmplifyException) {
             Log.e("MyAmplifyApp", "Could not initialize Amplify", error)
         }
-
-
-        //querys(b)
-
-
-       // observeData(b, this)
     }
 
     override fun setupInjector() {
