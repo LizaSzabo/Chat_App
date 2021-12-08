@@ -1,6 +1,7 @@
 package hu.bme.aut.android.chatApp.ui.editusername
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,6 +31,7 @@ class EditUserNameDialog(private var editbinding: FragmentEditProfileBinding) :
         binding.btnSave.setOnClickListener {
             if (inputIsValid()) {
                 viewModel.updateUserName(binding.editTextLoginName.text.toString())
+                Log.i("step", "execute ended")
             }
         }
 

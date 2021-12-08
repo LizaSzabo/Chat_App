@@ -163,7 +163,8 @@ class FloatingService : Service() {
         tvMessage?.text = newMessage
         ivConversation?.setImageBitmap(newMessagePicture)
         val notification = createNotification(text)
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.notify(NOTIFICATION_ID, notification)
     }
 

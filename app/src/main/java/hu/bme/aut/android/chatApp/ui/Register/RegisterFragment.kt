@@ -119,3 +119,8 @@ class RegisterFragment : RainbowCakeFragment<RegisterViewState, RegisterViewMode
     }
 
 }
+
+
+
+
+

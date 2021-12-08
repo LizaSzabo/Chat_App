@@ -7,7 +7,6 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
-import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import co.zsmb.rainbowcake.base.OneShotEvent
@@ -56,9 +55,14 @@ class LoginFragment : RainbowCakeFragment<LoginViewState, LoginViewModel>(), Ada
 
         val spinner: Spinner = fragmentBinding.spinnerLanguages
         context?.let {
-            ArrayAdapter.createFromResource(it, R.array.languages, android.R.layout.simple_spinner_item)
+            ArrayAdapter.createFromResource(
+                it,
+                R.array.languages, android.R.layout.simple_spinner_item
+            )
                 .also { adapter ->
-                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    adapter.setDropDownViewResource(
+                        android.R.layout.simple_spinner_dropdown_item
+                    )
                     spinner.adapter = adapter
                 }
         }
@@ -71,13 +75,17 @@ class LoginFragment : RainbowCakeFragment<LoginViewState, LoginViewModel>(), Ada
 
     private fun isLoginValid(): Boolean {
         if (fragmentBinding.editTextLoginName.text.toString().isEmpty()) {
-            fragmentBinding.editTextLoginName.error = getString(R.string.user_name_required)
+            fragmentBinding.editTextLoginName.error =
+                getString(R.string.user_name_required)
             return false
         }
         if (fragmentBinding.editTextLoginPassword.text.toString().isEmpty()) {
-            fragmentBinding.editTextLoginPassword.error = getString(R.string.pass_required)
+            fragmentBinding.editTextLoginPassword.error =
+                getString(R.string.pass_required)
             return false
         }
+        return true
+    }
         /* if (!viewModel.validUserAndPass(
                  fragmentBinding.editTextLoginName.text.toString(),
                  fragmentBinding.editTextLoginPassword.text.toString()
@@ -88,8 +96,7 @@ class LoginFragment : RainbowCakeFragment<LoginViewState, LoginViewModel>(), Ada
                  .show()
              return false
          }*/
-        return true
-    }
+
 
     override fun onEvent(event: OneShotEvent) {
         when (event) {
